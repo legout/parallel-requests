@@ -1,0 +1,14 @@
+from .utils import get_user_agents, get_webshare_proxy_list, get_free_proxy_list
+
+
+
+USER_AGENTS = get_user_agents()
+
+
+URL_WEBSHARE_PROXY_LIST = None # Put your webshare.io proxy list download url here
+
+if URL_WEBSHARE_PROXY_LIST is not None:
+    PROXIES = get_webshare_proxy_list(URL_WEBSHARE_PROXY_LIST)
+
+else:
+    PROXIES = get_free_proxy_list()
