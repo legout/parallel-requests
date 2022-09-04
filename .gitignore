@@ -1,4 +1,0 @@
-dist/
-src/async_requests/__pycache__
-src/async_requests/config_local.py
-.gitignore
