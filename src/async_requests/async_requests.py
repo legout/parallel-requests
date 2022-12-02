@@ -273,7 +273,7 @@ async def async_requests(
     #     max_tries=max_tries,
     # )
     @retry(
-        wait=wait_random(0.1, 7.5),
+        wait=wait_random(1, 10),
         stop=stop_after_attempt(max_tries)
     )
     async def _request(
@@ -307,10 +307,10 @@ async def async_requests(
             headers=headers,
             proxy=proxy,
         ) as response:
-            # if response.status >= 400:
-            #     raise aiohttp.ClientError(response.status)
-            # elif response.status >= 500:
-            #     raise aiohttp.ServerConnectionError(response.status)
+            if response.status >= 400:
+                raise aiohttp.ClientError(response.status)
+            elif response.status >= 500:
+                raise aiohttp.ServerConnectionError(response.status)
 
             if return_type == "json":
                 result = await response.json(content_type=None)
