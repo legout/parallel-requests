@@ -79,7 +79,7 @@ class ParallelRequests:
 
         try:
             tries = 0
-            while tries < self._max_tries:
+            while tries < self._max_retries:
                 try:
                     async with self._semaphore:
                         async with self._session.request(
