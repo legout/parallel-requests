@@ -2,6 +2,8 @@ import random
 import os
 import pandas as pd
 import requests
+import time
+from functools import wraps
 
 # from .config import USER_AGENTS, PROXIES
 
@@ -30,7 +32,7 @@ def set_webshare_proxy_url(url: str):
     os.environ["WEBSHARE_PROXY_URL"] = url
 
 
-def get_webshare_proxy_list(url: str | None) -> list:
+def get_webshare_proxy_list(url: str | None = None) -> list:
     """Fetches a list of fast and affordable proxy servers from http://webshare.io.
 
     After subsription for a plan, get the export url for your proxy list.
@@ -89,3 +91,47 @@ def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
     else:
         proxy = random.choice(proxies)
         return {"http:": proxy, "https": proxy} if as_dict else proxy
+
+
+
+def to_list(x: list | str | int | float | None) -> list:
+    """Returns a list of the given input"""
+    if isinstance(x, (str, dict)):
+        return [x]
+    elif x is None:
+        return [None]
+    else:
+        return x
+
+
+def extend_list(x: list, max_len: int) -> list:
+    """extends a list of length 1 to `max_len`"""
+    if len(x) == 1:
+        return x * max_len
+    else:
+        return x
+    
+    
+
+
+def unnest_results(results: list, keys: list) -> dict:
+    """Unnests a list of dicts.
+
+    Args:
+        results (list): list with dicts
+        keys (list): keys
+
+    Returns:
+        dict: unnested dicts
+    """
+
+    if keys[0] is not None and isinstance(results, dict):
+        results = dict((k, _results[k]) for _results in results for k in _results)
+
+    if keys[0] is not None and isinstance(results[0], dict):
+        results = dict((k, _results[k]) for _results in results for k in _results)
+
+    if len(keys) == 1 and isinstance(results, (list, tuple)):
+        results = results[0]
+
+    return results
