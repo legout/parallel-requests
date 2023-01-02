@@ -8,12 +8,10 @@ import requests.adapters
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .config import USER_AGENTS
 from .utils import (
     random_proxy,
     random_user_agent,
     set_webshare_proxy_url,
-    get_webshare_proxy_list,
     to_list,
     extend_list,
     unnest_results,
@@ -42,16 +40,17 @@ class ParallelRequests:
         self.set_proxies()
         self.set_user_agents()
 
-    def set_webshare_proxy_list(self, url: str):
-        set_webshare_proxy_url(url)
-
     def set_proxies(self, proxies: list | str | None = None):
         if not proxies:
-            proxies = get_webshare_proxy_list()
+            from .config import PROXIES
+
+            proxies = PROXIES
         self._proxies = proxies
 
     def set_user_agents(self, user_agents: list | str | None = None):
         if not user_agents:
+            from .config import USER_AGENTS
+
             user_agents = USER_AGENTS
 
         self._user_agents = user_agents
@@ -120,6 +119,8 @@ class ParallelRequests:
                 f"Failed even after {self._max_retries} retries with Exception {e}", e
             )
 
+        return {key: None} if key else None
+
     async def request(
         self,
         urls: str | list,
@@ -168,8 +169,8 @@ class ParallelRequests:
                     self._single_request(
                         url=url_, key=key_, params=params_, *args, **kwargs
                     )
-                    for url_, key_, params_ in zip(urls, keys, params)
                 )
+                for url_, key_, params_ in zip(urls, keys, params)
             ]
 
             if verbose:

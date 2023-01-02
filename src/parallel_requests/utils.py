@@ -111,8 +111,6 @@ def extend_list(x: list, max_len: int) -> list:
     else:
         return x
     
-    
-
 
 def unnest_results(results: list, keys: list) -> dict:
     """Unnests a list of dicts.

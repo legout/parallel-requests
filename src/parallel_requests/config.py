@@ -1,13 +1,11 @@
 import os
 from .utils import get_user_agents, get_webshare_proxy_list, get_free_proxy_list
 
-
 # Set the environment variable WEBSHARE_PROXIES_URL.
 # Under Linux you can do this in your .bashrc/.zsshrc/.cshrc
 # export WEBSHARE_PROXY_URL="http://proxy.webshare.io/api/vz/proxy/list/download/..."
 
 WEBSHARE_PROXY_URL = os.getenv("WEBSHARE_PROXY_URL", None)
-
 
 if WEBSHARE_PROXY_URL is not None:
     PROXIES = get_webshare_proxy_list(WEBSHARE_PROXY_URL)
