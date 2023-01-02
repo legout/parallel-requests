@@ -12,7 +12,8 @@
 
 import asyncio
 import aiohttp
-#import backoff
+
+# import backoff
 import pandas as pd
 
 from tenacity import retry, stop_after_attempt, wait_random
@@ -23,6 +24,7 @@ from .utils import random_user_agent, random_proxy
 
 from async_requests.config import USER_AGENTS, PROXIES
 from json import JSONDecodeError
+
 
 def _to_list(x: list | str) -> list:
     if isinstance(x, (str, dict)):
@@ -58,7 +60,7 @@ def _extend_list(x: list, max_len: int) -> list:
 #     timeout: int = 30,
 #     verbose: bool = True,
 # ):
-    
+
 #     @backoff.on_exception(
 #         backoff.expo,
 #         aiohttp.ClientError,
@@ -97,13 +99,13 @@ def _extend_list(x: list, max_len: int) -> list:
 #             proxy=proxy,
 #             timeout=timeout,
 #         ) as response:
-                        
+
 #             if return_type == "json":
 #                 result = await response.json(content_type=None)
 
 #             elif return_type == "text":
 #                 result = await response.text()
-                
+
 #             else:
 #                 result = await response.content()
 
@@ -272,10 +274,7 @@ async def async_requests(
     #     max_time=max_time,
     #     max_tries=max_tries,
     # )
-    @retry(
-        wait=wait_random(1, 10),
-        stop=stop_after_attempt(max_tries)
-    )
+    @retry(wait=wait_random(1, 10), stop=stop_after_attempt(max_tries))
     async def _request(
         method: str,
         semaphore_: int,

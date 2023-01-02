@@ -1,9 +1,9 @@
 import random
-import requests
+import os
 import pandas as pd
-#from .config import USER_AGENTS, PROXIES
+import requests
 
-
+# from .config import USER_AGENTS, PROXIES
 
 
 def get_user_agents():
@@ -12,22 +12,44 @@ def get_user_agents():
     ).text.split("\n")
 
 
-def get_webshare_proxy_list(url: str) -> list:
+def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> str:
+    """Random user-agent from list USER_AGENTS.
+
+    Returns:
+        str: user-agent
+    """
+    if user_agents is None:
+        user_agent = "my-fancy-user-agent"
+    else:
+        user_agent = random.choice(user_agents)
+
+    return {"user-agent": user_agent} if as_dict else user_agent
+
+
+def set_webshare_proxy_url(url: str):
+    os.environ["WEBSHARE_PROXY_URL"] = url
+
+
+def get_webshare_proxy_list(url: str | None) -> list:
     """Fetches a list of fast and affordable proxy servers from http://webshare.io.
 
     After subsription for a plan, get the export url for your proxy list.
         Settings -> Proxy -> List -> Export
     """
+    if not url:
+        url = os.getenv("WEBSHARE_PROXY_URL", None)
 
-    proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
-    proxies = [
-        dict(zip(["ip", "port", "user", "pw"], proxy.split(":"))) for proxy in proxies
-    ]
-    proxies = [
-        f"http://{proxy['user']}:{proxy['pw']}@{proxy['ip']}:{proxy['port']}"
-        for proxy in proxies
-    ]
-    return proxies
+    if url:
+        proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
+        proxies = [
+            dict(zip(["ip", "port", "user", "pw"], proxy.split(":")))
+            for proxy in proxies
+        ]
+        proxies = [
+            f"http://{proxy['user']}:{proxy['pw']}@{proxy['ip']}:{proxy['port']}"
+            for proxy in proxies
+        ]
+        return proxies
 
 
 def get_free_proxy_list() -> list:
@@ -61,29 +83,9 @@ def get_free_proxy_list() -> list:
     return proxies
 
 
-def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> str:
-    """Random user-agent from list USER_AGENTS.
-
-    Returns:
-        str: user-agent
-    """
-    if user_agents is None:
-        user_agent = "my-fancy-user-agent"
-    else:
-        user_agent = random.choice(user_agents)
-
-    if as_dict:
-        return {"user-agent": user_agent}
-    else:
-        return user_agent
-
-
-def random_proxy(proxies: list | None = None) -> str:
+def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
     if proxies is None:
         return None
     else:
-        if isinstance(proxies, str):
-            return proxies
-        else:
-            return random.choice(proxies)
-
+        proxy = random.choice(proxies)
+        return {"http:": proxy, "https": proxy} if as_dict else proxy
