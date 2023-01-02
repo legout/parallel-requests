@@ -3,15 +3,12 @@ from typing import Callable
 import aiohttp
 import time
 import random
-import requests
-import requests.adapters
 from loguru import logger
 from tqdm.asyncio import tqdm
 
 from .utils import (
     random_proxy,
     random_user_agent,
-    set_webshare_proxy_url,
     to_list,
     extend_list,
     unnest_results,
@@ -101,8 +98,8 @@ class ParallelRequests:
                                 else:
                                     result = await response.read()
 
-                                    if self._parse_func:
-                                        result = self._parse_func(result)
+                                if self._parse_func:
+                                    result = self._parse_func(result)
 
                                 return {key: result} if key else result
 
