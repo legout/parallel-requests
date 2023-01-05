@@ -63,10 +63,11 @@ class ParallelRequests:
 
         if self._with_random_user_agent:
             user_agent = random_user_agent(self._user_agents, as_dict=True)
-        if self._headers:
-            self._headers.update(user_agent)
-        else:
-            self._headers = user_agent
+
+            if self._headers:
+                self._headers.update(user_agent)
+            else:
+                self._headers = user_agent
 
         proxy = (
             random_proxy(self._proxies, as_dict=False)
@@ -74,47 +75,46 @@ class ParallelRequests:
             else None
         )
 
-        try:
+        async with self._semaphore:
             tries = 0
             while tries < self._max_retries:
                 try:
-                    async with self._semaphore:
-                        async with self._session.request(
-                            method=self._method,
-                            url=url,
-                            params=params,
-                            proxy=proxy,
-                            headers=self._headers,
-                            *args,
-                            **kwargs,
-                        ) as response:
-                            if response.status < 300:
-                                if self._return_type == "json":
-                                    result = await response.json(content_type=None)
+                    async with self._session.request(
+                        method=self._method,
+                        url=url,
+                        params=params,
+                        proxy=proxy,
+                        headers=self._headers,
+                        *args,
+                        **kwargs,
+                    ) as response:
+                        if response.status < 300:
+                            if self._return_type == "json":
+                                result = await response.json(content_type=None)
 
-                                elif self._return_type == "text":
-                                    result = await response.text()
-
-                                else:
-                                    result = await response.read()
-
-                                if self._parse_func:
-                                    result = self._parse_func(result)
-
-                                return {key: result} if key else result
+                            elif self._return_type == "text":
+                                result = await response.text()
 
                             else:
-                                response.raise_for_status()
+                                result = await response.read()
 
-                except Exception:
+                            if self._parse_func:
+                                result = self._parse_func(result)
+
+                            return {key: result} if key else result
+
+                        else:
+                            response.raise_for_status()
+
+                except Exception as e:
 
                     tries += 1
                     time.sleep(random.random() * self._random_delay_multiplier)
 
-        except Exception as e:
-            logger.exception(
-                f"Failed even after {self._max_retries} retries with Exception {e}", e
-            )
+                    if tries == self._max_retries:
+                        logger.warning(
+                            f"""{self._max_retries} failed {self._method} request with Exception {e} - url: {url}, params: {params}, headers: {self._headers}, proxy: {proxy}"""
+                        )
 
         return {key: None} if key else None
 
@@ -171,9 +171,9 @@ class ParallelRequests:
             ]
 
             if verbose:
-                results = [(await task) for task in tqdm.as_completed(tasks)]
+                results = [await task for task in tqdm.as_completed(tasks)]
             else:
-                results = [(await task) for task in asyncio.as_completed(tasks)]
+                results = [await task for task in asyncio.as_completed(tasks)]
 
         results = unnest_results(results=results, keys=keys)
 
