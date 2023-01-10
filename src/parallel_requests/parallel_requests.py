@@ -21,7 +21,7 @@ class ParallelRequests:
         concurrency: int = 100,
         max_retries: int = 5,
         random_delay_multiplier: int = 1,
-        with_random_proxy: bool = True,
+        with_random_proxy: bool = False,
         with_random_user_agent: bool = True,
     ) -> None:
 
@@ -193,7 +193,7 @@ async def parallel_requests_async(
     concurrency: int = 100,
     max_retries: int = 5,
     random_delay_multiplier: int = 1,
-    with_random_proxy: bool = True,
+    with_random_proxy: bool = False,
     with_random_user_agent: bool = True,
     *args,
     **kwargs,
@@ -236,7 +236,7 @@ def parallel_requests(
     concurrency: int = 100,
     max_retries: int = 5,
     random_delay_multiplier: int = 1,
-    with_random_proxy: bool = True,
+    with_random_proxy: bool = False,
     with_random_user_agent: bool = True,
     *args,
     **kwargs,
