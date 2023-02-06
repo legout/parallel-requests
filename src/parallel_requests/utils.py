@@ -94,12 +94,14 @@ def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
 
 
 
-def to_list(x: list | str | int | float | None) -> list:
+def to_list(x: list | str | int | float | pd.Series | None) -> list:
     """Returns a list of the given input"""
     if isinstance(x, (str, dict)):
         return [x]
     elif x is None:
         return [None]
+    elif isinstance(x, pd.Series):
+        x = x.tolist()    
     else:
         return x
 

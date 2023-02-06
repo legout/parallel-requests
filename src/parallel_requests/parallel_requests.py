@@ -174,7 +174,7 @@ class ParallelRequests:
                 results = [await task for task in tqdm.as_completed(tasks)]
             else:
                 results = [await task for task in asyncio.as_completed(tasks)]
-        print(keys)
+        #print(keys)
         results = unnest_results(results=results, keys=keys)
 
         return results
