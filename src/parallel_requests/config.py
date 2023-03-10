@@ -1,6 +1,7 @@
 import os
 
-from .utils import get_free_proxy_list, get_user_agents, get_webshare_proxy_list
+from .utils import (get_free_proxy_list, get_user_agents,
+                    get_webshare_proxy_list)
 
 # Set the environment variable WEBSHARE_PROXIES_URL.
 # Under Linux you can do this in your .bashrc/.zsshrc/.cshrc
@@ -10,7 +11,7 @@ from .utils import get_free_proxy_list, get_user_agents, get_webshare_proxy_list
 try:
     from dotenv import load_dotenv
 
-    load_dotenv("~/.env")
+    load_dotenv()
 except:
     pass
 
