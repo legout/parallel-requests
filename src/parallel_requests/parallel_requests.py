@@ -7,8 +7,8 @@ from loguru import logger
 from tqdm.asyncio import tqdm
 
 from .utils import (
-    random_proxy,
-    random_user_agent,
+    random_proxy as random_proxy_,
+    random_user_agent as random_user_agent_,
     to_list,
     extend_list,
     unnest_results,
@@ -21,13 +21,13 @@ class ParallelRequests:
         concurrency: int = 100,
         max_retries: int = 5,
         random_delay_multiplier: int = 1,
-        with_random_proxy: bool = False,
-        with_random_user_agent: bool = True,
+        random_proxy: bool = False,
+        random_user_agent: bool = True,
     ) -> None:
 
         self._concurrency = concurrency
-        self._with_random_user_agent = with_random_user_agent
-        self._with_random_proxy = with_random_proxy
+        self._random_user_agent = random_user_agent
+        self._random_proxy = random_proxy
         self._max_retries = max_retries
         self._random_delay_multiplier = random_delay_multiplier
 
@@ -61,8 +61,8 @@ class ParallelRequests:
         **kwargs,
     ) -> dict:
 
-        if self._with_random_user_agent:
-            user_agent = random_user_agent(self._user_agents, as_dict=True)
+        if self._random_user_agent:
+            user_agent = random_user_agent_(self._user_agents, as_dict=True)
 
             if self._headers:
                 self._headers.update(user_agent)
@@ -70,9 +70,7 @@ class ParallelRequests:
                 self._headers = user_agent
 
         proxy = (
-            random_proxy(self._proxies, as_dict=False)
-            if self._with_random_proxy
-            else None
+            random_proxy_(self._proxies, as_dict=False) if self._random_proxy else None
         )
 
         async with self._semaphore:
@@ -154,8 +152,8 @@ class ParallelRequests:
                 "concurrency",
                 "max_retries",
                 "random_delay_mutliplier",
-                "with_random_proxy",
-                "with_random_user_agent",
+                "random_proxy",
+                "random_user_agent",
                 "concurrency",
             ):
                 exec(f"self._{kw} = kwargs['{kw}']")
@@ -174,7 +172,7 @@ class ParallelRequests:
                 results = [await task for task in tqdm.as_completed(tasks)]
             else:
                 results = [await task for task in asyncio.as_completed(tasks)]
-        #print(keys)
+        # print(keys)
         results = unnest_results(results=results, keys=keys)
 
         return results
@@ -193,8 +191,8 @@ async def parallel_requests_async(
     concurrency: int = 100,
     max_retries: int = 5,
     random_delay_multiplier: int = 1,
-    with_random_proxy: bool = False,
-    with_random_user_agent: bool = True,
+    random_proxy: bool = False,
+    random_user_agent: bool = True,
     *args,
     **kwargs,
 ):
@@ -202,8 +200,8 @@ async def parallel_requests_async(
         concurrency=concurrency,
         max_retries=max_retries,
         random_delay_multiplier=random_delay_multiplier,
-        with_random_proxy=with_random_proxy,
-        with_random_user_agent=with_random_user_agent,
+        random_proxy=random_proxy,
+        random_user_agent=random_user_agent,
     )
 
     results = await pr.request(
@@ -236,8 +234,8 @@ def parallel_requests(
     concurrency: int = 100,
     max_retries: int = 5,
     random_delay_multiplier: int = 1,
-    with_random_proxy: bool = False,
-    with_random_user_agent: bool = True,
+    random_proxy: bool = False,
+    random_user_agent: bool = True,
     *args,
     **kwargs,
 ):
@@ -245,8 +243,8 @@ def parallel_requests(
         concurrency=concurrency,
         max_retries=max_retries,
         random_delay_multiplier=random_delay_multiplier,
-        with_random_proxy=with_random_proxy,
-        with_random_user_agent=with_random_user_agent,
+        random_proxy=random_proxy,
+        random_user_agent=random_user_agent,
     )
 
     results = asyncio.run(
