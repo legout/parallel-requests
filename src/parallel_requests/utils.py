@@ -1,8 +1,10 @@
-import random
 import os
+import random
+from pathlib import Path
+
 import pandas as pd
 import requests
-from functools import wraps
+from dotenv import load_dotenv
 
 # from .config import USER_AGENTS, PROXIES
 
@@ -37,10 +39,14 @@ def get_webshare_proxies_list(url: str | None = None) -> list:
     After subsription for a plan, get the export url for your proxy list.
         Settings -> Proxy -> List -> Export
     """
+
     if not url:
+        load_dotenv()
+        load_dotenv(Path("~/.env").expanduser())
         url = os.getenv("WEBSHARE_PROXIES_URL", None)
 
     if url:
+        set_webshare_proxies_url(url=url)
         proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
         proxies = [
             dict(zip(["ip", "port", "user", "pw"], proxy.split(":")))

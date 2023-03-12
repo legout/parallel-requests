@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from .utils import get_free_proxies_list, get_user_agents, get_webshare_proxies_list
 
@@ -7,20 +8,14 @@ from .utils import get_free_proxies_list, get_user_agents, get_webshare_proxies_
 # export WEBSHARE_PROXY_URL="http://proxy.webshare.io/api/vz/proxy/list/download/..."
 # Or create ur own env file in ~/.env.
 
-from dotenv import load_dotenv
-
-load_dotenv()
-load_dotenv("~/.env")
-
 
 WEBSHARE_PROXIES_URL = os.getenv("WEBSHARE_PROXIES_URL", None)
 
 if WEBSHARE_PROXIES_URL is not None:
-    PROXIES = get_webshare_proxies_list(WEBSHARE_PROXIES_URL)
+    PROXIES = get_webshare_proxies_list(url=WEBSHARE_PROXIES_URL)
 
 else:
-    PROXIES = None
-
+    PROXIES = get_webshare_proxies_list()
 
 try:
     USER_AGENTS = get_user_agents()
