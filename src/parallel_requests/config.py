@@ -1,30 +1,25 @@
 import os
 
-from .utils import (get_free_proxy_list, get_user_agents,
-                    get_webshare_proxy_list)
+from .utils import get_free_proxies_list, get_user_agents, get_webshare_proxies_list
 
 # Set the environment variable WEBSHARE_PROXIES_URL.
 # Under Linux you can do this in your .bashrc/.zsshrc/.cshrc
 # export WEBSHARE_PROXY_URL="http://proxy.webshare.io/api/vz/proxy/list/download/..."
 # Or create ur own env file in ~/.env.
 
-try:
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-    load_dotenv()
-except:
-    pass
+load_dotenv()
+load_dotenv("~/.env")
+
 
 WEBSHARE_PROXIES_URL = os.getenv("WEBSHARE_PROXIES_URL", None)
 
 if WEBSHARE_PROXIES_URL is not None:
-    PROXIES = get_webshare_proxy_list(WEBSHARE_PROXIES_URL)
+    PROXIES = get_webshare_proxies_list(WEBSHARE_PROXIES_URL)
 
 else:
-    try:
-        PROXIES = get_free_proxy_list()
-    except:
-        PROXIES = None
+    PROXIES = None
 
 
 try:

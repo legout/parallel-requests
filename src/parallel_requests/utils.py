@@ -2,7 +2,6 @@ import random
 import os
 import pandas as pd
 import requests
-import time
 from functools import wraps
 
 # from .config import USER_AGENTS, PROXIES
@@ -28,18 +27,18 @@ def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> 
     return {"user-agent": user_agent} if as_dict else user_agent
 
 
-def set_webshare_proxy_url(url: str):
-    os.environ["WEBSHARE_PROXY_URL"] = url
+def set_webshare_proxies_url(url: str):
+    os.environ["WEBSHARE_PROXIES_URL"] = url
 
 
-def get_webshare_proxy_list(url: str | None = None) -> list:
+def get_webshare_proxies_list(url: str | None = None) -> list:
     """Fetches a list of fast and affordable proxy servers from http://webshare.io.
 
     After subsription for a plan, get the export url for your proxy list.
         Settings -> Proxy -> List -> Export
     """
     if not url:
-        url = os.getenv("WEBSHARE_PROXY_URL", None)
+        url = os.getenv("WEBSHARE_PROXIES_URL", None)
 
     if url:
         proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
@@ -54,7 +53,7 @@ def get_webshare_proxy_list(url: str | None = None) -> list:
         return proxies
 
 
-def get_free_proxy_list() -> list:
+def get_free_proxies_list() -> list:
     urls = [
         "http://www.free-proxy-list.net",
         "https://free-proxy-list.net/anonymous-proxy.html",
@@ -72,7 +71,7 @@ def get_free_proxy_list() -> list:
                 ).text
             )[0]
             .rename({"Last Checked": "LastChecked"}, axis=1)
-            .query("LastChecked.str.contains('secs') & Https=='no'")
+            .query("LastChecked.str.contains('secs')")  # & Https=='no'")
         )
 
     proxies = pd.concat(proxies, ignore_index=True)
@@ -86,9 +85,7 @@ def get_free_proxy_list() -> list:
 
 
 def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
-    if proxies is None:
-        return None
-    else:
+    if proxies is not None:
         proxy = random.choice(proxies)
         return {"http:": proxy, "https": proxy} if as_dict else proxy
 
