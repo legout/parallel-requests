@@ -18,7 +18,7 @@ pip install git+https://github.com/legout/parallel-requests
 You can set random-proxy=True in any of the scraping functions. By default this uses free proxies*. In my experience, these proxies are not reliable, but maybe you are lucky.
 
 ### Webshare.io proxies
-I am using proxies from [webshare.io](https://www.webshare.io/). I am very happy with their service and the pricing. If you wanna use their service too, sign up (use the [this link](https://www.webshare.io/?referral_code=upb7xtsy39kl) if you wanna support my work) and choose a plan that fits your needs. In the next step, go to Dashboard -> Proxy -> List -> Download and copy the download link. Set this download link as an environment variable `WEBSHARE_PROXIES_URL`  before importing any yfin function. 
+I am using proxies from [webshare.io](https://www.webshare.io/). I am very happy with their service and the pricing. If you wanna use their service too, sign up (use the [this link](https://www.webshare.io/?referral_code=upb7xtsy39kl) if you wanna support my work) and choose a plan that fits your needs. In the next step, go to Dashboard -> Proxy -> List -> Download and copy the download link. Set this download link as an environment variable `WEBSHARE_PROXIES_URL`  before importing any parallel-requests function. 
 
 *Export WEBSHARE_PROXIES_URL in your linux shell*
 ```
