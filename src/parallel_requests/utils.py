@@ -58,9 +58,9 @@ def get_free_proxy_list() -> list:
     urls = [
         "http://www.free-proxy-list.net",
         "https://free-proxy-list.net/anonymous-proxy.html",
-        "https://www.us-proxy.org/",
+        # "https://www.us-proxy.org/",
         "https://free-proxy-list.net/uk-proxy.html",
-        "https://www.sslproxies.org/",
+        # "https://www.sslproxies.org/",
     ]
 
     proxies = list()
@@ -93,7 +93,6 @@ def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
         return {"http:": proxy, "https": proxy} if as_dict else proxy
 
 
-
 def to_list(x: list | str | int | float | pd.Series | None) -> list:
     """Returns a list of the given input"""
     if isinstance(x, (str, dict)):
@@ -101,7 +100,7 @@ def to_list(x: list | str | int | float | pd.Series | None) -> list:
     elif x is None:
         return [None]
     elif isinstance(x, pd.Series):
-        x = x.tolist()    
+        x = x.tolist()
     else:
         return x
 
@@ -112,7 +111,7 @@ def extend_list(x: list, max_len: int) -> list:
         return x * max_len
     else:
         return x
-    
+
 
 def unnest_results(results: list, keys: list) -> dict:
     """Unnests a list of dicts.
