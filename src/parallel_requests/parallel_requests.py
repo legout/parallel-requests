@@ -24,7 +24,6 @@ class ParallelRequests:
         random_proxy: bool = False,
         random_user_agent: bool = True,
     ) -> None:
-
         self._concurrency = concurrency
         self._random_user_agent = random_user_agent
         self._random_proxy = random_proxy
@@ -60,7 +59,6 @@ class ParallelRequests:
         *args,
         **kwargs,
     ) -> dict:
-
         if self._random_user_agent:
             user_agent = random_user_agent_(self._user_agents, as_dict=True)
 
@@ -105,7 +103,6 @@ class ParallelRequests:
                             response.raise_for_status()
 
                 except Exception as e:
-
                     tries += 1
                     time.sleep(random.random() * self._random_delay_multiplier)
 
@@ -129,7 +126,6 @@ class ParallelRequests:
         *args,
         **kwargs,
     ) -> dict | list:
-
         urls = to_list(urls)
         params = to_list(params)
         keys = to_list(keys)

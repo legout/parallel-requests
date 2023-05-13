@@ -9,7 +9,7 @@ packages = [{ include = "parallel_requests", from = "src" }]
 [tool.poetry.dependencies]
 python = "^3.10"
 asyncio = "^3.4.3"
-pandas = "^1.5.3"
+pandas = "^2.0.0"
 requests = "^2.28.2"
 python-dotenv = "^1.0.0"
 asyncer = "^0.0.2"

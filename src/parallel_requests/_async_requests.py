@@ -290,7 +290,6 @@ async def async_requests(
         proxy: str | None,
         use_random_proxy: bool,
     ) -> dict | str | list | pd.DataFrame:
-
         if headers is None:
             headers = random_user_agent(USER_AGENTS)
 

@@ -113,7 +113,6 @@ async def parallel_requests_async(
     retry_delay_multiplier: int | float = 1,
     verbose: bool = True,
 ) -> dict | list:
-
     url = _to_list(url)
     params = _to_list(params)
     key = _to_list(key)
