@@ -63,26 +63,8 @@ class ParallelRequests:
         debug: bool = False,
         *args,
         **kwargs,
-    ) -> dict:  # sourcery skip: low-code-quality
-        # if self._random_user_agent:
-        #     user_agent = random_user_agent_(self._user_agents, as_dict=False)
-
-        #     if self._headers:
-        #         self._headers.update({"user-agent":self._user_agent})
-        #     else:
-        #         self._headers = {"user-agent":self._user_agent}
-
-        # if self._random_proxy:
-        #     if (
-        #         self._proxies is None
-        #         and os.getenv("WEBSHARE_PROXIES_URL", None) is not None
-        #     ):
-        #         self.set_proxies()
-
-        #     proxy = random_proxy_(self._proxies, as_dict=False)
-
-        # else:
-        #     proxy = None
+    ) -> dict:  
+        
         if debug:
             logger.debug(
                 f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
@@ -164,8 +146,8 @@ class ParallelRequests:
         params = to_list(params)
         keys = to_list(keys)
         headers = to_list(headers)
-        proxies = to_list(self._proxies)
-
+        proxies = to_list(self._proxies) if self._random_proxy else to_list(None)
+        
         max_len = max([len(urls), len(params), len(keys)])
 
         urls = extend_list(urls, max_len)
