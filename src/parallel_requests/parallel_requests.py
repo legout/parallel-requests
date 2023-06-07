@@ -1,18 +1,17 @@
 import asyncio
-from typing import Callable
-import aiohttp
-import time
+import os
 import random
+import time
+from typing import Callable
+
+import aiohttp
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .utils import (
-    random_proxy as random_proxy_,
-    random_user_agent as random_user_agent_,
-    to_list,
-    extend_list,
-    unnest_results,
-)
+from .utils import extend_list
+from .utils import random_proxy as random_proxy_
+from .utils import random_user_agent as random_user_agent_
+from .utils import to_list, unnest_results
 
 
 class ParallelRequests:
@@ -58,7 +57,7 @@ class ParallelRequests:
         params: dict | None = None,
         *args,
         **kwargs,
-    ) -> dict:
+    ) -> dict:  # sourcery skip: low-code-quality
         if self._random_user_agent:
             user_agent = random_user_agent_(self._user_agents, as_dict=True)
 
@@ -67,9 +66,17 @@ class ParallelRequests:
             else:
                 self._headers = user_agent
 
-        proxy = (
-            random_proxy_(self._proxies, as_dict=False) if self._random_proxy else None
-        )
+        if self._random_proxy:
+            if (
+                self._proxies is None
+                and os.getenv("WEBSHARE_PROXIES_URL", None) is not None
+            ):
+                self._proxies = self.set_proxies()
+
+            proxy = random_proxy_(self._proxies, as_dict=False)
+
+        else:
+            proxy = None
 
         async with self._semaphore:
             tries = 0
