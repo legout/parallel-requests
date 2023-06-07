@@ -112,6 +112,8 @@ def extend_list(x: list, max_len: int) -> list:
     """extends a list of length 1 to `max_len`"""
     if len(x) == 1:
         return x * max_len
+    elif len(x)>1 and len(x)<max_len:
+        return (x*(max_len//len(x)+1))[:max_len]
     else:
         return x
 

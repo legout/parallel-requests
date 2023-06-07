@@ -22,8 +22,8 @@ class ParallelRequests:
         random_delay_multiplier: int = 1,
         random_proxy: bool = False,
         random_user_agent: bool = True,
-        proxies: list | str | None = None, 
-        user_agents: list | str | None = None
+        proxies: list | str | None = None,
+        user_agents: list | str | None = None,
     ) -> None:
         self._concurrency = concurrency
         self._random_user_agent = random_user_agent
@@ -39,14 +39,14 @@ class ParallelRequests:
 
     def set_proxies(self, proxies: list | str | None = None):
         if not proxies:
-            #from .config import PROXIES
+            # from .config import PROXIES
 
             proxies = get_webshare_proxies_list()
         self._proxies = proxies
 
     def set_user_agents(self, user_agents: list | str | None = None):
         if not user_agents:
-            #from .config import USER_AGENTS
+            # from .config import USER_AGENTS
 
             user_agents = get_user_agents()
 
@@ -55,11 +55,12 @@ class ParallelRequests:
     async def _single_request(
         self,
         url: str,
-        method:str="GET",
+        method: str = "GET",
         key: str | None = None,
         params: dict | None = None,
-        headers:dict|None=None,
-        proxy:str|None=None,
+        headers: dict | None = None,
+        proxy: str | None = None,
+        debug: bool = False,
         *args,
         **kwargs,
     ) -> dict:  # sourcery skip: low-code-quality
@@ -70,7 +71,6 @@ class ParallelRequests:
         #         self._headers.update({"user-agent":self._user_agent})
         #     else:
         #         self._headers = {"user-agent":self._user_agent}
-                
 
         # if self._random_proxy:
         #     if (
@@ -83,7 +83,10 @@ class ParallelRequests:
 
         # else:
         #     proxy = None
-
+        if debug:
+            logger.debug(
+                f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
+            )
         async with self._semaphore:
             tries = 0
             while tries < self._max_retries:
@@ -129,7 +132,7 @@ class ParallelRequests:
         self._url = url
         self._params = params
         self._method = method
-        
+
         return {key: None} if key else None
 
     async def request(
@@ -142,10 +145,10 @@ class ParallelRequests:
         parse_func: Callable | None = None,
         return_type: str = "json",
         verbose: bool = True,
+        debug: bool = False,
         *args,
         **kwargs,
     ) -> dict | list:
-        
         for kw in kwargs:
             if kw in (
                 "concurrency",
@@ -153,42 +156,65 @@ class ParallelRequests:
                 "random_delay_mutliplier",
                 "random_proxy",
                 "random_user_agent",
-                
             ):
                 exec(f"self._{kw} = kwargs['{kw}']")
                 kwargs.pop(kw)
-        
+
         urls = to_list(urls)
         params = to_list(params)
         keys = to_list(keys)
+        headers = to_list(headers)
+        proxies = to_list(self._proxies)
 
         max_len = max([len(urls), len(params), len(keys)])
 
         urls = extend_list(urls, max_len)
         params = extend_list(params, max_len)
         keys = extend_list(keys, max_len)
+        headers = extend_list(headers, max_len)
+        proxies = extend_list(proxies, max_len)
 
         if self._random_user_agent:
             random.shuffle(self._user_agents)
-            if not headers:
-                headers = {}
-            headers = [dict({"user-agent": user_agent}, **headers) for user_agent in self._user_agents[:len(urls)]]
-            
+
+            headers = (
+                [
+                    dict({"user-agent": user_agent}, **headers_)
+                    for headers_, user_agent in zip(
+                        headers, extend_list(self._user_agents, max_len)
+                    )
+                ]
+                if headers[0]
+                else [
+                    {"user-agent": user_agent}
+                    for user_agent in extend_list(self._user_agents, max_len)
+                ]
+            )
+
         if self._random_proxy:
-            proxies = random.shuffle(self._proxies)[:len(urls)]
-            
+            random.shuffle(proxies)
+
         self._parse_func = parse_func
         self._return_type = return_type
-
 
         async with aiohttp.ClientSession(connector=self._conn) as self._session:
             tasks = [
                 asyncio.create_task(
                     self._single_request(
-                        url=url_, key=key_, params=params_, headers=headers_, method=method, proxy=proxy, *args, **kwargs
+                        url=url_,
+                        key=key_,
+                        params=params_,
+                        headers=headers_,
+                        method=method,
+                        proxy=proxy,
+                        debug=debug,
+                        *args,
+                        **kwargs,
                     )
                 )
-                for url_, key_, params_, headers_, proxy in zip(urls, keys, params, headers, proxies)
+                for url_, key_, params_, headers_, proxy in zip(
+                    urls, keys, params, headers, proxies
+                )
             ]
 
             if verbose:
@@ -217,6 +243,7 @@ async def parallel_requests_async(
     random_user_agent: bool = True,
     proxies: list | str | None = None,
     user_agents: list | None = None,
+    debug: bool = False,
     *args,
     **kwargs,
 ):
@@ -226,14 +253,11 @@ async def parallel_requests_async(
         random_delay_multiplier=random_delay_multiplier,
         random_proxy=random_proxy,
         random_user_agent=random_user_agent,
+        proxies=proxies,
+        user_agents=user_agents,
     )
-    if (proxies is not None) & (random_proxy):
-        pr.set_proxies(proxies=proxies)
 
-    if (user_agents is not None) & (random_user_agent):
-        pr.set_user_agents(user_agents=user_agents)
-
-    results = await pr.request(
+    return await pr.request(
         urls=urls,
         keys=keys,
         params=params,
@@ -242,11 +266,10 @@ async def parallel_requests_async(
         parse_func=parse_func,
         verbose=verbose,
         return_type=return_type,
+        debug=debug,
         *args,
         **kwargs,
     )
-
-    return results
 
 
 def parallel_requests(
@@ -265,10 +288,11 @@ def parallel_requests(
     random_user_agent: bool = True,
     proxies: list | str | None = None,
     user_agents: list | None = None,
+    debug: bool = False,
     *args,
     **kwargs,
 ):
-    results = asyncio.run(
+    return asyncio.run(
         parallel_requests_async(
             urls=urls,
             keys=keys,
@@ -285,9 +309,8 @@ def parallel_requests(
             random_user_agent=random_user_agent,
             proxies=proxies,
             user_agents=user_agents,
+            debug=debug,
             *args,
             **kwargs,
         )
     )
-
-    return results
