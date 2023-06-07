@@ -8,7 +8,7 @@ import aiohttp
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .utils import extend_list
+from .utils import extend_list, get_user_agents, get_webshare_proxies_list
 from .utils import random_proxy as random_proxy_
 from .utils import random_user_agent as random_user_agent_
 from .utils import to_list, unnest_results
@@ -37,16 +37,16 @@ class ParallelRequests:
 
     def set_proxies(self, proxies: list | str | None = None):
         if not proxies:
-            from .config import PROXIES
+            #from .config import PROXIES
 
-            proxies = PROXIES
+            proxies = get_webshare_proxies_list()
         self._proxies = proxies
 
     def set_user_agents(self, user_agents: list | str | None = None):
         if not user_agents:
-            from .config import USER_AGENTS
+            #from .config import USER_AGENTS
 
-            user_agents = USER_AGENTS
+            user_agents = get_user_agents()
 
         self._user_agents = user_agents
 
@@ -59,19 +59,19 @@ class ParallelRequests:
         **kwargs,
     ) -> dict:  # sourcery skip: low-code-quality
         if self._random_user_agent:
-            user_agent = random_user_agent_(self._user_agents, as_dict=True)
+            self._user_agent = random_user_agent_(self._user_agents, as_dict=False)
 
             if self._headers:
-                self._headers.update(user_agent)
+                self._headers.update({"user-agent":self._user_agent})
             else:
-                self._headers = user_agent
+                self._headers = {"user-agent":self._user_agent}
 
         if self._random_proxy:
             if (
                 self._proxies is None
                 and os.getenv("WEBSHARE_PROXIES_URL", None) is not None
             ):
-                self._proxies = self.set_proxies()
+                self.set_proxies()
 
             proxy = random_proxy_(self._proxies, as_dict=False)
 

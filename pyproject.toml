@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "parallel-requests"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 authors = ["Volker Lorrmann <volker.lorrmann@gmail.com>"]
 readme = "README.md"
