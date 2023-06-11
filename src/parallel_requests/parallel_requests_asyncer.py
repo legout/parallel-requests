@@ -76,6 +76,7 @@ class ParallelRequests:
                 proxy = random.choice(self._proxies)
                 proxies = {"http://": proxy, "https://":proxy}
             else:
+                proxy=None
                 proxies = None
             if debug:
                 logger.debug(
