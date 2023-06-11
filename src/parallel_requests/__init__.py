@@ -1,10 +1,10 @@
 from parallel_requests.parallel_requests_asyncer import (
-    parallel_requests_asyncer,
-    parallel_requests_asyncer_async,
+    parallel_requests as parallel_requests_asyncer,
+    parllel_requests_async as parallel_requests_asyncer_async,
 )
 from parallel_requests.parallel_requests_aihttp import (
-    parallel_requests_aiohttp,
-    parallel_requests_aiohttp_async,
+    parallel_requests as parallel_requests_aiohttp,
+    parallel_requests_async as parallel_requests_aiohttp_async,
 )
 from parallel_requests.utils import random_proxy, random_user_agent
 from parallel_requests.config import USER_AGENTS, PROXIES
