@@ -1,16 +1,15 @@
 import asyncio
-import os
 import random
 import time
 from typing import Callable
 
-import aiohttp
+import requests
+from requests.adapters import HTTPAdapter, Retry
+from asyncer import asyncify
 from loguru import logger
 from tqdm.asyncio import tqdm
 
 from .utils import extend_list, get_user_agents, get_webshare_proxies_list
-from .utils import random_proxy as random_proxy_
-from .utils import random_user_agent as random_user_agent_
 from .utils import to_list, unnest_results
 
 
@@ -31,7 +30,7 @@ class ParallelRequests:
         self._max_retries = max_retries
         self._random_delay_multiplier = random_delay_multiplier
 
-        self._conn = aiohttp.TCPConnector(limit_per_host=concurrency, limit=concurrency)
+        self._adapter = HTTPAdapter(pool_connections=concurrency, pool_maxsize=concurrency, max_retries=Retry(total=max_retries, backoff_factor=random_delay_multiplier*0.1))
         self._semaphore = asyncio.Semaphore(concurrency)
 
         self.set_proxies(proxies=proxies)
@@ -42,6 +41,8 @@ class ParallelRequests:
             # from .config import PROXIES
 
             proxies = get_webshare_proxies_list()
+
+        proxies = proxies if proxies is not None else [None]
         self._proxies = proxies
 
     def set_user_agents(self, user_agents: list | str | None = None):
@@ -59,61 +60,51 @@ class ParallelRequests:
         key: str | None = None,
         params: dict | None = None,
         headers: dict | None = None,
-        proxy: str | None = None,
+        # proxy: str | None = None,
         debug: bool = False,
         *args,
         **kwargs,
-    ) -> dict:  
-        
+    ) -> dict:
         if debug:
             logger.debug(
                 f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
             )
         async with self._semaphore:
-            tries = 0
-            while tries < self._max_retries:
+           
+            if self._random_proxy and self._proxies is not None:
+                proxy = random.choice(self._proxies)
+            else:
+                proxy = None
                 try:
-                    async with self._session.request(
+                    response = asyncify(self._session.request)(
                         method=method,
                         url=url,
                         params=params,
                         proxy=proxy,
                         headers=headers,
                         *args,
-                        **kwargs,
-                    ) as response:
-                        if response.status < 300:
-                            if self._return_type == "json":
-                                result = await response.json(content_type=None)
+                        **kwargs,)
+                
+                    if self._return_type == "json":
+                        result = await response.json(content_type=None)
 
-                            elif self._return_type == "text":
-                                result = await response.text()
+                    elif self._return_type == "text":
+                        result = await response.text()
 
-                            else:
-                                result = await response.read()
+                    else:
+                        result = await response.read()
 
-                            if self._parse_func:
-                                result = self._parse_func(result)
+                    if self._parse_func:
+                        result = self._parse_func(result)
 
-                            return {key: result} if key else result
+                    return {key: result} if key else result
 
-                        else:
-                            response.raise_for_status()
-
+                    
                 except Exception as e:
-                    tries += 1
-                    time.sleep(random.random() * self._random_delay_multiplier)
+                    logger.warning(
+                        f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
+                    )
 
-                    if tries == self._max_retries:
-                        logger.warning(
-                            f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
-                        )
-        self._proxy = proxy
-        self._headers = headers
-        self._key = key
-        self._url = url
-        self._params = params
-        self._method = method
 
         return {key: None} if key else None
 
@@ -146,15 +137,15 @@ class ParallelRequests:
         params = to_list(params)
         keys = to_list(keys)
         headers = to_list(headers)
-        proxies = to_list(self._proxies) if self._random_proxy else to_list(None)
-        
+        # proxies = to_list(self._proxies) if self._random_proxy else to_list(None)
+
         max_len = max([len(urls), len(params), len(keys)])
 
         urls = extend_list(urls, max_len)
         params = extend_list(params, max_len)
         keys = extend_list(keys, max_len)
         headers = extend_list(headers, max_len)
-        proxies = extend_list(proxies, max_len)
+        # proxies = extend_list(proxies, max_len)
 
         if self._random_user_agent:
             random.shuffle(self._user_agents)
@@ -173,37 +164,35 @@ class ParallelRequests:
                 ]
             )
 
-        if self._random_proxy:
-            random.shuffle(proxies)
+        # if self._random_proxy:
+        #     random.shuffle(self._proxies)
 
         self._parse_func = parse_func
         self._return_type = return_type
-
-        async with aiohttp.ClientSession(connector=self._conn) as self._session:
-            tasks = [
-                asyncio.create_task(
-                    self._single_request(
-                        url=url_,
-                        key=key_,
-                        params=params_,
-                        headers=headers_,
-                        method=method,
-                        proxy=proxy,
-                        debug=debug,
-                        *args,
-                        **kwargs,
-                    )
+        self._session = requests.Session()
+        self._session.mount("http://", self._adapter)
+        tasks = [
+            asyncio.create_task(
+                self._single_request(
+                    url=url_,
+                    key=key_,
+                    params=params_,
+                    headers=headers_,
+                    method=method,
+                    # proxy=proxy,
+                    debug=debug,
+                    *args,
+                    **kwargs,
                 )
-                for url_, key_, params_, headers_, proxy in zip(
-                    urls, keys, params, headers, proxies
-                )
-            ]
+            )
+            for url_, key_, params_, headers_ in zip(urls, keys, params, headers)
+        ]
 
-            if verbose:
-                results = [await task for task in tqdm.as_completed(tasks)]
-            else:
-                results = [await task for task in asyncio.as_completed(tasks)]
-        # print(keys)
+        if verbose:
+            results = [await task for task in tqdm.as_completed(tasks)]
+        else:
+            results = [await task for task in asyncio.as_completed(tasks)]
+
         results = unnest_results(results=results, keys=keys)
 
         return results
