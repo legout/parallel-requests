@@ -22,7 +22,11 @@ def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> 
         str: user-agent
     """
     if user_agents is None:
-        user_agent = "my-fancy-user-agent"
+        try:
+            user_agents=get_user_agents()
+            user_agent = random.choice(user_agents)
+        except Exception as e:
+            user_agent = "my-fancy-user-agent"
     else:
         user_agent = random.choice(user_agents)
 
