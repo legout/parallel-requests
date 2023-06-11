@@ -224,6 +224,7 @@ async def parallel_requests_async(
     proxies: list | str | None = None,
     user_agents: list | None = None,
     debug: bool = False,
+    cookies:dict|None=None,
     *args,
     **kwargs,
 ):
@@ -235,6 +236,7 @@ async def parallel_requests_async(
         random_user_agent=random_user_agent,
         proxies=proxies,
         user_agents=user_agents,
+        cookies=cookies
     )
 
     return await pr.request(
@@ -269,6 +271,7 @@ def parallel_requests(
     proxies: list | str | None = None,
     user_agents: list | None = None,
     debug: bool = False,
+    cookies:dict|None=None,
     *args,
     **kwargs,
 ):
@@ -290,6 +293,7 @@ def parallel_requests(
             proxies=proxies,
             user_agents=user_agents,
             debug=debug,
+            cookies=cookies,
             *args,
             **kwargs,
         )
