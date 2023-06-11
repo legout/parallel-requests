@@ -23,12 +23,14 @@ class ParallelRequests:
         random_user_agent: bool = True,
         proxies: list | str | None = None,
         user_agents: list | str | None = None,
+        cookies:dict|None=None
     ) -> None:
         self._concurrency = concurrency
         self._random_user_agent = random_user_agent
         self._random_proxy = random_proxy
         self._max_retries = max_retries
         self._random_delay_multiplier = random_delay_multiplier
+        self._cookies=cookies
 
         self._adapter = HTTPAdapter(
             pool_connections=concurrency,
@@ -89,6 +91,7 @@ class ParallelRequests:
                     params=params,
                     proxies=proxies,
                     headers=headers,
+                    cookies=self._cookies,
                     *args,
                     **kwargs,
                 )
