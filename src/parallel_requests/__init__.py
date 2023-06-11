@@ -1,8 +1,8 @@
 from parallel_requests.parallel_requests_asyncer import (
-    parallel_requests as parallel_requests_asyncer,
-    parllel_requests_async as parallel_requests_asyncer_async,
+    parallel_requests as parallel_requests,
+    parallel_requests_async as parallel_requests_async,
 )
-from parallel_requests.parallel_requests_aihttp import (
+from parallel_requests.parallel_requests_aiohttp import (
     parallel_requests as parallel_requests_aiohttp,
     parallel_requests_async as parallel_requests_aiohttp_async,
 )

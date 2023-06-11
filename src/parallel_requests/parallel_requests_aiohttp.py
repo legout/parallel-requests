@@ -7,10 +7,8 @@ import aiohttp
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .utils import extend_list, get_user_agents, get_webshare_proxies_list
-from .utils import random_proxy as random_proxy_
-from .utils import random_user_agent as random_user_agent_
-from .utils import to_list, unnest_results
+from .utils import (extend_list, get_user_agents, get_webshare_proxies_list,
+                    to_list, unnest_results)
 
 
 class ParallelRequests:
@@ -41,7 +39,7 @@ class ParallelRequests:
             # from .config import PROXIES
 
             proxies = get_webshare_proxies_list()
-            
+
         proxies = proxies if proxies is not None else [None]
         self._proxies = proxies
 
@@ -60,16 +58,11 @@ class ParallelRequests:
         key: str | None = None,
         params: dict | None = None,
         headers: dict | None = None,
-        #proxy: str | None = None,
+        # proxy: str | None = None,
         debug: bool = False,
         *args,
         **kwargs,
-    ) -> dict:  
-        
-        if debug:
-            logger.debug(
-                f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
-            )
+    ) -> dict:
         async with self._semaphore:
             tries = 0
             while tries < self._max_retries:
@@ -77,6 +70,10 @@ class ParallelRequests:
                     proxy = random.choice(self._proxies)
                 else:
                     proxy = None
+                if debug:
+                    logger.debug(
+                        f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
+                    )
                 try:
                     async with self._session.request(
                         method=method,
@@ -151,15 +148,15 @@ class ParallelRequests:
         params = to_list(params)
         keys = to_list(keys)
         headers = to_list(headers)
-        #proxies = to_list(self._proxies) if self._random_proxy else to_list(None)
-        
+        # proxies = to_list(self._proxies) if self._random_proxy else to_list(None)
+
         max_len = max([len(urls), len(params), len(keys)])
 
         urls = extend_list(urls, max_len)
         params = extend_list(params, max_len)
         keys = extend_list(keys, max_len)
         headers = extend_list(headers, max_len)
-        #proxies = extend_list(proxies, max_len)
+        # proxies = extend_list(proxies, max_len)
 
         if self._random_user_agent:
             random.shuffle(self._user_agents)
@@ -192,15 +189,13 @@ class ParallelRequests:
                         params=params_,
                         headers=headers_,
                         method=method,
-                        #proxy=proxy,
+                        # proxy=proxy,
                         debug=debug,
                         *args,
                         **kwargs,
                     )
                 )
-                for url_, key_, params_, headers_ in zip(
-                    urls, keys, params, headers
-                )
+                for url_, key_, params_, headers_ in zip(urls, keys, params, headers)
             ]
 
             if verbose:
