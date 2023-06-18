@@ -70,6 +70,7 @@ class ParallelRequests:
         headers: dict | None = None,
         # proxy: str | None = None,
         debug: bool = False,
+        warnings:bool=False,
         *args,
         **kwargs,
     ) -> dict:
@@ -112,9 +113,10 @@ class ParallelRequests:
                 return {key: result} if key else result
 
             except Exception as e:
-                logger.warning(
-                    f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
-                )
+                if warnings:
+                    logger.warning(
+                        f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
+                    )
 
         return {key: None} if key else None
 
@@ -129,6 +131,7 @@ class ParallelRequests:
         return_type: str = "json",
         verbose: bool = True,
         debug: bool = False,
+        warnings :bool = False,
         *args,
         **kwargs,
     ) -> dict | list:
@@ -191,6 +194,7 @@ class ParallelRequests:
                         method=method,
                         # proxy=proxy,
                         debug=debug,
+                        warnings=warnings,
                         *args,
                         **kwargs,
                     )
@@ -225,6 +229,7 @@ async def parallel_requests_async(
     proxies: list | str | None = None,
     user_agents: list | None = None,
     debug: bool = False,
+    warnings:bool=False,
     cookies:dict|None=None,
     *args,
     **kwargs,
@@ -250,6 +255,7 @@ async def parallel_requests_async(
         verbose=verbose,
         return_type=return_type,
         debug=debug,
+        warnings=warnings,
         *args,
         **kwargs,
     )
@@ -272,6 +278,7 @@ def parallel_requests(
     proxies: list | str | None = None,
     user_agents: list | None = None,
     debug: bool = False,
+    warnings:bool = False,
     cookies:dict|None=None,
     *args,
     **kwargs,
@@ -294,6 +301,7 @@ def parallel_requests(
             proxies=proxies,
             user_agents=user_agents,
             debug=debug,
+            warnings=warnings,
             cookies=cookies,
             *args,
             **kwargs,
