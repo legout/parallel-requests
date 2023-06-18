@@ -95,7 +95,8 @@ class ParallelRequests:
                     *args,
                     **kwargs,
                 )
-
+                response.raise_for_status()
+                
                 if self._return_type == "json":
                     result = response.json()
 
