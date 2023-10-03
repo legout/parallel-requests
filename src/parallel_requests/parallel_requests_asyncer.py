@@ -144,7 +144,7 @@ class ParallelRequests:
                 "random_user_agent",
             ):
                 exec(f"self._{kw} = kwargs['{kw}']")
-                kwargs.pop(kw)
+                #kwargs.pop(kw)
 
         urls = to_list(urls)
         params = to_list(params)
