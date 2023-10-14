@@ -1,6 +1,7 @@
 import asyncio
 from operator import le
 import random
+import re
 import time
 from typing import Callable
 
@@ -32,6 +33,7 @@ class ParallelRequests:
         self._max_retries = max_retries
         self._random_delay_multiplier = random_delay_multiplier
         self._cookies=cookies
+        self._parse_func = None
 
         self._adapter = HTTPAdapter(
             pool_connections=concurrency,
@@ -74,6 +76,7 @@ class ParallelRequests:
         headers:str|None=None,
         debug:bool=False,
         warnings:bool=False,
+        return_type:str|None=None,
         *args,
         **kwargs
     )-> dict|str|None:
@@ -101,15 +104,17 @@ class ParallelRequests:
             )
             response.raise_for_status()
             
-            if self._return_type == "json":
+            if return_type == "json":
                 result = response.json()
 
-            elif self._return_type == "text":
-                result = response.text()
-            elif self._return_type is None:
-                result = response
+            elif return_type == "text":
+                result = response.text
+                
+            elif return_type=="content":
+                result = response.content
+                
             else:
-                result = response.read()
+                result = response
 
             if self._parse_func:
                 result = self._parse_func(result)
@@ -134,6 +139,7 @@ class ParallelRequests:
         # proxy: str | None = None,
         debug: bool = False,
         warnings:bool=False,
+        return_type: str | None = None,
         *args,
         **kwargs,
     ) -> dict|str|None:
@@ -146,6 +152,7 @@ class ParallelRequests:
                 headers=headers,
                 debug=debug,
                 warnings=warnings,
+                return_type=return_type,
                 *args,
                 **kwargs
             )
@@ -158,7 +165,7 @@ class ParallelRequests:
         headers: dict | None = None,
         method: str = "GET",
         parse_func: Callable | None = None,
-        return_type: str = "json",
+        return_type: str = None,
         verbose: bool = True,
         debug: bool = False,
         warnings :bool = False,
@@ -221,6 +228,7 @@ class ParallelRequests:
                     params=params_,
                     headers=headers_,
                     method=method,
+                    return_type=return_type,
                     # proxy=proxy,
                     debug=debug,
                     warnings=warnings,
