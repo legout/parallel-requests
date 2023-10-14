@@ -1,3 +1,4 @@
+from ast import parse
 import asyncio
 from operator import le
 import random
@@ -299,6 +300,7 @@ async def parallel_requests_async(
                     method=method,
                     #parse_func=parse_func,
                     return_type=return_type,
+                    parse_func=parse_func,
                     verbose=verbose,
                     debug=debug,
                     warnings=warnings,
