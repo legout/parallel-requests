@@ -19,6 +19,32 @@ numpy = "^1.24.2"
 aiohttp = "^3.8.4"
 
 
+
+[tool.pdm.build]
+includes = [
+    "src/parallel_requests",
+]
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[project]
+authors = [
+    {name = "Volker Lorrmann", email = "volker.lorrmann@gmail.com"},
+]
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    "asyncio<4.0.0,>=3.4.3",
+    "pandas<3.0.0,>=2.0.0",
+    "requests<3.0.0,>=2.28.2",
+    "python-dotenv<2.0.0,>=1.0.0",
+    "asyncer<1.0.0,>=0.0.2",
+    "loguru<1.0.0,>=0.6.0",
+    "tqdm<5.0.0,>=4.65.0",
+    "numpy<2.0.0,>=1.24.2",
+]
+name = "parallel-requests"
+version = "0.2.2"
+description = ""
+readme = "README.md"
