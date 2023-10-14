@@ -1,4 +1,5 @@
 import asyncio
+from operator import le
 import random
 import time
 from typing import Callable
@@ -61,7 +62,66 @@ class ParallelRequests:
 
         self._user_agents = user_agents
 
-    async def _single_request(
+    def single_request(
+        self,
+        url:str,
+        method:str = "GET",
+        key:str|None=None,
+        params:str|None=None,
+        headers:str|None=None,
+        debug:bool=False,
+        warnings:bool=False,
+        *args,
+        **kwargs
+    )-> dict|str|None:
+        
+        if self._random_proxy and self._proxies is not None:
+            proxy = random.choice(self._proxies)
+            proxies = {"http://": proxy, "https://":proxy}
+        else:
+            proxy=None
+            proxies = None
+        if debug:
+            logger.debug(
+                f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
+            )
+        try:
+            response = self._session.request(
+                method=method,
+                url=url,
+                params=params,
+                proxies=proxies,
+                headers=headers,
+                cookies=self._cookies,
+                *args,
+                **kwargs,
+            )
+            response.raise_for_status()
+            
+            if self._return_type == "json":
+                result = response.json()
+
+            elif self._return_type == "text":
+                result = response.text()
+            elif self._return_type is None:
+                result = response
+            else:
+                result = response.read()
+
+            if self._parse_func:
+                result = self._parse_func(result)
+
+            return {key: result} if key else result
+
+        except Exception as e:
+            if warnings:
+                logger.warning(
+                    f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
+                )
+
+        return {key: None} if key else None
+
+    async def single_request_async(
         self,
         url: str,
         method: str = "GET",
@@ -73,54 +133,21 @@ class ParallelRequests:
         warnings:bool=False,
         *args,
         **kwargs,
-    ) -> dict:
+    ) -> dict|str|None:
         async with self._semaphore:
-            if self._random_proxy and self._proxies is not None:
-                proxy = random.choice(self._proxies)
-                proxies = {"http://": proxy, "https://":proxy}
-            else:
-                proxy=None
-                proxies = None
-            if debug:
-                logger.debug(
-                    f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
-                )
-            try:
-                response = await asyncify(self._session.request)(
-                    method=method,
-                    url=url,
-                    params=params,
-                    proxies=proxies,
-                    headers=headers,
-                    cookies=self._cookies,
-                    *args,
-                    **kwargs,
-                )
-                response.raise_for_status()
-                
-                if self._return_type == "json":
-                    result = response.json()
+            return await asyncify(self.single_request)(
+                url=url,
+                method=method,
+                key=key,
+                params=params,
+                headers=headers,
+                debug=debug,
+                warnings=warnings,
+                *args,
+                **kwargs
+            )
 
-                elif self._return_type == "text":
-                    result = response.text()
-
-                else:
-                    result = response.read()
-
-                if self._parse_func:
-                    result = self._parse_func(result)
-
-                return {key: result} if key else result
-
-            except Exception as e:
-                if warnings:
-                    logger.warning(
-                        f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
-                    )
-
-        return {key: None} if key else None
-
-    async def request(
+    async def request_async(
         self,
         urls: str | list,
         keys: str | list | None = None,
@@ -244,8 +271,26 @@ async def parallel_requests_async(
         user_agents=user_agents,
         cookies=cookies
     )
-
-    return await pr.request(
+    if isinstance(urls, str) or len(urls) == 1:
+        if keys is None or isinstance(keys, str) or len(keys or "") == 1:
+            if params is None or isinstance(params, dict) or len(params or "") == 1:
+                
+                return await pr.single_request_async(
+                    url=urls,
+                    key=keys,
+                    params=params,
+                    headers=headers,
+                    method=method,
+                    parse_func=parse_func,
+                    return_type=return_type,
+                    verbose=verbose,
+                    debug=debug,
+                    warnings=warnings,
+                    *args,
+                    **kwargs,
+                )
+                
+    return await pr.request_async(
         urls=urls,
         keys=keys,
         params=params,
