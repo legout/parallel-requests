@@ -126,6 +126,7 @@ class ParallelRequests:
                 logger.warning(
                     f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
                 )
+            logger.exception(e)
 
         return {key: None} if key else None
 
