@@ -122,7 +122,7 @@ def extend_list(x: list, max_len: int) -> list:
         return x
 
 
-def unnest_results(results: list, keys: list) -> dict:
+def unnest_results(results: list|dict|str|tuple, keys: list|str|None) -> dict:
     """Unnests a list of dicts.
 
     Args:

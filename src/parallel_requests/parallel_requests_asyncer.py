@@ -41,6 +41,9 @@ class ParallelRequests:
             ),
         )
         self._semaphore = asyncio.Semaphore(concurrency)
+        self._session = requests.Session()
+        self._session.mount("http://", self._adapter)
+        self._session.mount("https://", self._adapter)
 
         self.set_proxies(proxies=proxies)
         self.set_user_agents(user_agents=user_agents)
@@ -209,32 +212,32 @@ class ParallelRequests:
 
         self._parse_func = parse_func
         self._return_type = return_type
-        with requests.Session() as self._session:
-            self._session.mount("http://", self._adapter)
-            tasks = [
-                asyncio.create_task(
-                    self._single_request(
-                        url=url_,
-                        key=key_,
-                        params=params_,
-                        headers=headers_,
-                        method=method,
-                        # proxy=proxy,
-                        debug=debug,
-                        warnings=warnings,
-                        *args,
-                        **kwargs,
-                    )
+       
+        tasks = [
+            asyncio.create_task(
+                self._single_request(
+                    url=url_,
+                    key=key_,
+                    params=params_,
+                    headers=headers_,
+                    method=method,
+                    # proxy=proxy,
+                    debug=debug,
+                    warnings=warnings,
+                    *args,
+                    **kwargs,
                 )
-                for url_, key_, params_, headers_ in zip(urls, keys, params, headers)
-            ]
+            )
+            for url_, key_, params_, headers_ in zip(urls, keys, params, headers)
+        ]
 
-            if verbose:
-                results = [await task for task in tqdm.as_completed(tasks)]
-            else:
-                results = [await task for task in asyncio.as_completed(tasks)]
+        if verbose:
+            results = [await task for task in tqdm.as_completed(tasks)]
+        else:
+            results = [await task for task in asyncio.as_completed(tasks)]
 
-        results = unnest_results(results=results, keys=keys)
+        if self._return_type == "json" or self._return_type == "text":
+            results = unnest_results(results=results, keys=keys)
 
         return results
 
