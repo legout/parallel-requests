@@ -77,6 +77,7 @@ class ParallelRequests:
         debug:bool=False,
         warnings:bool=False,
         return_type:str|None=None,
+        parse_func:Callable|None=None,
         *args,
         **kwargs
     )-> dict|str|None:
@@ -116,8 +117,8 @@ class ParallelRequests:
             else:
                 result = response
 
-            if self._parse_func:
-                result = self._parse_func(result)
+            if parse_func:
+                result = parse_func(result)
 
             return {key: result} if key else result
 
@@ -141,6 +142,7 @@ class ParallelRequests:
         debug: bool = False,
         warnings:bool=False,
         return_type: str | None = None,
+        parse_func: Callable | None = None,
         *args,
         **kwargs,
     ) -> dict|str|None:
@@ -154,6 +156,7 @@ class ParallelRequests:
                 debug=debug,
                 warnings=warnings,
                 return_type=return_type,
+                parse_func=parse_func,
                 *args,
                 **kwargs
             )
@@ -223,13 +226,14 @@ class ParallelRequests:
        
         tasks = [
             asyncio.create_task(
-                self._single_request(
+                self._single_request_async(
                     url=url_,
                     key=key_,
                     params=params_,
                     headers=headers_,
                     method=method,
                     return_type=return_type,
+                    parse_func=parse_func,
                     # proxy=proxy,
                     debug=debug,
                     warnings=warnings,
@@ -293,7 +297,7 @@ async def parallel_requests_async(
                     params=params,
                     headers=headers,
                     method=method,
-                    parse_func=parse_func,
+                    #parse_func=parse_func,
                     return_type=return_type,
                     verbose=verbose,
                     debug=debug,
