@@ -301,7 +301,6 @@ async def parallel_requests_async(
                     #parse_func=parse_func,
                     return_type=return_type,
                     parse_func=parse_func,
-                    verbose=verbose,
                     debug=debug,
                     warnings=warnings,
                     *args,
