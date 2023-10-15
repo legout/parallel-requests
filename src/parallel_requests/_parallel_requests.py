@@ -1,7 +1,8 @@
 import asyncio
-from typing import Callable
-import time
 import random
+import time
+from typing import Callable
+
 import requests
 import requests.adapters
 from asyncer import asyncify

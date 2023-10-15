@@ -23,7 +23,7 @@ def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> 
     """
     if user_agents is None:
         try:
-            user_agents=get_user_agents()
+            user_agents = get_user_agents()
             user_agent = random.choice(user_agents)
         except Exception as e:
             user_agent = "my-fancy-user-agent"
@@ -116,13 +116,13 @@ def extend_list(x: list, max_len: int) -> list:
     """extends a list of length 1 to `max_len`"""
     if len(x) == 1:
         return x * max_len
-    elif len(x)>1 and len(x)<max_len:
-        return (x*(max_len//len(x)+1))[:max_len]
+    elif len(x) > 1 and len(x) < max_len:
+        return (x * (max_len // len(x) + 1))[:max_len]
     else:
         return x
 
 
-def unnest_results(results: list|dict|str|tuple, keys: list|str|None) -> dict:
+def unnest_results(results: list | dict | str | tuple, keys: list | str | None) -> dict:
     """Unnests a list of dicts.
 
     Args:

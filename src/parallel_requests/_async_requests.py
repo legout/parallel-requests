@@ -11,19 +11,18 @@
 """
 
 import asyncio
+from json import JSONDecodeError
+from typing import Callable
+
 import aiohttp
 
 # import backoff
 import pandas as pd
-
-from tenacity import retry, stop_after_attempt, wait_random
 import progressbar
+from async_requests.config import PROXIES, USER_AGENTS
+from tenacity import retry, stop_after_attempt, wait_random
 
-from typing import Callable
-from .utils import random_user_agent, random_proxy
-
-from async_requests.config import USER_AGENTS, PROXIES
-from json import JSONDecodeError
+from .utils import random_proxy, random_user_agent
 
 
 def _to_list(x: list | str) -> list:

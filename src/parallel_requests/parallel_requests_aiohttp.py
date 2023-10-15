@@ -7,8 +7,13 @@ import aiohttp
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .utils import (extend_list, get_user_agents, get_webshare_proxies_list,
-                    to_list, unnest_results)
+from .utils import (
+    extend_list,
+    get_user_agents,
+    get_webshare_proxies_list,
+    to_list,
+    unnest_results,
+)
 
 
 class ParallelRequests:
