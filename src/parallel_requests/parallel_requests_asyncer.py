@@ -1,9 +1,5 @@
 import asyncio
 import random
-import re
-import time
-from ast import parse
-from operator import le
 from typing import Callable
 
 import requests

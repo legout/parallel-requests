@@ -1,4 +1,4 @@
-from parallel_requests.config import PROXIES, USER_AGENTS
+from parallel_requests.constants import PROXIES, USER_AGENTS
 from parallel_requests.parallel_requests_asyncer import ParallelRequests
 from parallel_requests.parallel_requests_asyncer import (
     parallel_requests as parallel_requests,
