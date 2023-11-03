@@ -8,15 +8,21 @@ from .utils import get_free_proxies_list, get_user_agents, get_webshare_proxies_
 # export WEBSHARE_PROXY_URL="http://proxy.webshare.io/api/vz/proxy/list/download/..."
 # Or create ur own env file in ~/.env.
 
-
+# Set the environment variable PROXIES.
 WEBSHARE_PROXIES_URL = os.getenv("WEBSHARE_PROXIES_URL", None)
+PROXIES = os.getenv("PROXIES", None)
 
-if WEBSHARE_PROXIES_URL is not None:
-    PROXIES = get_webshare_proxies_list(url=WEBSHARE_PROXIES_URL)
+if PROXIES is None:
+    if WEBSHARE_PROXIES_URL is not None:
+        PROXIES = get_webshare_proxies_list(url=WEBSHARE_PROXIES_URL)
 
+    else:
+        PROXIES = get_webshare_proxies_list()
+    os.environ["PROXIES"] = ",".join(PROXIES)
 else:
-    PROXIES = get_webshare_proxies_list()
-
+    PROXIES = PROXIES.split(",")
+        
+# Set the environment variable USER_AGENTS.
 try:
     USER_AGENTS = get_user_agents()
 except:
