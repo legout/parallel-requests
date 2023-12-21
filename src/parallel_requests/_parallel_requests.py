@@ -9,7 +9,7 @@ from asyncer import asyncify
 from loguru import logger
 from tqdm.asyncio import tqdm
 
-from .config import PROXIES, USER_AGENTS
+from .constants import PROXIES, USER_AGENTS
 from .utils import random_proxy, random_user_agent
 
 

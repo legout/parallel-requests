@@ -87,7 +87,7 @@ class ParallelRequests:
     ) -> dict | str | None:
         if self._random_proxy and self._proxies is not None:
             proxy = random.choice(self._proxies)
-            proxies = {"http://": proxy, "https://": proxy}
+            proxies = {"http": proxy, "https": proxy}
         else:
             proxy = None
             proxies = None
