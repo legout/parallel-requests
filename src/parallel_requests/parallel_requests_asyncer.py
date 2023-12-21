@@ -28,6 +28,9 @@ class ParallelRequests:
         proxies: list | str | None = None,
         user_agents: list | str | None = None,
         cookies: dict | None = None,
+        verbose:bool = True,
+        debug: bool = False,
+        warnings: bool = False,
     ) -> None:
         self._concurrency = concurrency
         self._random_user_agent = random_user_agent
@@ -36,6 +39,9 @@ class ParallelRequests:
         self._random_delay_multiplier = random_delay_multiplier
         self._cookies = cookies
         self._parse_func = None
+        self._debug = debug
+        self._warnings = warnings
+        self._verbose = verbose
 
         self._adapter = HTTPAdapter(
             pool_connections=concurrency,
@@ -78,8 +84,6 @@ class ParallelRequests:
         data: dict | str | None = None,
         json: dict | None = None,
         headers: str | None = None,
-        debug: bool = False,
-        warnings: bool = False,
         return_type: str | None = None,
         parse_func: Callable | None = None,
         *args,
@@ -91,7 +95,7 @@ class ParallelRequests:
         else:
             proxy = None
             proxies = None
-        if debug:
+        if self._debug:
             logger.debug(
                 f"""{self._max_retries}  {method} request | url: {url}, params: {params}, headers: {headers}, proxy: {proxy}, key: {key}"""
             )
@@ -128,11 +132,11 @@ class ParallelRequests:
             return {key: result} if key else result
 
         except Exception as e:
-            if warnings:
+            if self._warnings:
                 logger.warning(
                     f"""{self._max_retries} failed {method} request with Exception {e} - url: {url}, params: {params}, headers: {headers}, proxy: {proxy}"""
                 )
-            logger.exception(e)
+                logger.exception(e)
 
         return {key: None} if key else None
 
@@ -145,9 +149,6 @@ class ParallelRequests:
         data: dict | str | None = None,
         json: dict | None = None,
         headers: dict | None = None,
-        # proxy: str | None = None,
-        debug: bool = False,
-        warnings: bool = False,
         return_type: str | None = None,
         parse_func: Callable | None = None,
         *args,
@@ -162,8 +163,6 @@ class ParallelRequests:
                 data=data,
                 json=json,
                 headers=headers,
-                debug=debug,
-                warnings=warnings,
                 return_type=return_type,
                 parse_func=parse_func,
                 *args,
@@ -181,9 +180,7 @@ class ParallelRequests:
         method: str = "GET",
         parse_func: Callable | None = None,
         return_type: str = None,
-        verbose: bool = True,
-        debug: bool = False,
-        warnings: bool = False,
+
         *args,
         **kwargs,
     ) -> dict | list:
@@ -251,9 +248,6 @@ class ParallelRequests:
                     method=method,
                     return_type=return_type,
                     parse_func=parse_func,
-                    # proxy=proxy,
-                    debug=debug,
-                    warnings=warnings,
                     *args,
                     **kwargs,
                 )
@@ -263,7 +257,7 @@ class ParallelRequests:
             )
         ]
 
-        if verbose:
+        if self._verbose:
             results = [await task for task in tqdm.as_completed(tasks)]
         else:
             results = [await task for task in asyncio.as_completed(tasks)]
@@ -307,25 +301,11 @@ async def parallel_requests_async(
         proxies=proxies,
         user_agents=user_agents,
         cookies=cookies,
+        debug=debug,
+        warnings=warnings,
+        verbose=verbose,
     )
-    # if isinstance(urls, str) or len(urls) == 1:
-
-    #     if params is None or isinstance(params, dict) or len(params or "") == 1:
-
-    #         return await pr.single_request_async(
-    #             url=urls,
-    #             key=keys,
-    #             params=params,
-    #             headers=headers,
-    #             method=method,
-    #             #parse_func=parse_func,
-    #             return_type=return_type,
-    #             parse_func=parse_func,
-    #             debug=debug,
-    #             warnings=warnings,
-    #             *args,
-    #             **kwargs,
-    #         )
+    
 
     return await pr.request_async(
         urls=urls,
@@ -338,8 +318,6 @@ async def parallel_requests_async(
         parse_func=parse_func,
         verbose=verbose,
         return_type=return_type,
-        debug=debug,
-        warnings=warnings,
         *args,
         **kwargs,
     )
@@ -355,7 +333,6 @@ def parallel_requests(
     method: str = "GET",
     parse_func: Callable | None = None,
     return_type: str = "json",
-    verbose: bool = True,
     concurrency: int = 100,
     max_retries: int = 5,
     random_delay_multiplier: int = 1,
@@ -363,9 +340,10 @@ def parallel_requests(
     random_user_agent: bool = True,
     proxies: list | str | None = None,
     user_agents: list | None = None,
+    cookies: dict | None = None,
+    verbose: bool = True,
     debug: bool = False,
     warnings: bool = False,
-    cookies: dict | None = None,
     *args,
     **kwargs,
 ):
