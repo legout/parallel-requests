@@ -22,7 +22,7 @@ if PROXIES is None:
         os.environ["PROXIES"] = ",".join(PROXIES)
 else:
     PROXIES = PROXIES.split(",")
-        
+
 # Set the environment variable USER_AGENTS.
 try:
     USER_AGENTS = get_user_agents()

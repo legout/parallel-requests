@@ -295,15 +295,18 @@ async def async_requests(
         if use_random_proxy:
             proxy = random_proxy(PROXIES)
 
-        async with semaphore_, session.request(
-            method=method,
-            url=url,
-            params=params,
-            data=data,
-            json=json,
-            headers=headers,
-            proxy=proxy,
-        ) as response:
+        async with (
+            semaphore_,
+            session.request(
+                method=method,
+                url=url,
+                params=params,
+                data=data,
+                json=json,
+                headers=headers,
+                proxy=proxy,
+            ) as response,
+        ):
             if response.status >= 400:
                 raise aiohttp.ClientError(response.status)
             elif response.status >= 500:

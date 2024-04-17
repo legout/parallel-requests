@@ -6,6 +6,7 @@ import pandas as pd
 import requests
 from dotenv import load_dotenv
 import time
+
 # from .config import USER_AGENTS, PROXIES
 
 
@@ -51,10 +52,12 @@ def get_webshare_proxies_list(url: str | None = None) -> list:
 
     if url:
         set_webshare_proxies_url(url=url)
-        n=0
-        while n<3:
+        n = 0
+        while n < 3:
             try:
-                proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
+                proxies = [
+                    p for p in requests.get(url).text.split("\r\n") if len(p) > 0
+                ]
                 proxies = [
                     dict(zip(["ip", "port", "user", "pw"], proxy.split(":")))
                     for proxy in proxies
@@ -66,8 +69,7 @@ def get_webshare_proxies_list(url: str | None = None) -> list:
                 return proxies
             except KeyError:
                 time.sleep(60)
-                n+=1
-
+                n += 1
 
 
 def get_free_proxies_list() -> list:

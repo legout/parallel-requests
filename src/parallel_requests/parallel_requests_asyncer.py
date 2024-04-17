@@ -4,6 +4,8 @@ from typing import Callable
 
 import requests
 from asyncer import asyncify
+
+# import niquests as requests
 from loguru import logger
 from requests.adapters import HTTPAdapter, Retry
 from tqdm.asyncio import tqdm
@@ -28,7 +30,7 @@ class ParallelRequests:
         proxies: list | str | None = None,
         user_agents: list | str | None = None,
         cookies: dict | None = None,
-        verbose:bool = True,
+        verbose: bool = True,
         debug: bool = False,
         warnings: bool = False,
     ) -> None:
@@ -180,7 +182,6 @@ class ParallelRequests:
         method: str = "GET",
         parse_func: Callable | None = None,
         return_type: str = None,
-
         *args,
         **kwargs,
     ) -> dict | list:
@@ -305,7 +306,6 @@ async def parallel_requests_async(
         warnings=warnings,
         verbose=verbose,
     )
-    
 
     return await pr.request_async(
         urls=urls,

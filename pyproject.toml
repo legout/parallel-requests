@@ -24,6 +24,14 @@
 includes = [
     "src/parallel_requests",
 ]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ipython>=8.23.0",
+    "black>=24.4.0",
+    "ruff>=0.3.7",
+    "isort>=5.13.2",
+]
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
@@ -43,6 +51,7 @@ dependencies = [
     "loguru>=0.6.0",
     "tqdm>=4.65.0",
     "numpy>=1.24.2",
+    "niquests>=3.5.5",
 ]
 name = "parallel-requests"
 version = "0.2.6"
