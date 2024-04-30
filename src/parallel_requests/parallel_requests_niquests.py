@@ -218,4 +218,5 @@ class ParallelRequests:
             responses = [await task for task in asyncio.as_completed(tasks)]
 
         responses = unnest_results(results=responses, keys=keys)
+        
         return responses
