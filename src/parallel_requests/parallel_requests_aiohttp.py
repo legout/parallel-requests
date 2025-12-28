@@ -1,6 +1,5 @@
 import asyncio
 import random
-import time
 from typing import Callable
 
 import aiohttp
@@ -33,7 +32,6 @@ class ParallelRequests:
         self._max_retries = max_retries
         self._random_delay_multiplier = random_delay_multiplier
 
-        self._conn = aiohttp.TCPConnector(limit_per_host=concurrency, limit=concurrency)
         self._semaphore = asyncio.Semaphore(concurrency)
 
         self.set_proxies(proxies=proxies)
@@ -109,7 +107,7 @@ class ParallelRequests:
 
                 except Exception as e:
                     tries += 1
-                    time.sleep(random.random() * self._random_delay_multiplier)
+                    await asyncio.sleep(random.random() * self._random_delay_multiplier)
 
                     if tries == self._max_retries:
                         logger.warning(
@@ -138,17 +136,6 @@ class ParallelRequests:
         *args,
         **kwargs,
     ) -> dict | list:
-        for kw in kwargs:
-            if kw in (
-                "concurrency",
-                "max_retries",
-                "random_delay_mutliplier",
-                "random_proxy",
-                "random_user_agent",
-            ):
-                exec(f"self._{kw} = kwargs['{kw}']")
-                kwargs.pop(kw)
-
         urls = to_list(urls)
         params = to_list(params)
         keys = to_list(keys)
@@ -185,7 +172,8 @@ class ParallelRequests:
 
         self._parse_func = parse_func
         self._return_type = return_type
-        async with aiohttp.ClientSession(connector=self._conn) as self._session:
+        conn = aiohttp.TCPConnector(limit_per_host=self._concurrency, limit=self._concurrency)
+        async with aiohttp.ClientSession(connector=conn) as self._session:
             tasks = [
                 asyncio.create_task(
                     self._single_request(

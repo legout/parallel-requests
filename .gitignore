@@ -2,5 +2,22 @@ dist/
 __pycache__/
 **/*.pyc
 **/*.pyo
-
 **/__pycache__
+
+# uv
+.venv/
+.uv/
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local

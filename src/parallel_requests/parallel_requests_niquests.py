@@ -1,7 +1,6 @@
 import niquests
 import asyncio
 import random
-from typing import Callable
 from loguru import logger
 from niquests.adapters import Retry
 from niquests import Response
@@ -24,7 +23,7 @@ class ParallelRequests:
         max_retries: int = 5,
         backoff_factor: int = 0.05,
         backoff_max: int = 10,
-        backoff_jitter: bool = 0.1,
+        backoff_jitter: float = 0.1,
         random_proxy: bool = False,
         random_user_agent: bool = True,
         proxies: list | str | None = None,
@@ -80,6 +79,17 @@ class ParallelRequests:
 
         self._user_agents = user_agents
 
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self._session.close()
+        return False
+
+    async def close(self):
+        """Close the underlying session."""
+        await self._session.close()
+
     async def _request(
         self,
         url: str,
@@ -102,7 +112,7 @@ class ParallelRequests:
                 url: {url}, 
                 params: {params}, 
                 headers: {headers}, 
-                proxy: {proxies['http']}, 
+                proxy: {proxies["http"]}, 
                 key: {key}
                 """
             )
@@ -173,7 +183,7 @@ class ParallelRequests:
                 [{"http": proxy, "https": proxy} for proxy in self._proxies], max_len
             )
         else:
-            proxies = extend_list([{"http":None, "https":None}], max_len)
+            proxies = extend_list([{"http": None, "https": None}], max_len)
 
         if self._random_user_agent and self._user_agents:
             random.shuffle(self._user_agents)
@@ -192,10 +202,8 @@ class ParallelRequests:
             )
 
         tasks = []
-        
-        for url, key, param, d, j, h, p in zip(
-            urls, keys, params, data, json, headers, proxies
-        ):
+
+        for url, key, param, d, j, h, p in zip(urls, keys, params, data, json, headers, proxies):
             tasks.append(
                 asyncio.create_task(
                     self._request(
@@ -218,5 +226,5 @@ class ParallelRequests:
             responses = [await task for task in asyncio.as_completed(tasks)]
 
         responses = unnest_results(results=responses, keys=keys)
-        
+
         return responses

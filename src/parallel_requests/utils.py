@@ -26,7 +26,7 @@ def random_user_agent(user_agents: list | None = None, as_dict: bool = True) -> 
         try:
             user_agents = get_user_agents()
             user_agent = random.choice(user_agents)
-        except Exception as e:
+        except Exception:
             user_agent = "my-fancy-user-agent"
     else:
         user_agent = random.choice(user_agents)
@@ -55,12 +55,9 @@ def get_webshare_proxies_list(url: str | None = None) -> list:
         n = 0
         while n < 3:
             try:
+                proxies = [p for p in requests.get(url).text.split("\r\n") if len(p) > 0]
                 proxies = [
-                    p for p in requests.get(url).text.split("\r\n") if len(p) > 0
-                ]
-                proxies = [
-                    dict(zip(["ip", "port", "user", "pw"], proxy.split(":")))
-                    for proxy in proxies
+                    dict(zip(["ip", "port", "user", "pw"], proxy.split(":"))) for proxy in proxies
                 ]
                 proxies = [
                     f"http://{proxy['user']}:{proxy['pw']}@{proxy['ip']}:{proxy['port']}"
@@ -68,7 +65,8 @@ def get_webshare_proxies_list(url: str | None = None) -> list:
                 ]
                 return proxies
             except KeyError:
-                time.sleep(60)
+                sleep_time = min(2**n, 30)
+                time.sleep(sleep_time)
                 n += 1
 
 
@@ -85,9 +83,7 @@ def get_free_proxies_list() -> list:
     for url in urls:
         proxies.append(
             pd.read_html(
-                requests.get(
-                    url, headers={"user-agent": "yahoo-symbols-async-requests"}
-                ).text
+                requests.get(url, headers={"user-agent": "yahoo-symbols-async-requests"}).text
             )[0]
             .rename({"Last Checked": "LastChecked"}, axis=1)
             .query("LastChecked.str.contains('secs')")  # & Https=='no'")
@@ -106,7 +102,7 @@ def get_free_proxies_list() -> list:
 def random_proxy(proxies: list | None = None, as_dict: bool = True) -> str:
     if proxies is not None:
         proxy = random.choice(proxies)
-        return {"http:": proxy, "https": proxy} if as_dict else proxy
+        return {"http": proxy, "https": proxy} if as_dict else proxy
 
 
 def to_list(x: list | str | int | float | pd.Series | None) -> list:
@@ -116,7 +112,7 @@ def to_list(x: list | str | int | float | pd.Series | None) -> list:
     elif x is None:
         return [None]
     elif isinstance(x, pd.Series):
-        x = x.tolist()
+        return x.tolist()
     else:
         return x
 

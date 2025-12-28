@@ -185,17 +185,6 @@ class ParallelRequests:
         *args,
         **kwargs,
     ) -> dict | list:
-        for kw in kwargs:
-            if kw in (
-                "concurrency",
-                "max_retries",
-                "random_delay_mutliplier",
-                "random_proxy",
-                "random_user_agent",
-            ):
-                exec(f"self._{kw} = kwargs['{kw}']")
-                # kwargs.pop(kw)
-
         urls = to_list(urls)
         params = to_list(params)
         data = to_list(data)
