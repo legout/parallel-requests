@@ -1,6 +1,6 @@
 [project]
 name = "parallel-requests"
-version = "0.2.6"
+version = "1.0.0"
 description = "Fast parallel HTTP requests"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
@@ -16,6 +16,7 @@ dependencies = [
     "loguru>=0.6.0",
     "tqdm>=4.65.0",
     "niquests>=3.5.5",
+    "aiohttp>=3.13.2",
 ]
 
 [project.optional-dependencies]
