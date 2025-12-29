@@ -1,6 +1,8 @@
 from .retry import RetryConfig, RetryStrategy
 from .rate_limiter import RateLimitConfig, TokenBucket, AsyncRateLimiter
 from .validators import validate_url, validate_proxy, validate_headers, normalize_urls
+from .proxies import ProxyConfig, ProxyManager, ProxyValidationError
+from .headers import HeaderManager
 
 __all__ = [
     "RetryConfig",
@@ -12,4 +14,8 @@ __all__ = [
     "validate_proxy",
     "validate_headers",
     "normalize_urls",
+    "ProxyConfig",
+    "ProxyManager",
+    "ProxyValidationError",
+    "HeaderManager",
 ]

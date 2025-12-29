@@ -1,16 +1,44 @@
-"""
-parallel-requests v2.0.0
-
-Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting.
-
-Status: 🚧 Rebuilding from scratch
-
-Documentation: See PRD.md for complete specifications.
-"""
+from parallel_requests.exceptions import (
+    ConfigurationError,
+    FailureDetails,
+    ParallelRequestsError,
+    PartialFailureError,
+    ProxyError,
+    RateLimitExceededError,
+    RetryExhaustedError,
+    ValidationError,
+    BackendError,
+)
+from parallel_requests.config import GlobalConfig
+from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
+from parallel_requests.client import (
+    ParallelRequests,
+    RequestOptions,
+    ReturnType,
+    parallel_requests,
+    parallel_requests_async,
+)
 
 __version__ = "2.0.0"
 
-# Public API will be populated as we implement:
-# - ParallelRequests
-# - parallel_requests
-# - parallel_requests_async
+__all__ = [
+    "__version__",
+    "ParallelRequestsError",
+    "BackendError",
+    "ProxyError",
+    "RetryExhaustedError",
+    "RateLimitExceededError",
+    "ValidationError",
+    "ConfigurationError",
+    "PartialFailureError",
+    "FailureDetails",
+    "GlobalConfig",
+    "Backend",
+    "RequestConfig",
+    "NormalizedResponse",
+    "ParallelRequests",
+    "RequestOptions",
+    "ReturnType",
+    "parallel_requests",
+    "parallel_requests_async",
+]
