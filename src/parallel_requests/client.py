@@ -156,14 +156,21 @@ class ParallelRequests:
                 ("requests", "RequestsBackend"),
             ]
 
+            unavailable: list[str] = []
             for backend_module, backend_class_name in backend_classes:
                 try:
                     module = importlib.import_module(f"parallel_requests.backends.{backend_module}")
                     backend_cls = getattr(module, backend_class_name)
                     self._backend = backend_cls(http2_enabled=self._http2)
-                    logger.info(f"Using backend: {backend_module}")
+                    if unavailable:
+                        logger.info(
+                            f"Using backend: {backend_module} ({', '.join(unavailable)} unavailable)"
+                        )
+                    else:
+                        logger.info(f"Using backend: {backend_module}")
                     return
                 except ImportError:
+                    unavailable.append(backend_module)
                     continue
 
             raise ConfigurationError(
@@ -474,7 +481,7 @@ class ParallelRequests:
         return self._parse_response(response, req)
 
     def _parse_response(self, response: NormalizedResponse, req: RequestOptions) -> Any:
-        logger.info(f"Request completed: {req.url} - Status: {response.status_code}")
+        logger.debug(f"Request completed: {req.url} - Status: {response.status_code}")
         match req.return_type:
             case ReturnType.JSON:
                 return response.json_data if response.is_json else None

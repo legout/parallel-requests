@@ -111,10 +111,11 @@ class RetryStrategy:
                 if attempt < self.config.max_retries:
                     delay = self._calculate_delay(attempt)
                     logger.debug(
-                        f"Retry attempt {attempt + 1}/{self.config.max_retries}, waiting {delay:.2f}s"
+                        f"Retry attempt {attempt + 1}/{self.config.max_retries}: {e}, waiting {delay:.2f}s"
                     )
                     await asyncio.sleep(delay)
 
+        logger.error(f"All retries exhausted after {self.config.max_retries} attempts")
         raise RetryExhaustedError(
             message=f"Retry attempts exhausted after {self.config.max_retries} retries",
             attempts=self.config.max_retries,
