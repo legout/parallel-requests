@@ -12,8 +12,10 @@ from .exceptions import (
     FailureDetails,
     PartialFailureError,
 )
+from .utils.logging import configure_logging
 from .utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
 from .utils.retry import RetryConfig, RetryStrategy
+from loguru import logger
 
 
 class ReturnType(str, Enum):
@@ -73,6 +75,8 @@ class ParallelRequests:
         self.verbose = verbose
         self.return_none_on_failure = return_none_on_failure
 
+        configure_logging(debug, verbose)
+
         self._backend: Backend | None = None
         self._cookies: dict[str, str] = cookies.copy() if cookies else {}
         self._rate_limiter: AsyncRateLimiter | None = None
@@ -104,6 +108,7 @@ class ParallelRequests:
                     module = importlib.import_module(f"parallel_requests.backends.{backend_module}")
                     backend_cls = getattr(module, backend_class_name)
                     self._backend = backend_cls(http2_enabled=self._http2)
+                    logger.info(f"Using backend: {backend_module}")
                     return
                 except ImportError:
                     continue
@@ -125,6 +130,7 @@ class ParallelRequests:
 
                 backend_cls = backend_options[0][1]
                 self._backend = backend_cls(http2_enabled=self._http2)
+                logger.info(f"Using backend: {self.backend_name}")
             except ImportError as e:
                 raise ConfigurationError(
                     f"Failed to load backend '{self.backend_name}': {e}"
@@ -402,6 +408,7 @@ class ParallelRequests:
         return self._parse_response(response, req)
 
     def _parse_response(self, response: NormalizedResponse, req: RequestOptions) -> Any:
+        logger.info(f"Request completed: {req.url} - Status: {response.status_code}")
         match req.return_type:
             case ReturnType.JSON:
                 return response.json_data if response.is_json else None

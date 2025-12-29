@@ -4,6 +4,8 @@ from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import AsyncIterator
 
+from loguru import logger
+
 
 @dataclass
 class RateLimitConfig:
@@ -48,6 +50,7 @@ class AsyncRateLimiter:
     @asynccontextmanager
     async def acquire(self) -> AsyncIterator[None]:
         async with self._semaphore:
+            logger.debug(f"Rate limiter acquiring token (available: {self._bucket.available()})")
             await self._bucket.acquire()
             yield
 

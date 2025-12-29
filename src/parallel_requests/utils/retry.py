@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Coroutine
 
 from ..exceptions import RetryExhaustedError
+from loguru import logger
 
 
 @dataclass
@@ -51,6 +52,9 @@ class RetryStrategy:
 
                 if attempt < self.config.max_retries:
                     delay = self._calculate_delay(attempt)
+                    logger.debug(
+                        f"Retry attempt {attempt + 1}/{self.config.max_retries}, waiting {delay:.2f}s"
+                    )
                     await asyncio.sleep(delay)
 
         raise RetryExhaustedError(
