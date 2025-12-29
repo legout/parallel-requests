@@ -1,4 +1,3 @@
-import asyncio
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -10,8 +9,7 @@ from parallel_requests import (
     parallel_requests,
     parallel_requests_async,
 )
-from parallel_requests.backends.base import NormalizedResponse
-from parallel_requests.exceptions import ConfigurationError, PartialFailureError
+from parallel_requests.exceptions import ConfigurationError
 
 
 class TestParallelRequestsInit:
@@ -19,9 +17,11 @@ class TestParallelRequestsInit:
     async def test_init_with_defaults(self) -> None:
         client = ParallelRequests()
         assert client.backend_name == "auto"
-        assert client.max_concurrency == 20
-        assert client.allow_redirects is True
+        assert client.concurrency == 20
+        assert client.follow_redirects is True
         assert client.verify_ssl is True
+        assert client.random_user_agent is True
+        assert client.random_proxy is False
         assert client.debug is False
         assert client.verbose is True
         assert client.return_none_on_failure is False
@@ -29,11 +29,16 @@ class TestParallelRequestsInit:
     @pytest.mark.asyncio
     async def test_init_with_custom_values(self) -> None:
         client = ParallelRequests(
-            max_concurrency=10,
-            http2_enabled=False,
+            concurrency=10,
+            http2=False,
         )
-        assert client.max_concurrency == 10
-        assert client._http2_enabled is False
+        assert client.concurrency == 10
+        assert client._http2 is False
+
+    @pytest.mark.asyncio
+    async def test_init_with_cookies(self) -> None:
+        client = ParallelRequests(cookies={"session": "abc123"})
+        assert client._cookies == {"session": "abc123"}
 
     @pytest.mark.asyncio
     async def test_reset_cookies(self) -> None:
@@ -115,6 +120,75 @@ class TestReturnType:
         assert ReturnType.STREAM.value == "stream"
 
 
+class TestParallelRequestsRequest:
+    @pytest.mark.asyncio
+    async def test_single_url_returns_single_result(self) -> None:
+        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+            mock_exec.return_value = {"result": "success"}
+
+            client = ParallelRequests()
+            async with client:
+                result = await client.request("https://example.com/api")
+
+            # Single URL returns single result, not a list
+            assert result == {"result": "success"}
+
+    @pytest.mark.asyncio
+    async def test_multiple_urls_returns_list(self) -> None:
+        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+            mock_exec.side_effect = [{"result": "a"}, {"result": "b"}]
+
+            client = ParallelRequests()
+            async with client:
+                results = await client.request(["https://a.com", "https://b.com"])
+
+            assert isinstance(results, list)
+            assert len(results) == 2
+            assert results[0] == {"result": "a"}
+            assert results[1] == {"result": "b"}
+
+    @pytest.mark.asyncio
+    async def test_urls_with_keys_returns_dict(self) -> None:
+        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+            mock_exec.side_effect = [{"result": "first"}, {"result": "second"}]
+
+            client = ParallelRequests()
+            async with client:
+                results = await client.request(
+                    ["https://a.com", "https://b.com"],
+                    keys=["first", "second"],
+                )
+
+            assert isinstance(results, dict)
+            assert results["first"] == {"result": "first"}
+            assert results["second"] == {"result": "second"}
+
+    @pytest.mark.asyncio
+    async def test_keys_mismatch_raises_error(self) -> None:
+        client = ParallelRequests()
+        async with client:
+            with pytest.raises(ConfigurationError) as exc_info:
+                await client.request(
+                    ["https://a.com", "https://b.com"],
+                    keys=["only_one"],
+                )
+            assert "Number of keys" in str(exc_info.value)
+
+    @pytest.mark.asyncio
+    async def test_parse_func_applied(self) -> None:
+        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+            mock_exec.return_value = {"id": 123, "name": "test"}
+
+            client = ParallelRequests()
+            async with client:
+                result = await client.request(
+                    "https://example.com/api",
+                    parse_func=lambda r: r.get("id"),
+                )
+
+            assert result == 123
+
+
 class TestParallelRequestsAsyncFunctions:
     @pytest.mark.asyncio
     async def test_parallel_requests_async_wrapper(self) -> None:
@@ -125,9 +199,7 @@ class TestParallelRequestsAsyncFunctions:
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            request = RequestOptions(url="https://example.com/api")
-
-            results = await parallel_requests_async([request])
+            results = await parallel_requests_async(["https://example.com/api"])
 
             assert len(results) == 1
             assert results[0] == {"result": "success"}
@@ -141,12 +213,10 @@ class TestParallelRequestsAsyncFunctions:
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            request = RequestOptions(url="https://example.com/api")
-
             results = await parallel_requests_async(
-                [request],
+                ["https://example.com/api"],
                 backend="custom",
-                max_concurrency=5,
+                concurrency=5,
                 max_retries=10,
                 rate_limit=50.0,
             )
@@ -154,7 +224,7 @@ class TestParallelRequestsAsyncFunctions:
             MockClient.assert_called_once()
             call_kwargs = MockClient.call_args[1]
             assert call_kwargs["backend"] == "custom"
-            assert call_kwargs["max_concurrency"] == 5
+            assert call_kwargs["concurrency"] == 5
             assert call_kwargs["rate_limit"] == 50.0
             assert len(results) == 1
 
@@ -169,10 +239,22 @@ class TestParallelRequestsAsyncFunctions:
             with patch("parallel_requests.client.asyncio.run") as mock_run:
                 mock_run.return_value = [{"result": "success"}]
 
-                request = RequestOptions(url="https://example.com/api")
-
-                results = parallel_requests([request])
+                results = parallel_requests(["https://example.com/api"])
 
                 assert len(results) == 1
                 assert results[0] == {"result": "success"}
                 mock_run.assert_called_once()
+
+    @pytest.mark.asyncio
+    async def test_parallel_requests_async_single_url(self) -> None:
+        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+            mock_instance = AsyncMock()
+            mock_instance.request = AsyncMock(return_value={"result": "success"})
+            mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
+            mock_instance.__aexit__ = AsyncMock(return_value=None)
+            MockClient.return_value = mock_instance
+
+            result = await parallel_requests_async("https://example.com/api")
+
+            # Single URL returns single result
+            assert result == {"result": "success"}

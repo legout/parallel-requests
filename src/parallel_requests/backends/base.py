@@ -16,6 +16,8 @@ class RequestConfig:
     proxy: str | None = None
     http2: bool = True
     stream: bool = False
+    follow_redirects: bool = True
+    verify_ssl: bool = True
 
 
 @dataclass
