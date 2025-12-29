@@ -4,20 +4,37 @@ from typing import Any
 
 @dataclass
 class FailureDetails:
+    """Details about a failed request.
+
+    Attributes:
+        url: URL that failed
+        error: Exception that occurred
+        attempt: Retry attempt number (0 = first attempt)
+    """
+
     url: str
     error: Exception
     attempt: int = 0
 
 
 class ParallelRequestsError(Exception):
-    """Base exception for parallel-requests library."""
+    """Base exception for parallel-requests library.
+
+    All library exceptions inherit from this base class.
+    """
 
     def __init__(self, message: str, *args: Any, **kwargs: Any) -> None:
         super().__init__(message, *args, **kwargs)
 
 
 class BackendError(ParallelRequestsError):
-    """Raised when a backend operation fails."""
+    """Raised when a backend operation fails.
+
+    Indicates a failure in the underlying HTTP client library.
+
+    Attributes:
+        backend_name: Name of the backend that failed
+    """
 
     def __init__(
         self, message: str, backend_name: str | None = None, *args: Any, **kwargs: Any
@@ -27,7 +44,13 @@ class BackendError(ParallelRequestsError):
 
 
 class ProxyError(ParallelRequestsError):
-    """Raised when a proxy operation fails."""
+    """Raised when a proxy operation fails.
+
+    Indicates a failure with proxy rotation, validation, or connection.
+
+    Attributes:
+        proxy_url: Proxy URL that failed (if applicable)
+    """
 
     def __init__(
         self, message: str, proxy_url: str | None = None, *args: Any, **kwargs: Any
@@ -37,7 +60,15 @@ class ProxyError(ParallelRequestsError):
 
 
 class RetryExhaustedError(ParallelRequestsError):
-    """Raised when all retry attempts are exhausted."""
+    """Raised when all retry attempts are exhausted.
+
+    Indicates that a request failed after max_retries attempts.
+
+    Attributes:
+        attempts: Number of retry attempts made
+        last_error: Last exception that occurred
+        url: URL that failed (if applicable)
+    """
 
     def __init__(
         self,
@@ -55,7 +86,13 @@ class RetryExhaustedError(ParallelRequestsError):
 
 
 class RateLimitExceededError(ParallelRequestsError):
-    """Raised when rate limit is exceeded."""
+    """Raised when rate limit is exceeded.
+
+    Indicates that the rate limiter blocked a request.
+
+    Attributes:
+        retry_after: Seconds to wait before retry (if provided)
+    """
 
     def __init__(
         self,
@@ -69,7 +106,13 @@ class RateLimitExceededError(ParallelRequestsError):
 
 
 class ValidationError(ParallelRequestsError):
-    """Raised when request validation fails."""
+    """Raised when request validation fails.
+
+    Indicates invalid input parameters or configuration.
+
+    Attributes:
+        field_name: Name of the field that failed validation
+    """
 
     def __init__(
         self, message: str, field_name: str | None = None, *args: Any, **kwargs: Any
@@ -79,7 +122,13 @@ class ValidationError(ParallelRequestsError):
 
 
 class ConfigurationError(ParallelRequestsError):
-    """Raised when configuration is invalid."""
+    """Raised when configuration is invalid.
+
+    Indicates missing or invalid configuration parameters.
+
+    Attributes:
+        config_key: Name of the configuration key that failed
+    """
 
     def __init__(
         self, message: str, config_key: str | None = None, *args: Any, **kwargs: Any
@@ -89,7 +138,22 @@ class ConfigurationError(ParallelRequestsError):
 
 
 class PartialFailureError(ParallelRequestsError):
-    """Raised when some requests succeed and others fail."""
+    """Raised when some requests succeed and others fail.
+
+    Occurs when return_none_on_failure=False and some requests fail.
+
+    Attributes:
+        failures: Dictionary mapping URLs to FailureDetails
+        successes: Number of successful requests
+        total: Total number of requests
+
+    Example:
+        >>> try:
+        ...     results = parallel_requests(urls=many_urls)
+        ... except PartialFailureError as e:
+        ...     print(f"Failed: {e.get_failed_urls()}")
+        ...     print(f"Success: {e.successes}/{e.total}")
+    """
 
     def __init__(
         self,
@@ -106,5 +170,9 @@ class PartialFailureError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
     def get_failed_urls(self) -> list[str]:
-        """Return list of URLs that failed."""
+        """Return list of URLs that failed.
+
+        Returns:
+            List of URLs that experienced errors
+        """
         return list(self.failures.keys())

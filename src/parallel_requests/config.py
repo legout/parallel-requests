@@ -4,6 +4,43 @@ from pathlib import Path
 
 @dataclass
 class GlobalConfig:
+    """Global configuration for parallel requests.
+
+    Can be loaded from environment variables or created programmatically.
+
+    Example:
+        >>> from parallel_requests.config import GlobalConfig
+        >>> config = GlobalConfig(
+        ...     backend="niquests",
+        ...     default_concurrency=10,
+        ... )
+        >>> config.save_to_env(".env")
+
+    Environment variables:
+        PARALLEL_BACKEND: Backend to use ("auto", "niquests", "aiohttp", "requests")
+        PARALLEL_CONCURRENCY: Default concurrency limit
+        PARALLEL_MAX_RETRIES: Default max retries
+        PARALLEL_RATE_LIMIT: Rate limit (requests per second)
+        PARALLEL_RATE_LIMIT_BURST: Rate limit burst size
+        PARALLEL_HTTP2: Enable HTTP/2 (true/false)
+        PARALLEL_RANDOM_USER_AGENT: Rotate user agents (true/false)
+        PARALLEL_RANDOM_PROXY: Enable proxy rotation (true/false)
+        PARALLEL_PROXY_ENABLED: Enable proxies (true/false)
+        PARALLEL_FREE_PROXIES: Enable free proxy fetching (true/false)
+
+    Attributes:
+        backend: Default backend selection
+        default_concurrency: Default concurrency limit
+        default_max_retries: Default maximum retry attempts
+        rate_limit: Rate limit in requests per second (None for no limit)
+        rate_limit_burst: Burst size for rate limiter
+        http2_enabled: Enable HTTP/2 support
+        random_user_agent: Enable user agent rotation
+        random_proxy: Enable proxy rotation
+        proxy_enabled: Enable proxy usage
+        free_proxies_enabled: Enable free proxy fetching
+    """
+
     backend: str = "auto"
     default_concurrency: int = 20
     default_max_retries: int = 3
@@ -45,6 +82,14 @@ class GlobalConfig:
         )
 
     def to_env(self, prefix: str = "PARALLEL_") -> dict[str, str]:
+        """Convert config to environment variable dictionary.
+
+        Args:
+            prefix: Prefix for environment variable names
+
+        Returns:
+            Dictionary of environment variable name to value
+        """
         env: dict[str, str] = {
             f"{prefix}BACKEND": self.backend,
             f"{prefix}CONCURRENCY": str(self.default_concurrency),
@@ -60,6 +105,16 @@ class GlobalConfig:
         return env
 
     def save_to_env(self, path: Path | str, prefix: str = "PARALLEL_") -> None:
+        """Save configuration to an environment file.
+
+        Args:
+            path: Path to save the .env file
+            prefix: Prefix for environment variable names
+
+        Example:
+            >>> config = GlobalConfig(backend="niquests")
+            >>> config.save_to_env(".env")
+        """
         p = Path(path) if isinstance(path, str) else path
         env_content = ""
         for key, value in self.to_env(prefix).items():

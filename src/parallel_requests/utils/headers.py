@@ -4,6 +4,23 @@ from typing import Optional, List, Dict
 
 
 class HeaderManager:
+    """Manager for HTTP headers with user-agent rotation.
+
+    Provides automatic user-agent rotation and custom header management.
+
+    Example:
+        >>> from parallel_requests.utils.headers import HeaderManager
+        >>> manager = HeaderManager(random_user_agent=True)
+        >>> headers = manager.get_headers({"Authorization": "Bearer token"})
+
+    User agent sources (in order of priority):
+        1. Custom user agent (if set via set_custom_user_agent)
+        2. Provided user_agents list
+        3. USER_AGENTS environment variable (comma-separated)
+        4. USER_AGENTS_URL environment variable (fetch from URL)
+        5. Default user agents
+    """
+
     DEFAULT_USER_AGENTS = [
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -21,6 +38,13 @@ class HeaderManager:
         user_agents: Optional[List[str]] = None,
         custom_user_agent: Optional[str] = None,
     ):
+        """Initialize HeaderManager.
+
+        Args:
+            random_user_agent: Enable random user-agent selection
+            user_agents: Custom list of user agents (overrides defaults)
+            custom_user_agent: Fixed user agent to use (overrides rotation)
+        """
         self._enabled = random_user_agent
         self._custom_ua = custom_user_agent
         self._agents = self._load_user_agents(user_agents)
@@ -52,6 +76,14 @@ class HeaderManager:
         self,
         custom_headers: Optional[Dict[str, str]] = None,
     ) -> Dict[str, str]:
+        """Get headers with optional user-agent.
+
+        Args:
+            custom_headers: Additional headers to include
+
+        Returns:
+            Dictionary of headers including user-agent if enabled
+        """
         headers = {}
 
         if self._enabled:
@@ -66,6 +98,14 @@ class HeaderManager:
         return headers
 
     def update_agents_from_remote(self, url: str) -> None:
+        """Update user agent list from remote URL.
+
+        Args:
+            url: URL to fetch user agents from (one per line)
+
+        Raises:
+            ValueError: If fetch fails
+        """
         import requests
 
         try:
@@ -78,7 +118,17 @@ class HeaderManager:
             raise ValueError(f"Failed to update user agents: {e}") from e
 
     def set_custom_user_agent(self, user_agent: str) -> None:
+        """Set fixed custom user agent (disables rotation).
+
+        Args:
+            user_agent: User agent string to use
+        """
         self._custom_ua = user_agent
 
     def get_user_agents(self) -> List[str]:
+        """Get current list of user agents.
+
+        Returns:
+            Copy of user agent list
+        """
         return self._agents.copy()

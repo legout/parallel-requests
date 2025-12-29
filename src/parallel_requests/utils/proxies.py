@@ -10,6 +10,17 @@ from loguru import logger
 
 @dataclass
 class ProxyConfig:
+    """Configuration for proxy rotation.
+
+    Attributes:
+        enabled: Enable proxy rotation
+        list: List of proxy URLs (IP:PORT or IP:PORT:USER:PASS or http://user:pass@host:port)
+        webshare_url: URL to fetch webshare.io proxy list
+        free_proxies: Enable fetching free proxies (not implemented yet)
+        retry_delay: Seconds before retrying failed proxy
+        validation_timeout: Timeout for proxy validation
+    """
+
     enabled: bool = False
     list: Optional[List[str]] = None
     webshare_url: Optional[str] = None
@@ -19,15 +30,37 @@ class ProxyConfig:
 
 
 class ProxyValidationError(Exception):
+    """Raised when proxy validation fails."""
+
     pass
 
 
 class ProxyManager:
+    """Manager for proxy rotation and validation.
+
+    Handles loading, validating, rotating, and tracking proxy health.
+
+    Example:
+        >>> from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+        >>> config = ProxyConfig(
+        ...     enabled=True,
+        ...     list=["192.168.1.1:8080", "192.168.1.2:8080:admin:pass"],
+        ... )
+        >>> manager = ProxyManager(config)
+        >>> proxy = await manager.get_next()
+
+    Proxy formats supported:
+        - IP:PORT (e.g., "192.168.1.1:8080")
+        - IP:PORT:USER:PASS (e.g., "192.168.1.1:8080:admin:pass")
+        - http://USER:PASS@HOST:PORT
+        - https://USER:PASS@HOST:PORT
+    """
+
     PROXY_PATTERNS = [
         r"^(\d{1,3}\.){3}\d{1,3}:\d{1,5}$",
         r"^(\d{1,3}\.){3}\d{1,3}:\d{1,5}:[^:]+:[^:]+$",
         r"^http://[^:]+:[^@]+@[^:]+:\d+$",
-        r"^https://[^:]+:[^@]+@[^:]+:\d+$",
+        r"^https://[^:]+:[^@]+@[^:]+\d+$",
     ]
 
     def __init__(self, config: ProxyConfig):
@@ -39,7 +72,14 @@ class ProxyManager:
 
     @classmethod
     def _validate_ip_octets(cls, ip: str) -> bool:
-        """Validate IP octets are in range 0-255"""
+        """Validate IP octets are in range 0-255.
+
+        Args:
+            ip: IP address string
+
+        Returns:
+            True if valid, False otherwise
+        """
         octets = ip.split(".")
         if len(octets) != 4:
             return False
@@ -111,6 +151,20 @@ class ProxyManager:
 
     @classmethod
     def validate(cls, proxy: str) -> bool:
+        """Validate proxy format.
+
+        Args:
+            proxy: Proxy URL string
+
+        Returns:
+            True if valid format, False otherwise
+
+        Example:
+            >>> ProxyManager.validate("192.168.1.1:8080")
+            True
+            >>> ProxyManager.validate("invalid-proxy")
+            False
+        """
         if not proxy or not isinstance(proxy, str):
             return False
 
@@ -125,6 +179,13 @@ class ProxyManager:
         return False
 
     async def get_next(self) -> Optional[str]:
+        """Get next available proxy.
+
+        Excludes proxies that are currently in failed state.
+
+        Returns:
+            Proxy URL or None if no proxies available
+        """
         async with self._lock:
             now = time.time()
 
@@ -138,18 +199,38 @@ class ProxyManager:
             return random.choice(available)
 
     async def mark_failed(self, proxy: str) -> None:
+        """Mark proxy as failed (unavailable for retry_delay).
+
+        Args:
+            proxy: Proxy URL to mark as failed
+        """
         async with self._lock:
             if proxy in self._proxies:
                 self._failed_proxies[proxy] = time.time() + self._config.retry_delay
 
     async def mark_success(self, proxy: str) -> None:
+        """Mark proxy as successful (clear failed status).
+
+        Args:
+            proxy: Proxy URL to mark as successful
+        """
         async with self._lock:
             self._failed_proxies.pop(proxy, None)
 
     def count(self) -> int:
+        """Get total number of proxies.
+
+        Returns:
+            Total proxy count
+        """
         return len(self._proxies)
 
     def count_available(self) -> int:
+        """Get number of available proxies (not in failed state).
+
+        Returns:
+            Available proxy count
+        """
         now = time.time()
         return sum(
             1

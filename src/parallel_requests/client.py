@@ -19,6 +19,16 @@ from loguru import logger
 
 
 class ReturnType(str, Enum):
+    """Enum for response parsing options.
+
+    Attributes:
+        JSON: Parse response as JSON (returns dict/list or None)
+        TEXT: Return response as decoded string
+        CONTENT: Return response as raw bytes
+        RESPONSE: Return full NormalizedResponse object
+        STREAM: Stream response content (requires stream_callback)
+    """
+
     JSON = "json"
     TEXT = "text"
     CONTENT = "content"
@@ -28,7 +38,20 @@ class ReturnType(str, Enum):
 
 @dataclass
 class RequestOptions:
-    """Internal request options for backwards compatibility."""
+    """Internal request options for backwards compatibility.
+
+    Attributes:
+        url: Request URL
+        method: HTTP method (GET, POST, etc.)
+        params: Query parameters
+        data: Request body data
+        json: JSON body (serialized automatically)
+        headers: Request headers
+        timeout: Per-request timeout in seconds
+        proxy: Proxy URL
+        return_type: How to parse the response
+        stream_callback: Callback for streaming responses
+    """
 
     url: str
     method: str = "GET"
@@ -46,6 +69,36 @@ T = TypeVar("T")
 
 
 class ParallelRequests:
+    """Main client for parallel HTTP requests.
+
+    Example:
+        >>> from parallel_requests import ParallelRequests
+        >>> client = ParallelRequests(concurrency=5)
+        >>> async with client:
+        ...     results = await client.request(
+        ...         urls=["https://httpbin.org/get"] * 3,
+        ...     )
+        >>> print(len(results))
+        3
+
+    Args:
+        backend: Backend to use ("auto", "niquests", "aiohttp", or "requests")
+        concurrency: Maximum number of concurrent requests
+        max_retries: Maximum retry attempts per request
+        rate_limit: Requests per second (None for no limit)
+        rate_limit_burst: Burst size for rate limiter
+        http2: Enable HTTP/2 (if supported by backend)
+        follow_redirects: Follow HTTP redirects
+        verify_ssl: Verify SSL certificates
+        timeout: Default timeout per request (seconds)
+        cookies: Initial session cookies
+        random_user_agent: Rotate user agents
+        random_proxy: Enable proxy rotation (requires proxy config)
+        debug: Enable debug logging
+        verbose: Enable verbose output
+        return_none_on_failure: Return None instead of raising on failure
+    """
+
     def __init__(
         self,
         backend: str = "auto",
@@ -137,22 +190,35 @@ class ParallelRequests:
                 ) from e
 
     async def __aenter__(self) -> "ParallelRequests":
+        """Enter async context manager and initialize backend session.
+
+        Returns:
+            Self for use in async with statement
+        """
         if self._backend:
             await self._backend.__aenter__()
         return self
 
     async def __aexit__(self, *args: Any) -> None:
+        """Exit async context manager and close backend session."""
         if self._backend:
             await self._backend.__aexit__(*args)
 
     async def close(self) -> None:
+        """Close backend session and cleanup resources."""
         if self._backend:
             await self._backend.close()
 
     def reset_cookies(self) -> None:
+        """Clear all session cookies."""
         self._cookies = {}
 
     def set_cookies(self, cookies: dict[str, str]) -> None:
+        """Add cookies to the session.
+
+        Args:
+            cookies: Dictionary of cookies to add (updates existing cookies)
+        """
         self._cookies.update(cookies)
 
     @staticmethod
@@ -454,7 +520,48 @@ def parallel_requests(
 ) -> Any:
     """Synchronous convenience function for parallel requests.
 
-    Uses asyncio.run() internally.
+    This is the easiest way to make parallel requests. Uses asyncio.run() internally.
+
+    Example:
+        >>> from parallel_requests import parallel_requests
+        >>> results = parallel_requests(
+        ...     urls=["https://api.github.com/repos/python/cpython"],
+        ...     concurrency=3,
+        ... )
+        >>> print(results[0]['name'])
+        'cpython'
+
+    Args:
+        urls: Single URL or list of URLs to request
+        backend: Backend to use ("auto", "niquests", "aiohttp", or "requests")
+        concurrency: Maximum number of concurrent requests
+        max_retries: Maximum retry attempts per request
+        rate_limit: Requests per second (None for no limit)
+        rate_limit_burst: Burst size for rate limiter
+        http2: Enable HTTP/2 (if supported by backend)
+        follow_redirects: Follow HTTP redirects
+        verify_ssl: Verify SSL certificates
+        timeout: Default timeout per request (seconds)
+        cookies: Initial session cookies
+        random_user_agent: Rotate user agents
+        random_proxy: Enable proxy rotation
+        debug: Enable debug logging
+        verbose: Enable verbose output
+        return_none_on_failure: Return None instead of raising on failure
+        method: HTTP method (GET, POST, etc.)
+        params: Query parameters
+        data: Request body data
+        json: JSON body (serialized automatically)
+        headers: Request headers
+        proxy: Proxy URL
+        return_type: How to parse the response (json, text, content, response, stream)
+        parse_func: Custom function to parse each response
+        keys: Keys for dict return (must match urls length)
+
+    Returns:
+        - Single URL: single result
+        - List of URLs: list of results
+        - List of URLs with keys: dict mapping keys to results
     """
 
     async def _run() -> Any:
@@ -521,7 +628,53 @@ async def parallel_requests_async(
     parse_func: Callable[[Any], Any] | None = None,
     keys: list[str] | None = None,
 ) -> Any:
-    """Async convenience function for parallel requests."""
+    """Async convenience function for parallel requests.
+
+    Example:
+        >>> import asyncio
+        >>> from parallel_requests import parallel_requests_async
+        >>> async def main():
+        ...     results = await parallel_requests_async(
+        ...         urls=["https://httpbin.org/get"] * 3,
+        ...         concurrency=5,
+        ...     )
+        ...     return results
+        >>> results = asyncio.run(main())
+        >>> print(len(results))
+        3
+
+    Args:
+        urls: Single URL or list of URLs to request
+        backend: Backend to use ("auto", "niquests", "aiohttp", or "requests")
+        concurrency: Maximum number of concurrent requests
+        max_retries: Maximum retry attempts per request
+        rate_limit: Requests per second (None for no limit)
+        rate_limit_burst: Burst size for rate limiter
+        http2: Enable HTTP/2 (if supported by backend)
+        follow_redirects: Follow HTTP redirects
+        verify_ssl: Verify SSL certificates
+        timeout: Default timeout per request (seconds)
+        cookies: Initial session cookies
+        random_user_agent: Rotate user agents
+        random_proxy: Enable proxy rotation
+        debug: Enable debug logging
+        verbose: Enable verbose output
+        return_none_on_failure: Return None instead of raising on failure
+        method: HTTP method (GET, POST, etc.)
+        params: Query parameters
+        data: Request body data
+        json: JSON body (serialized automatically)
+        headers: Request headers
+        proxy: Proxy URL
+        return_type: How to parse the response (json, text, content, response, stream)
+        parse_func: Custom function to parse each response
+        keys: Keys for dict return (must match urls length)
+
+    Returns:
+        - Single URL: single result
+        - List of URLs: list of results
+        - List of URLs with keys: dict mapping keys to results
+    """
     client = ParallelRequests(
         backend=backend,
         concurrency=concurrency,
