@@ -321,6 +321,5 @@ except ValidationError as e:
 
 ## See Also
 
-- [API Reference: Validators](../api/validation.md)
 - [Reference: Exceptions](exceptions.md)
 - [How-to: Debug Issues](../how-to-guides/debug-issues.md)

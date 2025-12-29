@@ -388,4 +388,4 @@ results = parallel_requests(
 
 - **[Make Parallel Requests](make-parallel-requests.md)** - Request configuration
 - **[Post JSON Data](post-json-data.md)** - Authentication examples
-- **[API Reference](../reference/client.md)** - Client documentation
+- **[API Reference](../reference/api/parallelrequests.md)** - Client documentation

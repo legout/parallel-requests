@@ -222,4 +222,4 @@ results = parallel_requests(
 
 - **[Limit Request Rate](limit-request-rate.md)** - Control request frequency
 - **[Handle Retries](handle-retries.md)** - Configure retry logic
-- **[API Reference](../reference/parallel_requests.md)** - Complete function documentation
+- **[API Reference](../reference/api/parallel_requests.md)** - Complete function documentation

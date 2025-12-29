@@ -1,0 +1,108 @@
+[32m2025-12-29 14:29:38[0m | [1mINFO    [0m | [36mTest log message[0m
+[32m2025-12-29 14:29:38[0m | [34m[1mDEBUG   [0m | [36mDebug message[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: requests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com/file.zip - Status: 200[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com - Status: 200[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com - Status: 200[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com - Status: 200[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com - Status: 200[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 14:57:49[0m | [1mINFO    [0m | [36mRequest completed: https://example.com/api - Status: 200[0m
+[32m2025-12-29 15:42:55[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:42:55[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get - Status: 200[0m
+[32m2025-12-29 15:42:55[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/uuid - Status: 200[0m
+[32m2025-12-29 15:42:55[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/headers - Status: 200[0m
+[32m2025-12-29 15:42:56[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/user-agent - Status: 200[0m
+[32m2025-12-29 15:42:56[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/ip - Status: 200[0m
+[32m2025-12-29 15:43:14[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:43:15[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:43:15[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:43:15[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:43:15[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:43:15[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/503 - Status: 503[0m
+[32m2025-12-29 15:43:16[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:43:16[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:43:16[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/200 - Status: 200[0m
+[32m2025-12-29 15:43:16[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/500 - Status: 500[0m
+[32m2025-12-29 15:43:16[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/200 - Status: 200[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/503 - Status: 503[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/500 - Status: 500[0m
+[32m2025-12-29 15:43:17[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:43:19[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get - Status: 200[0m
+[32m2025-12-29 15:43:19[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:25[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:25[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:26[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get - Status: 200[0m
+[32m2025-12-29 15:44:26[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?id=charlie - Status: 200[0m
+[32m2025-12-29 15:44:26[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/200 - Status: 200[0m
+[32m2025-12-29 15:44:26[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?id=alice - Status: 200[0m
+[32m2025-12-29 15:44:26[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/500 - Status: 500[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?id=bob - Status: 200[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/posts/1 - Status: 200[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/500 - Status: 500[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/200 - Status: 200[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/comments/1 - Status: 200[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/1 - Status: 200[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:27[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get - Status: 200[0m
+[32m2025-12-29 15:44:28[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:44:28[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/503 - Status: 503[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?valid=1 - Status: 200[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?valid=2 - Status: 200[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:29[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/post - Status: 200[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?valid=2 - Status: 200[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?valid=1 - Status: 200[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/1 - Status: 200[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/invalid - Status: 404[0m
+[32m2025-12-29 15:44:30[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/3 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/2 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mUsing backend: niquests[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/1 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://jsonplaceholder.typicode.com/users/2 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?retry=1 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/get?retry=2 - Status: 200[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/503 - Status: 503[0m
+[32m2025-12-29 15:44:31[0m | [1mINFO    [0m | [36mRequest completed: https://httpbin.org/status/404 - Status: 404[0m

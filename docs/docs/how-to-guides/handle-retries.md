@@ -362,4 +362,4 @@ results = parallel_requests(
 - **[Limit Request Rate](limit-request-rate.md)** - Control request frequency
 - **[Debug Issues](debug-issues.md)** - Enable debug logging
 - **[Handling Errors](../tutorials/handling-errors.md)** - Complete error handling guide
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

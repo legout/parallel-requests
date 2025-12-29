@@ -218,4 +218,4 @@ Example output:
 
 - **[Handle Retries](handle-retries.md)** - Automatic retry configuration
 - **[Debug Issues](debug-issues.md)** - Enable debug logging
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

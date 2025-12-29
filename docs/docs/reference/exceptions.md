@@ -255,6 +255,6 @@ async with ParallelRequests(return_none_on_failure=True) as client:
 
 ## See Also
 
-- [API Reference: Exceptions](../api/parallelrequests.md)
-- [How-to: Handle Errors](../how-to-guides/handling-errors.md)
+- [API Reference: ParallelRequests](api/parallelrequests.md)
+- [How-to: Handle Errors](../tutorials/handling-errors.md)
 - [How-to: Debug Issues](../how-to-guides/debug-issues.md)

@@ -183,4 +183,4 @@ Key concepts:
 ## Next Steps
 
 - Learn about **[Handling Errors](handling-errors.md)** for robust error handling
-- Explore **[How-to Guides](../how-to-guides/)** for practical examples
+- Explore **[How-to Guides](../how-to-guides/index.md)** for practical examples

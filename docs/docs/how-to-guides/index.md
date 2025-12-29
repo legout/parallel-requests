@@ -23,6 +23,6 @@ This section contains practical guides for solving common tasks with parallel-re
 
 ## Getting Help
 
-- **[Tutorials](../tutorials/)** - Start here for step-by-step learning
-- **[API Reference](../reference/)** - Complete API documentation
+- **[Tutorials](../tutorials/index.md)** - Start here for step-by-step learning
+- **[API Reference](../reference/index.md)** - Complete API documentation
 - **[GitHub Issues](https://github.com/volkerlorrmann/parallel-requests/issues)** - Report bugs or request features

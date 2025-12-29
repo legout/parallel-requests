@@ -297,6 +297,5 @@ except ProxyValidationError as e:
 
 ## See Also
 
-- [API Reference: ProxyManager](../api/proxy-rotation.md)
 - [How-to: Use Proxies](../how-to-guides/use-proxies.md)
 - [Reference: Exceptions](exceptions.md)

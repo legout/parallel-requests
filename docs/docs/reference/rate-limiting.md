@@ -220,6 +220,5 @@ async with limiter.acquire():
 
 ## See Also
 
-- [API Reference: RateLimitConfig](../api/rate-limiter.md)
 - [How-to: Limit Request Rate](../how-to-guides/limit-request-rate.md)
 - [Reference: Retry Strategy](retry-strategy.md)

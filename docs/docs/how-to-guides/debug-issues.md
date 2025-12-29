@@ -422,4 +422,4 @@ Use this checklist when debugging:
 
 - **[Handling Errors](../tutorials/handling-errors.md)** - Complete error handling guide
 - **[Handle Retries](handle-retries.md)** - Configure retry logic
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

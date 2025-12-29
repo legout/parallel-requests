@@ -396,4 +396,4 @@ except PartialFailureError as e:
 - **[Make Parallel Requests](make-parallel-requests.md)** - Basic request configuration
 - **[Handle Retries](handle-retries.md)** - Configure retry logic for POST requests
 - **[Debug Issues](debug-issues.md)** - Troubleshoot request problems
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

@@ -22,4 +22,4 @@ After completing these tutorials, you'll be able to:
 
 ## Next Steps
 
-After completing the tutorials, check out the **[How-to Guides](../how-to-guides/)** for practical solutions to common tasks, or dive into the **[Reference](../reference/)** section for complete API documentation.
+After completing the tutorials, check out the **[How-to Guides](../how-to-guides/index.md)** for practical solutions to common tasks, or dive into the **[Reference](../reference/index.md)** section for complete API documentation.

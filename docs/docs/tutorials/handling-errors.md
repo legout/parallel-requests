@@ -250,5 +250,5 @@ print(f"Got {len(valid_results)} valid results")
 
 ## Next Steps
 
-- Explore **[How-to Guides](../how-to-guides/)** for more practical examples
+- Explore **[How-to Guides](../how-to-guides/index.md)** for more practical examples
 - Check the **[API Reference](../reference/exceptions.md)** for complete exception documentation

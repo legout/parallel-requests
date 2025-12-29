@@ -247,5 +247,4 @@ class HttpxBackend(Backend):
 
 ## See Also
 
-- [API Reference: Backend](../api/backend.md)
 - [How-to: Select a Backend](../how-to-guides/select-backend.md)

@@ -359,4 +359,4 @@ for backend in ["niquests", "aiohttp", "requests"]:
 
 - **[Make Parallel Requests](make-parallel-requests.md)** - Request configuration
 - **[Stream Large Files](stream-large-files.md)** - Backend streaming differences
-- **[API Reference](../reference/backends.md)** - Backend documentation
+- **[API Reference](../reference/backend.md)** - Backend documentation

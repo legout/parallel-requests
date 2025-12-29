@@ -44,6 +44,6 @@ Consult explanations when you want to understand:
 
 ## Related Documentation
 
-- **[Tutorials](../tutorials/)** - Start here for hands-on learning
-- **[How-to Guides](../how-to-guides/)** - Practical solutions to common problems
-- **[Reference](../reference/)** - Complete API documentation
+- **[Tutorials](../tutorials/index.md)** - Start here for hands-on learning
+- **[How-to Guides](../how-to-guides/index.md)** - Practical solutions to common problems
+- **[Reference](../reference/index.md)** - Complete API documentation

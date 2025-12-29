@@ -293,5 +293,4 @@ async with client:
 
 ## See Also
 
-- [API Reference: HeaderManager](../api/header-management.md)
 - [How-to: Handle Cookies](../how-to-guides/handle-cookies.md)

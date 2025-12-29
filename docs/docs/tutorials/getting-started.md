@@ -173,5 +173,5 @@ results1, results2 = asyncio.run(main())
 ## Next Steps
 
 - Learn about **[Parallel Fundamentals](parallel-fundamentals.md)** to understand concurrency and async patterns
-- Explore **[How-to Guides](../how-to-guides/)** for practical solutions
-- Check the **[API Reference](../reference/)** for complete documentation
+- Explore **[How-to Guides](../how-to-guides/index.md)** for practical solutions
+- Check the **[API Reference](../reference/index.md)** for complete documentation

@@ -324,4 +324,4 @@ print(f"Successful requests: {len(successful)}/{len(results)}")
 
 - **[Debug Issues](debug-issues.md)** - Troubleshoot proxy problems
 - **[Handle Retries](handle-retries.md)** - Configure retry logic for unreliable proxies
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

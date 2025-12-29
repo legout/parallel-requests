@@ -344,4 +344,4 @@ results = parallel_requests(
 
 - **[Make Parallel Requests](make-parallel-requests.md)** - Basic request configuration
 - **[Limit Request Rate](limit-request-rate.md)** - Control download rate
-- **[API Reference](../reference/config.md)** - Configuration options
+- **[API Reference](../reference/configuration.md)** - Configuration options

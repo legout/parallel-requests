@@ -71,10 +71,10 @@ results = asyncio.run(main())
 
 ## Documentation
 
-- **[Tutorials](tutorials/)** - Step-by-step learning guides for new users
-- **[How-To Guides](how-to-guides/)** - Practical guides for specific tasks
-- **[Reference](reference/)** - Complete API documentation
-- **[Explanations](explanation/)** - In-depth conceptual understanding
+- **[Tutorials](tutorials/index.md)** - Step-by-step learning guides for new users
+- **[How-To Guides](how-to-guides/index.md)** - Practical guides for specific tasks
+- **[Reference](reference/index.md)** - Complete API documentation
+- **[Explanations](explanation/index.md)** - In-depth conceptual understanding
 
 ## Examples
 

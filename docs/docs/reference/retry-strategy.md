@@ -248,6 +248,5 @@ async with client:
 
 ## See Also
 
-- [API Reference: RetryStrategy](../api/retry-strategy.md)
 - [Reference: Exceptions](exceptions.md)
-- [How-to: Handle Errors](../how-to-guides/handling-errors.md)
+- [How-to: Handle Errors](../tutorials/handling-errors.md)

@@ -63,7 +63,6 @@ nav:
     - Select Backend: how-to-guides/select-backend.md
     - Debug Issues: how-to-guides/debug-issues.md
     - Handle Cookies: how-to-guides/handle-cookies.md
-    - Custom Parsing: how-to-guides/custom-parsing.md
   - Reference:
     - reference/index.md
     - API:

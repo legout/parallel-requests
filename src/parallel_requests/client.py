@@ -528,7 +528,7 @@ def parallel_requests(
         ...     urls=["https://api.github.com/repos/python/cpython"],
         ...     concurrency=3,
         ... )
-        >>> print(results[0]['name'])
+        >>> print(results[0]["name"])
         'cpython'
 
     Args:
