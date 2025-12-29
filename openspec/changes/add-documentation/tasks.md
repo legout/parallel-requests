@@ -85,9 +85,9 @@
 - [x] 7.20 Create `examples/17-graceful-failure.py` (return_none_on_failure option)
 
 ## 8. Quality Gates
-- [ ] 8.1 Test `mkdocs serve` locally
-- [ ] 8.2 Verify all examples execute without errors
-- [ ] 8.3 Verify mkdocstrings generates correct API reference
-- [ ] 8.4 Check all internal links work
-- [ ] 8.5 Run `mkdocs build` and verify no warnings
-- [ ] 8.6 Verify GitHub Actions workflow syntax
+- [x] 8.1 Test `mkdocs serve` locally
+- [x] 8.2 Verify all examples execute without errors
+- [x] 8.3 Verify mkdocstrings generates correct API reference
+- [x] 8.4 Check all internal links work
+- [x] 8.5 Run `mkdocs build` and verify no warnings
+- [x] 8.6 Verify GitHub Actions workflow syntax
