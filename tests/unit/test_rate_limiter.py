@@ -78,8 +78,8 @@ async def test_rate_and_concurrency_combined() -> None:
     request_times: list[float] = []
 
     async def worker() -> None:
-        await limiter.acquire()
-        request_times.append(time.monotonic())
+        async with limiter.acquire():
+            request_times.append(time.monotonic())
 
     tasks = [worker() for _ in range(8)]
     await asyncio.gather(*tasks)
@@ -118,11 +118,11 @@ async def test_async_rate_limiter_acquire() -> None:
     config = RateLimitConfig(requests_per_second=10, burst=5, max_concurrency=10)
     limiter = AsyncRateLimiter(config)
 
-    await limiter.acquire()
-    assert limiter.available() == 4
+    async with limiter.acquire():
+        assert limiter.available() == 4
 
-    await limiter.acquire()
-    assert limiter.available() == 3
+    async with limiter.acquire():
+        assert limiter.available() == 3
 
 
 @pytest.mark.asyncio

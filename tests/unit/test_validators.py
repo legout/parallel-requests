@@ -19,7 +19,7 @@ def test_valid_url_with_query_params() -> None:
     assert result is True
 
 
-def test_valid_http_url() -> None:
+def test_valid_http_scheme() -> None:
     result = validate_url("http://example.com")
     assert result is True
 

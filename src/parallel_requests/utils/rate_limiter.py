@@ -1,6 +1,8 @@
 import asyncio
 import time
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
+from typing import AsyncIterator
 
 
 @dataclass
@@ -43,9 +45,11 @@ class AsyncRateLimiter:
         self._bucket = TokenBucket(config.requests_per_second, config.burst)
         self._semaphore = asyncio.Semaphore(config.max_concurrency)
 
-    async def acquire(self) -> None:
+    @asynccontextmanager
+    async def acquire(self) -> AsyncIterator[None]:
         async with self._semaphore:
             await self._bucket.acquire()
+            yield
 
     def available(self) -> int:
         return self._bucket.available()
