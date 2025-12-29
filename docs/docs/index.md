@@ -1,0 +1,104 @@
+# Parallel Requests
+
+A high-performance Python library for executing parallel HTTP requests with built-in retry logic, proxy rotation, rate limiting, and support for multiple HTTP backends.
+
+## Features
+
+- **Parallel Execution**: Execute multiple HTTP requests concurrently with automatic async/sync handling
+- **Multiple Backends**: Support for niquests, aiohttp, and requests with automatic backend detection
+- **Retry Logic**: Exponential backoff with jitter for resilient request handling
+- **Proxy Rotation**: Automatic proxy management with support for authenticated proxies
+- **Rate Limiting**: Token bucket algorithm for precise request rate control
+- **User-Agent Rotation**: Built-in user agent string rotation
+- **Cookie Management**: Session-based cookie handling with set/reset methods
+- **Flexible Response Parsing**: Custom parse functions, keyed responses, and graceful failure handling
+- **HTTP/2 Support**: Full HTTP/2 support when using the niquests backend
+- **Streaming**: Efficient streaming of large responses
+
+## Installation
+
+```bash
+pip install parallel-requests
+
+# Install with all backend support
+pip install parallel-requests[all]
+
+# Install with specific backend
+pip install parallel-requests[niquests]  # For HTTP/2 support
+pip install parallel-requests[aiohttp]
+pip install parallel-requests[requests]
+```
+
+## Quick Start
+
+```python
+from parallel_requests import parallel_requests
+
+# Make parallel requests
+results = parallel_requests(
+    urls=[
+        "https://api.github.com/repos/python/cpython",
+        "https://api.github.com/repos/python/cpython/issues",
+        "https://api.github.com/repos/python/cpython/pulls",
+    ],
+    concurrency=3,
+)
+
+for result in results:
+    print(result.json())
+```
+
+## Async Usage
+
+```python
+import asyncio
+from parallel_requests import parallel_requests_async
+
+async def main():
+    results = await parallel_requests_async(
+        urls=[
+            "https://httpbin.org/delay/1",
+            "https://httpbin.org/delay/2",
+            "https://httpbin.org/delay/3",
+        ],
+        concurrency=5,
+        timeout=10,
+    )
+    return results
+
+results = asyncio.run(main())
+```
+
+## Documentation
+
+- **[Tutorials](tutorials/)** - Step-by-step learning guides for new users
+- **[How-To Guides](how-to-guides/)** - Practical guides for specific tasks
+- **[Reference](reference/)** - Complete API documentation
+- **[Explanations](explanation/)** - In-depth conceptual understanding
+
+## Examples
+
+Visit the [examples](https://github.com/volkerlorrmann/parallel-requests/tree/main/examples) folder for executable code samples covering all library features.
+
+## Backend Selection
+
+The library automatically detects and uses the best available backend in this priority order:
+
+1. **niquests** - Recommended (HTTP/2 support, streaming, async native)
+2. **aiohttp** - Streaming support, async native
+3. **requests** - Sync-first, streaming via thread wrapper
+
+To explicitly select a backend:
+
+```python
+from parallel_requests import parallel_requests
+
+results = parallel_requests(
+    urls=["https://httpbin.org/get"],
+    backend="niquests",  # Explicit backend selection
+)
+```
+
+## License
+
+MIT License - see [LICENSE](https://github.com/volkerlorrmann/parallel-requests/blob/main/LICENSE) for details.

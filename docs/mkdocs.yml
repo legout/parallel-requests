@@ -1,0 +1,111 @@
+site_name: Parallel Requests
+site_url: https://volkerlorrmann.github.io/parallel-requests/
+site_description: Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting
+site_author: Volker Lorrmann
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - toc.integrate
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_members_full_path: false
+            show_signature_annotations: true
+            members_order: source
+            separate_signature: true
+
+nav:
+  - Home:
+    - index.md
+  - Tutorials:
+    - tutorials/index.md
+    - Getting Started: tutorials/getting-started.md
+    - Parallel Fundamentals: tutorials/parallel-fundamentals.md
+    - Handling Errors: tutorials/handling-errors.md
+  - How-To Guides:
+    - how-to-guides/index.md
+    - Make Parallel Requests: how-to-guides/make-parallel-requests.md
+    - Limit Request Rate: how-to-guides/limit-request-rate.md
+    - Use Proxies: how-to-guides/use-proxies.md
+    - Handle Retries: how-to-guides/handle-retries.md
+    - Stream Large Files: how-to-guides/stream-large-files.md
+    - POST JSON Data: how-to-guides/post-json-data.md
+    - Select Backend: how-to-guides/select-backend.md
+    - Debug Issues: how-to-guides/debug-issues.md
+    - Handle Cookies: how-to-guides/handle-cookies.md
+    - Custom Parsing: how-to-guides/custom-parsing.md
+  - Reference:
+    - reference/index.md
+    - API:
+      - reference/api/parallelrequests.md
+      - reference/api/parallel_requests.md
+      - reference/api/parallel_requests_async.md
+      - reference/api/returntype.md
+      - reference/api/globalconfig.md
+    - Return Types: reference/return-types.md
+    - Configuration: reference/configuration.md
+    - Exceptions: reference/exceptions.md
+    - Backend: reference/backend.md
+    - Rate Limiting: reference/rate-limiting.md
+    - Retry Strategy: reference/retry-strategy.md
+    - Proxy Rotation: reference/proxy-rotation.md
+    - Header Management: reference/header-management.md
+    - Validation: reference/validation.md
+  - Explanations:
+    - explanation/index.md
+    - Architecture: explanation/architecture.md
+    - Backends: explanation/backends.md
+    - Rate Limiting: explanation/rate-limiting.md
+    - Retry Strategy: explanation/retry-strategy.md
+    - Proxy Rotation: explanation/proxy-rotation.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+extra:
+  version:
+    provider: mike
