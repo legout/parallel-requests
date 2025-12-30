@@ -1,6 +1,6 @@
 # Select Backend
 
-Learn how to choose and configure HTTP backends (niquests, aiohttp, requests).
+Learn how to choose and configure HTTP backends (niquests, httpx, aiohttp, requests).
 
 ## Backend Auto-Detection
 
@@ -18,8 +18,9 @@ results = parallel_requests(
 
 **Detection Order:**
 1. **niquests** - HTTP/2 support, streaming, async native
-2. **aiohttp** - Streaming support, async native
-3. **requests** - Sync-first, streaming via thread wrapper
+2. **httpx** - HTTP/2 support (with h2 extra), modern API, async native
+3. **aiohttp** - Streaming support, async native
+4. **requests** - Sync-first, streaming via thread wrapper
 
 ## Explicit Backend Selection
 
@@ -32,6 +33,12 @@ from parallel_requests import parallel_requests
 results = parallel_requests(
     urls=["https://httpbin.org/get"],
     backend="niquests",
+)
+
+# Use httpx (modern async API with HTTP/2 support)
+results = parallel_requests(
+    urls=["https://httpbin.org/get"],
+    backend="httpx",
 )
 
 # Use aiohttp
@@ -49,16 +56,18 @@ results = parallel_requests(
 
 ## Backend Feature Comparison
 
-| Feature              | niquests | aiohttp | requests |
-|----------------------|---------|---------|----------|
-| HTTP/2 Support       | ✅ Yes  | ❌ No   | ❌ No    |
-| Streaming            | ✅ Yes  | ✅ Yes  | ✅ Yes   |
-| Async Native         | ✅ Yes  | ✅ Yes  | ❌ No    |
-| Sync Native          | ✅ Yes  | ❌ No   | ✅ Yes   |
-| Connection Pooling   | ✅ Yes  | ✅ Yes  | ✅ Yes   |
-| Cookies              | ✅ Yes  | ✅ Yes  | ✅ Yes   |
-| Proxies              | ✅ Yes  | ✅ Yes  | ✅ Yes   |
-| Session Reuse        | ✅ Yes  | ✅ Yes  | ✅ Yes   |
+| Feature              | niquests | httpx | aiohttp | requests |
+|----------------------|----------|-------|---------|----------|
+| HTTP/2 Support       | ✅ Yes  | ✅ Yes* | ❌ No   | ❌ No    |
+| Streaming            | ✅ Yes  | ✅ Yes | ✅ Yes  | ✅ Yes   |
+| Async Native         | ✅ Yes  | ✅ Yes | ✅ Yes  | ❌ No    |
+| Sync Native          | ✅ Yes  | ❌ No  | ❌ No   | ✅ Yes   |
+| Connection Pooling   | ✅ Yes  | ✅ Yes | ✅ Yes  | ✅ Yes   |
+| Cookies              | ✅ Yes  | ✅ Yes | ✅ Yes  | ✅ Yes   |
+| Proxies              | ✅ Yes  | ✅ Yes | ✅ Yes  | ✅ Yes   |
+| Session Reuse        | ✅ Yes  | ✅ Yes | ✅ Yes  | ✅ Yes   |
+
+*HTTP/2 requires `pip install httpx[http2]` (installs the `h2` extra)
 
 ## When to Use Each Backend
 
@@ -77,6 +86,28 @@ results = parallel_requests(
     backend="niquests",
     concurrency=50,
 )
+```
+
+### Use httpx When:
+
+- You prefer httpx's modern API
+- You need HTTP/2 with aio-like async interface
+- You're already using httpx in your project
+
+```python
+import asyncio
+from parallel_requests import parallel_requests_async
+
+async def fetch_with_httpx():
+    results = await parallel_requests_async(
+        urls=["https://api.example.com/data"] * 100,
+        backend="httpx",
+        concurrency=50,
+    )
+    return results
+
+# HTTP/2 requires httpx[http2] extra
+results = asyncio.run(fetch_with_httpx())
 ```
 
 ### Use aiohttp When:
@@ -118,7 +149,7 @@ results = parallel_requests(
 
 ## HTTP/2 Support Example
 
-niquests supports HTTP/2 for better performance:
+niquests and httpx support HTTP/2 for better performance:
 
 ```python
 from parallel_requests import parallel_requests
@@ -128,6 +159,12 @@ results = parallel_requests(
     urls=["https://httpbin.org/get"] * 10,
     backend="niquests",
     debug=True,
+)
+
+# HTTP/2 with httpx (requires httpx[http2] extra)
+results = parallel_requests(
+    urls=["https://httpbin.org/get"] * 10,
+    backend="httpx",
 )
 
 # Other backends use HTTP/1.1
@@ -152,7 +189,7 @@ from parallel_requests import parallel_requests
 
 urls = ["https://httpbin.org/get"] * 100
 
-for backend in ["niquests", "aiohttp", "requests"]:
+for backend in ["niquests", "httpx", "aiohttp", "requests"]:
     start = time.time()
     results = parallel_requests(
         urls=urls,
@@ -173,6 +210,9 @@ pip install parallel-requests[all]
 
 # niquests only (HTTP/2 support)
 pip install parallel-requests[niquests]
+
+# httpx only (HTTP/2 support with h2 extra)
+pip install parallel-requests[httpx]
 
 # aiohttp only
 pip install parallel-requests[aiohttp]
@@ -203,6 +243,13 @@ from parallel_requests import parallel_requests
 results = parallel_requests(
     urls=["https://httpbin.org/get"],
     backend="niquests",
+    # Backend can expose additional options
+)
+
+# httpx-specific options
+results = parallel_requests(
+    urls=["https://httpbin.org/get"],
+    backend="httpx",
     # Backend can expose additional options
 )
 
@@ -291,7 +338,7 @@ from parallel_requests import parallel_requests
 results = parallel_requests(
     urls=["https://httpbin.org/delay/5"],
     timeout=3,  # 3 second timeout
-    backend="niquests",  # or aiohttp, requests
+    backend="niquests",  # or httpx, aiohttp, requests
 )
 ```
 
@@ -314,7 +361,7 @@ results = parallel_requests(
 
 ```python
 # During development, test with multiple backends
-for backend in ["niquests", "aiohttp", "requests"]:
+for backend in ["niquests", "httpx", "aiohttp", "requests"]:
     try:
         results = parallel_requests(
             urls=test_urls,
@@ -332,14 +379,14 @@ for backend in ["niquests", "aiohttp", "requests"]:
    backend="auto"  # Default
    ```
 
-2. **Prefer niquests**: For HTTP/2 support and best performance
+2. **Prefer niquests or httpx**: For HTTP/2 support and modern async API
    ```python
-   backend="niquests"
+   backend="niquests"  # or "httpx"
    ```
 
 3. **Test All Backends**: Verify compatibility during development
    ```python
-   for backend in ["niquests", "aiohttp", "requests"]:
+   for backend in ["niquests", "httpx", "aiohttp", "requests"]:
        # Test code
    ```
 

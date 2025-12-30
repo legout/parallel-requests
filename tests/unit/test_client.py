@@ -186,6 +186,60 @@ class TestParallelRequestsInit:
 
             assert "Failed to load backend 'nonexistent'" in str(exc_info.value)
 
+    @pytest.mark.asyncio
+    async def test_explicit_httpx_backend_selection(self) -> None:
+        from parallel_requests.backends.base import Backend
+
+        class MockHttpxBackend(Backend):
+            def __init__(self, http2_enabled: bool = True):
+                super().__init__(http2_enabled)
+
+            @property
+            def name(self) -> str:
+                return "httpx"
+
+            async def __aenter__(self):
+                return self
+
+            async def __aexit__(self, *args):
+                pass
+
+            async def close(self):
+                pass
+
+            async def request(self, config):
+                pass
+
+            def supports_http2(self) -> bool:
+                return True
+
+        mock_backend = MockHttpxBackend()
+
+        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+            mock_module = MagicMock()
+            mock_module.HttpxBackend = MockHttpxBackend
+            mock_import.return_value = mock_module
+
+            client = ParallelRequests(backend="httpx")
+            assert client._backend.name == "httpx"
+
+    @pytest.mark.asyncio
+    async def test_auto_backend_selection_with_httpx_priority(self) -> None:
+
+        with patch("parallel_requests.client.importlib.util.find_spec") as mock_find:
+            with patch("parallel_requests.client.importlib.import_module") as mock_import:
+                mock_backend = AsyncMock()
+                mock_backend.__aenter__ = AsyncMock(return_value=mock_backend)
+                mock_backend.__aexit__ = AsyncMock(return_value=None)
+
+                mock_module = MagicMock()
+                mock_module.NiquestsBackend = MagicMock(return_value=mock_backend)
+                mock_import.return_value = mock_module
+                mock_find.side_effect = lambda x: None if x == "niquests" else MagicMock()
+
+                client = ParallelRequests()
+                assert client._backend is not None
+
 
 class TestRequestOptions:
     def test_default_values(self) -> None:

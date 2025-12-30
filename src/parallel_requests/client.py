@@ -153,6 +153,7 @@ class ParallelRequests:
         if self.backend_name == "auto":
             backend_candidates = [
                 ("niquests", "niquests", "NiquestsBackend"),
+                ("httpx", "httpx", "HttpxBackend"),
                 ("aiohttp", "aiohttp", "AiohttpBackend"),
                 ("requests", "requests", "RequestsBackend"),
             ]
@@ -179,7 +180,7 @@ class ParallelRequests:
                     continue
 
             raise ConfigurationError(
-                "No suitable backend found. Please install one of: niquests, aiohttp, or requests"
+                "No suitable backend found. Please install one of: niquests, httpx, aiohttp, or requests"
             )
         else:
             try:

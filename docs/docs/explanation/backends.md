@@ -1,24 +1,28 @@
 # Backends
 
-The parallel-requests library supports three HTTP backends, each with different capabilities and trade-offs.
+The parallel-requests library supports four HTTP backends, each with different capabilities and trade-offs.
 
 ## Overview
 
 | Backend | HTTP/2 | Streaming | Async Native | Notes |
 |---------|--------|----------|--------------|-------|
 | **niquests** | ✓ | ✓ | ✓ | Recommended default |
+| **httpx** | ✓* | ✓ | ✓ | Modern API, httpx ecosystem |
 | **aiohttp** | ✗ | ✓ | ✓ | Mature, widely used |
 | **requests** | ✗ | ✓ | ✗ | Familiar API, wrapped |
+
+*HTTP/2 requires httpx[http2] extra (installs h2 package)
 
 ## Auto-Detection Order
 
 When `backend="auto"` (default), the library checks backends in this order:
 
 1. **niquests** - HTTP/2 support, streaming, async native
-2. **aiohttp** - Streaming support, async native
-3. **requests** - Streaming via thread wrapper, sync-first
+2. **httpx** - HTTP/2 support (with h2 extra), modern async API
+3. **aiohttp** - Streaming support, async native
+4. **requests** - Streaming via thread wrapper, sync-first
 
-The first available backend is used. This means if you have both niquests and aiohttp installed, niquests will be selected.
+The first available backend is used. This means if you have both niquests and httpx installed, niquests will be selected.
 
 ## Niquests Backend
 
@@ -59,6 +63,50 @@ class NiquestsBackend(Backend):
 - **HTTP/2 Multiplexing**: Multiple requests over single connection
 - **Low Overhead**: Async native, minimal thread usage
 - **Efficient Streaming**: Memory-efficient for large responses
+
+## Httpx Backend
+
+### Capabilities
+
+- **HTTP/2 Support**: Native HTTP/2 when `h2` extra is installed
+- **Streaming**: Full streaming support for large files
+- **Async Native**: Built on async I/O with httpx.AsyncClient
+- **Modern API**: Clean, well-designed interface
+- **Connection Reuse**: Efficient connection pooling
+
+### When to Use
+
+- **Prefer httpx** for new projects or if you already use httpx
+- **HTTP/2 APIs** when you want the httpx ecosystem
+- **Modern async applications** that value clean APIs
+- **Large file downloads** with streaming
+
+### Implementation Details
+
+```python
+class HttpxBackend(Backend):
+    async def __init__(self, http2_enabled: bool = True):
+        self._h2_available = self._check_h2_available()
+        http2 = http2_enabled and self._h2_available
+        self._client = httpx.AsyncClient(http2=http2)
+
+    async def request(self, config: RequestConfig) -> NormalizedResponse:
+        if config.stream:
+            async with self._client.stream(**kwargs) as response:
+                content = await response.aread()
+        else:
+            response = await self._client.request(**kwargs)
+            content = response.content
+```
+
+**Note**: HTTP/2 requires the `h2` package (`pip install httpx[http2]`). Without it, the backend falls back to HTTP/1.1.
+
+### Performance Characteristics
+
+- **HTTP/2 Multiplexing**: When h2 is available
+- **Low Overhead**: Modern async implementation
+- **Efficient Streaming**: Memory-efficient for large responses
+- **Modern Design**: Clean API, well-documented
 
 ## Aiohttp Backend
 
@@ -141,17 +189,17 @@ class RequestsBackend(Backend):
 
 ## Feature Comparison Table
 
-| Feature | niquests | aiohttp | requests |
-|---------|----------|---------|----------|
-| **HTTP/2** | ✓ (native) | ✗ (extensions only) | ✗ |
-| **HTTP/1.1** | ✓ | ✓ | ✓ |
-| **Streaming** | ✓ | ✓ | ✓ (thread wrapper) |
-| **Async Native** | ✓ | ✓ | ✗ (thread wrapper) |
-| **Connection Pooling** | ✓ | ✓ | ✓ |
-| **Session Cookies** | ✓ | ✓ | ✓ |
-| **Thread Safe** | ✓ | ✓ | ✓ |
-| **Maturity** | Medium | High | Very High |
-| **Installation Size** | ~2MB | ~1MB | ~0.5MB |
+| Feature | niquests | httpx | aiohttp | requests |
+|---------|----------|-------|---------|----------|
+| **HTTP/2** | ✓ (native) | ✓ (with h2) | ✗ (extensions only) | ✗ |
+| **HTTP/1.1** | ✓ | ✓ | ✓ | ✓ |
+| **Streaming** | ✓ | ✓ | ✓ | ✓ (thread wrapper) |
+| **Async Native** | ✓ | ✓ | ✓ | ✗ (thread wrapper) |
+| **Connection Pooling** | ✓ | ✓ | ✓ | ✓ |
+| **Session Cookies** | ✓ | ✓ | ✓ | ✓ |
+| **Thread Safe** | ✓ | ✓ | ✓ | ✓ |
+| **Maturity** | Medium | High | High | Very High |
+| **Installation Size** | ~2MB | ~1MB | ~1MB | ~0.5MB |
 
 ## Performance Considerations
 
@@ -193,6 +241,12 @@ CPU usage generally follows async vs sync pattern:
 - ✓ You're starting a new project
 - ✓ You care about connection efficiency
 
+### Choose httpx if:
+- ✓ You prefer httpx's modern API
+- ✓ You need HTTP/2 with aio-like async interface
+- ✓ Your project uses httpx
+- ✓ You value clean, well-documented APIs
+
 ### Choose aiohttp if:
 - ✓ You're already using aiohttp
 - ✓ You need aiohttp-specific features
@@ -208,13 +262,18 @@ CPU usage generally follows async vs sync pattern:
 
 ## Example: Backend-Specific Behavior
 
-### HTTP/2 Multiplexing (niquests only)
+### HTTP/2 Multiplexing (niquests/httpx only)
 
 With HTTP/2, multiple requests share a single connection:
 
 ```python
 # With niquests (HTTP/2 enabled)
 client = ParallelRequests(backend="niquests", http2=True)
+# All 100 requests share 1-2 connections due to multiplexing
+results = await client.request(urls=[url] * 100)
+
+# With httpx (HTTP/2 enabled, requires h2)
+client = ParallelRequests(backend="httpx", http2=True)
 # All 100 requests share 1-2 connections due to multiplexing
 results = await client.request(urls=[url] * 100)
 ```
@@ -240,6 +299,9 @@ The `concurrency` parameter directly limits the number of concurrent connections
 # Install only niquests
 pip install parallel-requests[niquests]
 
+# Install only httpx (HTTP/2 requires httpx[http2])
+pip install parallel-requests[httpx]
+
 # Install only aiohttp
 pip install parallel-requests[aiohttp]
 
@@ -253,6 +315,7 @@ pip install parallel-requests[all]
 ### Dependency Sizes
 
 - **niquests**: ~2MB (includes urllib3 dependencies)
+- **httpx**: ~1MB (includes httpcore, h2 optional)
 - **aiohttp**: ~1MB (includes yarl, multidict)
 - **requests**: ~0.5MB (includes urllib3)
 
@@ -276,6 +339,10 @@ Each backend catches its library-specific exceptions and wraps them in `BackendE
 ```python
 # niquests
 except niquests.RequestException as e:
+    raise BackendError(f"Request failed: {e}", backend_name=self.name)
+
+# httpx
+except httpx.HTTPError as e:
     raise BackendError(f"Request failed: {e}", backend_name=self.name)
 
 # aiohttp
@@ -308,10 +375,29 @@ print(response.url)            # Final URL (after redirects)
 
 **Problem**: You set `http2=True` but requests are still HTTP/1.1
 
-**Solution**: Ensure you're using the niquests backend:
+**Solution**: Ensure you're using niquests or httpx backend:
+
 ```python
+# niquests
 client = ParallelRequests(backend="niquests", http2=True)
+
+# httpx (requires httpx[http2] extra)
+client = ParallelRequests(backend="httpx", http2=True)
 ```
+
+### HTTP/2 with httpx
+
+**Problem**: You want HTTP/2 with httpx but it's not working
+
+**Solution**: Install the h2 extra:
+
+```bash
+pip install httpx[http2]
+# or
+pip install parallel-requests[httpx]
+```
+
+The backend will automatically detect if h2 is available and enable HTTP/2.
 
 ### Backend Not Found
 

@@ -7,12 +7,14 @@ from .base import Backend, NormalizedResponse, RequestConfig
 
 if TYPE_CHECKING:
     from .aiohttp import AiohttpBackend
+    from .httpx import HttpxBackend
     from .niquests import NiquestsBackend
     from .requests import RequestsBackend
 
 
 _LAZY_BACKENDS: dict[str, tuple[str, str, str]] = {
     "NiquestsBackend": ("niquests", "NiquestsBackend", "niquests"),
+    "HttpxBackend": ("httpx", "HttpxBackend", "httpx"),
     "AiohttpBackend": ("aiohttp", "AiohttpBackend", "aiohttp"),
     "RequestsBackend": ("requests", "RequestsBackend", "requests"),
 }
@@ -22,6 +24,7 @@ __all__ = [
     "RequestConfig",
     "NormalizedResponse",
     "NiquestsBackend",
+    "HttpxBackend",
     "AiohttpBackend",
     "RequestsBackend",
 ]
@@ -36,7 +39,9 @@ def __getattr__(name: str) -> object:
     try:
         module = importlib.import_module(f"{__name__}.{backend_module}")
     except ModuleNotFoundError as e:
-        if e.name == dependency_module or e.name.startswith(f"{dependency_module}."):
+        if e.name is not None and (
+            e.name == dependency_module or e.name.startswith(f"{dependency_module}.")
+        ):
             raise ImportError(
                 f"{backend_class} requires the optional dependency '{dependency_module}'. "
                 f"Install it with 'parallel-requests[{dependency_module}]' or 'pip install {dependency_module}'."
