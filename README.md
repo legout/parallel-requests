@@ -3,8 +3,8 @@
 [![PyPI Version](https://img.shields.io/pypi/v/parallel-requests)](https://pypi.org/project/parallel-requests/)
 [![Python Version](https://img.shields.io/pypi/pyversions/parallel-requests)](https://pypi.org/project/parallel-requests/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Test Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/volkerlorrmann/parallel-requests)
-[![Tests](https://img.shields.io/badge/tests-140%2B-brightgreen)](https://github.com/volkerlorrmann/parallel-requests)
+[![Test Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/legout/parallel-requests)
+[![Tests](https://img.shields.io/badge/tests-140%2B-brightgreen)](https://github.com/legout/parallel-requests)
 
 Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting.
 
@@ -91,14 +91,14 @@ async def main():
 
 ## Documentation
 
-- **[Full Documentation](https://volkerlorrmann.github.io/parallel-requests/)** - Complete user guide
+- **[Full Documentation](https://legout.github.io/parallel-requests/)** - Complete user guide
 - **[API Reference](docs/reference/api/)** - Detailed API documentation
 - **[How-To Guides](docs/how-to-guides/)** - Practical guides for specific tasks
 - **[Tutorials](docs/tutorials/)** - Step-by-step learning guides
 
 ## Examples
 
-Visit the [examples](https://github.com/volkerlorrmann/parallel-requests/tree/main/examples) folder for 17 executable code samples covering all library features, including:
+Visit the [examples](https://github.com/legout/parallel-requests/tree/main/examples) folder for 17 executable code samples covering all library features, including:
 
 - Basic requests and concurrency tuning
 - Rate limiting and retry configuration
@@ -129,4 +129,4 @@ results = parallel_requests(
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/volkerlorrmann/parallel-requests/blob/main/LICENSE) for details.
+MIT License - see [LICENSE](https://github.com/legout/parallel-requests/blob/main/LICENSE) for details.
