@@ -1,6 +1,7 @@
 import asyncio
 import contextlib
 import importlib
+import importlib.util
 from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from enum import Enum
@@ -150,27 +151,31 @@ class ParallelRequests:
 
     def _select_backend(self) -> None:
         if self.backend_name == "auto":
-            backend_classes = [
-                ("niquests", "NiquestsBackend"),
-                ("aiohttp", "AiohttpBackend"),
-                ("requests", "RequestsBackend"),
+            backend_candidates = [
+                ("niquests", "niquests", "NiquestsBackend"),
+                ("aiohttp", "aiohttp", "AiohttpBackend"),
+                ("requests", "requests", "RequestsBackend"),
             ]
 
             unavailable: list[str] = []
-            for backend_module, backend_class_name in backend_classes:
+            for backend_name, dependency_module, backend_class_name in backend_candidates:
+                if importlib.util.find_spec(dependency_module) is None:
+                    unavailable.append(backend_name)
+                    continue
+
                 try:
-                    module = importlib.import_module(f"parallel_requests.backends.{backend_module}")
+                    module = importlib.import_module(f"parallel_requests.backends.{backend_name}")
                     backend_cls = getattr(module, backend_class_name)
                     self._backend = backend_cls(http2_enabled=self._http2)
                     if unavailable:
                         logger.info(
-                            f"Using backend: {backend_module} ({', '.join(unavailable)} unavailable)"
+                            f"Using backend: {backend_name} ({', '.join(unavailable)} unavailable)"
                         )
                     else:
-                        logger.info(f"Using backend: {backend_module}")
+                        logger.info(f"Using backend: {backend_name}")
                     return
                 except ImportError:
-                    unavailable.append(backend_module)
+                    unavailable.append(backend_name)
                     continue
 
             raise ConfigurationError(
