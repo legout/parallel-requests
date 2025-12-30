@@ -107,6 +107,37 @@ Visit the [examples](https://github.com/legout/parallel-requests/tree/main/examp
 - Error handling and backend selection
 - Cookie management and keyed responses
 
+## Development
+
+### Versioning and Publishing
+
+This project uses [semantic versioning](https://semver.org/). To release a new version:
+
+1. Update the version in `pyproject.toml`
+2. Create a version tag:
+
+```bash
+# For patch release (e.g., v2.0.1)
+git tag v2.0.1
+
+# For minor release (e.g., v2.1.0)
+git tag v2.1.0
+
+# For major release (e.g., v3.0.0)
+git tag v3.0.0
+```
+
+3. Push the tag to trigger the automated workflow:
+
+```bash
+git push origin v2.0.1
+```
+
+The workflow will:
+- Run tests, linting, and type checking
+- Publish to Test PyPI for validation
+- Publish to PyPI if Test PyPI succeeds
+
 ## Backend Selection
 
 The library automatically detects and uses the best available backend in this priority order:
