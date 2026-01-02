@@ -26,7 +26,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install mkdocs
-        run: pip install mkdocs mkdocs-material mkdocstrings
+        run: pip install mkdocs mkdocs-material mkdocstrings mkdocstrings-python
 
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
