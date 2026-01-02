@@ -6,12 +6,12 @@ on:
       - main
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
+      - 'docs/mkdocs.yml'
       - '.github/workflows/docs.yml'
   pull_request:
     paths:
       - 'docs/**'
-      - 'mkdocs.yml'
+      - 'docs/mkdocs.yml'
       - '.github/workflows/docs.yml'
 
 permissions:
@@ -41,7 +41,7 @@ jobs:
           pip install -e ".[docs]"
 
       - name: Build documentation
-        run: mkdocs build
+        run: mkdocs build -f docs/mkdocs.yml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
