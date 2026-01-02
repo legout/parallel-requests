@@ -6,9 +6,9 @@ Welcome to the tutorials section! These step-by-step guides will help you learn 
 
 We recommend following the tutorials in order:
 
-1. **[Getting Started](getting-started.md)** - Installation and your first parallel requests
-2. **[Parallel Fundamentals](parallel-fundamentals.md)** - Understanding concurrency and async patterns
-3. **[Handling Errors](handling-errors.md)** - Working with exceptions and error handling
+1. **[Getting Started](getting-started.md)** - Installation and your first parallel requests (~10 min)
+2. **[Parallel Fundamentals](parallel-fundamentals.md)** - Understanding concurrency and async patterns (~15 min)
+3. **[Handling Errors](handling-errors.md)** - Working with exceptions and error handling (~15 min)
 
 ## What You'll Learn
 

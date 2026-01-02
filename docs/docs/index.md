@@ -69,16 +69,30 @@ async def main():
 results = asyncio.run(main())
 ```
 
-## Documentation
+## Quick Links
 
-- **[Tutorials](tutorials/index.md)** - Step-by-step learning guides for new users
-- **[How-To Guides](how-to-guides/index.md)** - Practical guides for specific tasks
-- **[Reference](reference/index.md)** - Complete API documentation
-- **[Explanations](explanation/index.md)** - In-depth conceptual understanding
+### New Users
+- [Getting Started Tutorial](tutorials/getting-started.md) - Installation and your first parallel requests
+- [Basic Examples](https://github.com/legout/parallel-requests/tree/main/examples) - Runnable code samples
+
+### Common Tasks
+- [Make Parallel Requests](how-to-guides/make-parallel-requests.md)
+- [Handle Rate Limits](how-to-guides/limit-request-rate.md)
+- [Configure Retries](how-to-guides/handle-retries.md)
+- [Use Proxies](how-to-guides/use-proxies.md)
+
+### API Reference
+- [API Overview](reference/index.md)
+- [ParallelRequests Class](reference/api/parallelrequests.md)
+- [Configuration Options](reference/configuration.md)
+
+### Advanced Topics
+- [Architecture](explanation/architecture.md)
+- [Backend Comparison](explanation/backends.md)
 
 ## Examples
 
-Visit the [examples](https://github.com/volkerlorrmann/parallel-requests/tree/main/examples) folder for executable code samples covering all library features.
+Visit the [examples](https://github.com/legout/parallel-requests/tree/main/examples) folder for executable code samples covering all library features.
 
 ## Backend Selection
 
@@ -101,4 +115,4 @@ results = parallel_requests(
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/volkerlorrmann/parallel-requests/blob/main/LICENSE) for details.
+MIT License - see [LICENSE](https://github.com/legout/parallel-requests/blob/main/LICENSE) for details.

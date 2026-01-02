@@ -2,6 +2,8 @@
 
 This tutorial covers error handling patterns and working with exceptions in parallel-requests.
 
+**Estimated reading time: 15 minutes**
+
 ## Types of Errors
 
 The library defines several exception types:

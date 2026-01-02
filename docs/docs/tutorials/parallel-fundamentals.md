@@ -2,6 +2,8 @@
 
 This tutorial explains the core concepts of parallel requests: concurrency, async/await, and backend selection.
 
+**Estimated reading time: 15 minutes**
+
 ## What is Concurrency?
 
 Concurrency means performing multiple operations at the same time. In the context of HTTP requests, it means making multiple network calls simultaneously instead of one after another.

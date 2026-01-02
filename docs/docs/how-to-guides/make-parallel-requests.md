@@ -20,7 +20,7 @@ results = parallel_requests(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
-        "https://api.github.com/repos/volkerlorrmann/parallel-requests",
+        "https://api.github.com/repos/legout/parallel-requests",
     ],
 )
 ```
@@ -65,7 +65,7 @@ def extract_repo_info(response):
 results = parallel_requests(
     urls=[
         "https://api.github.com/repos/python/cpython",
-        "https://api.github.com/repos/volkerlorrmann/parallel-requests",
+        "https://api.github.com/repos/legout/parallel-requests",
     ],
     parse_func=extract_repo_info,
 )

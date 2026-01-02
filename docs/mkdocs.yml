@@ -2,6 +2,8 @@ site_name: Parallel Requests
 site_url: https://volkerlorrmann.github.io/parallel-requests/
 site_description: Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting
 site_author: Volker Lorrmann
+repo_url: https://github.com/legout/parallel-requests
+edit_uri: edit/main/docs/docs/
 
 theme:
   name: material
@@ -25,9 +27,12 @@ theme:
     - content.code.copy
     - navigation.instant
     - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - navigation.indexes
+    - navigation.path
     - toc.integrate
 
 plugins:
@@ -45,14 +50,13 @@ plugins:
             separate_signature: true
 
 nav:
-  - Home:
-    - index.md
-  - Tutorials:
+  - Getting Started:
+    - Home: index.md
     - tutorials/index.md
-    - Getting Started: tutorials/getting-started.md
-    - Parallel Fundamentals: tutorials/parallel-fundamentals.md
-    - Handling Errors: tutorials/handling-errors.md
-  - How-To Guides:
+    - tutorials/getting-started.md
+    - tutorials/parallel-fundamentals.md
+    - tutorials/handling-errors.md
+  - Using:
     - how-to-guides/index.md
     - Make Parallel Requests: how-to-guides/make-parallel-requests.md
     - Limit Request Rate: how-to-guides/limit-request-rate.md
@@ -63,9 +67,9 @@ nav:
     - Select Backend: how-to-guides/select-backend.md
     - Debug Issues: how-to-guides/debug-issues.md
     - Handle Cookies: how-to-guides/handle-cookies.md
-  - Reference:
+  - API Reference:
     - reference/index.md
-    - API:
+    - Core API:
       - reference/api/parallelrequests.md
       - reference/api/parallel_requests.md
       - reference/api/parallel_requests_async.md
@@ -80,13 +84,13 @@ nav:
     - Proxy Rotation: reference/proxy-rotation.md
     - Header Management: reference/header-management.md
     - Validation: reference/validation.md
-  - Explanations:
+  - Understanding:
     - explanation/index.md
-    - Architecture: explanation/architecture.md
-    - Backends: explanation/backends.md
-    - Rate Limiting: explanation/rate-limiting.md
-    - Retry Strategy: explanation/retry-strategy.md
-    - Proxy Rotation: explanation/proxy-rotation.md
+    - explanation/architecture.md
+    - explanation/backends.md
+    - explanation/rate-limiting.md
+    - explanation/retry-strategy.md
+    - explanation/proxy-rotation.md
 
 markdown_extensions:
   - pymdownx.highlight:

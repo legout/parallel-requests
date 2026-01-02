@@ -2,7 +2,7 @@
 
 Complete API reference and technical documentation for parallel-requests.
 
-## API Reference
+## Core API
 
 Auto-generated API documentation using mkdocstrings:
 
@@ -12,14 +12,15 @@ Auto-generated API documentation using mkdocstrings:
 - [ReturnType](api/returntype.md) - Response parsing options
 - [GlobalConfig](api/globalconfig.md) - Global configuration
 
-## Manual Reference
-
-Detailed documentation for key components:
+## Key Components
 
 - [Return Types](return-types.md) - JSON, TEXT, CONTENT, RESPONSE, STREAM
 - [Configuration](configuration.md) - Client parameters and environment variables
 - [Exceptions](exceptions.md) - Exception hierarchy and error handling
 - [Backend Interface](backend.md) - Backend abstraction and dataclasses
+
+## Features
+
 - [Rate Limiting](rate-limiting.md) - Token bucket algorithm
 - [Retry Strategy](retry-strategy.md) - Exponential backoff with jitter
 - [Proxy Rotation](proxy-rotation.md) - Proxy management and validation

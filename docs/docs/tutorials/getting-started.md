@@ -2,6 +2,8 @@
 
 This tutorial will walk you through installing parallel-requests and making your first parallel HTTP requests.
 
+**Estimated reading time: 10 minutes**
+
 ## Installation
 
 Install parallel-requests using pip:
@@ -162,7 +164,7 @@ async def main():
 
         # Second batch (reuses the same session)
         results2 = await client.request(
-            urls=["https://api.github.com/repos/volkerlorrmann/parallel-requests"],
+            urls=["https://api.github.com/repos/legout/parallel-requests"],
         )
 
     return results1, results2
