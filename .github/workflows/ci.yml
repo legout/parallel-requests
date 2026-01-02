@@ -53,6 +53,6 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
       - name: Install mypy
-        run: pip install -e ".[all,dev]" mypy
+        run: pip install -e ".[all,dev]" types-requests h2
       - name: Run mypy
         run: mypy src/parallel_requests/
