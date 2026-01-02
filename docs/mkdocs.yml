@@ -48,7 +48,6 @@ plugins:
             show_signature_annotations: true
             members_order: source
             separate_signature: true
-      python_path: ../..
 
 nav:
   - Getting Started:

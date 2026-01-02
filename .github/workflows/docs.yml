@@ -28,5 +28,8 @@ jobs:
       - name: Install mkdocs
         run: pip install mkdocs mkdocs-material mkdocstrings mkdocstrings-python
 
+      - name: Install package
+        run: pip install -e .
+
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force -f docs/mkdocs.yml
