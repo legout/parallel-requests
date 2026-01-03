@@ -1,18 +1,18 @@
 from fastreq.exceptions import (
+    BackendError,
     ConfigurationError,
     FailureDetails,
-    ParallelRequestsError,
+    FastRequestsError,
     PartialFailureError,
     ProxyError,
     RateLimitExceededError,
     RetryExhaustedError,
     ValidationError,
-    BackendError,
 )
 from fastreq.config import GlobalConfig
 from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
 from fastreq.client import (
-    ParallelRequests,
+    FastRequests,
     RequestOptions,
     ReturnType,
     fastreq,
@@ -23,7 +23,7 @@ __version__ = "2.0.0"
 
 __all__ = [
     "__version__",
-    "ParallelRequestsError",
+    "FastRequestsError",
     "BackendError",
     "ProxyError",
     "RetryExhaustedError",
@@ -36,15 +36,17 @@ __all__ = [
     "Backend",
     "RequestConfig",
     "NormalizedResponse",
-    "ParallelRequests",
+    "FastRequests",
     "RequestOptions",
     "ReturnType",
     "fastreq",
     "fastreq_async",
+    "ParallelRequestsError",
+    "ParallelRequests",
 ]
 
 
-__doc__ = """Parallel Requests - High-performance parallel HTTP client
+__doc__ = """fastreq - High-performance parallel HTTP client
 
 A Python library for executing parallel HTTP requests with built-in retry logic,
 proxy rotation, rate limiting, and support for multiple HTTP backends (niquests,
@@ -89,3 +91,6 @@ Backends:
     - aiohttp: Streaming support, async native
     - requests: Sync-first, streaming via thread wrapper
 """
+
+ParallelRequestsError = FastRequestsError
+ParallelRequests = FastRequests

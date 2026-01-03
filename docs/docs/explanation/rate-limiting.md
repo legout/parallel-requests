@@ -238,7 +238,7 @@ Many APIs enforce rate limits (e.g., GitHub: 5000 requests/hour):
 
 ```python
 # GitHub API: 5,000 requests/hour ≈ 1.4 requests/second
-client = ParallelRequests(
+client = FastRequests(
     rate_limit=1.4,
     rate_limit_burst=5,  # Allow bursts
     concurrency=10,
@@ -251,7 +251,7 @@ Protect your own servers from excessive requests:
 
 ```python
 # Self-imposed limit: 100 requests/second
-client = ParallelRequests(
+client = FastRequests(
     rate_limit=100,
     rate_limit_burst=20,
     concurrency=50,
@@ -264,7 +264,7 @@ When scraping, stay under radar:
 
 ```python
 # Conservative scraping: 1 request/second
-client = ParallelRequests(
+client = FastRequests(
     rate_limit=1,
     rate_limit_burst=3,  # Small burst
     concurrency=5,
@@ -277,7 +277,7 @@ Some APIs charge per request:
 
 ```python
 # Stay within budget: 10,000 requests/day ≈ 0.12 requests/second
-client = ParallelRequests(
+client = FastRequests(
     rate_limit=0.12,
     rate_limit_burst=10,
 )
@@ -391,7 +391,7 @@ Rate limiting state is minimal:
 
 **Solution**: Increase `rate_limit_burst` or wait for refill:
 ```python
-client = ParallelRequests(
+client = FastRequests(
     rate_limit=10,
     rate_limit_burst=20,  # Larger burst
 )

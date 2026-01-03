@@ -11,7 +11,7 @@ Note: HTTP/2 requires niquests backend
 """
 
 import asyncio
-from fastreq import fastreq, ParallelRequests
+from fastreq import fastreq, FastRequests
 
 
 def main():
@@ -67,7 +67,7 @@ def main():
     print("-" * 50)
 
     async def test_http2_async():
-        client = ParallelRequests(
+        client = FastRequests(
             backend="niquests",
             http2=True,
             concurrency=5,

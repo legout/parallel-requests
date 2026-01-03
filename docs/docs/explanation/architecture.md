@@ -52,7 +52,7 @@ The library is organized into distinct layers:
                               │
 ┌─────────────────────────────────────────────────────────────┐
 │                   Client Layer                              │
-│           ParallelRequests class                             │
+│           FastRequests class                                │
 │  (orchestrates requests, retries, rate limiting)            │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -76,7 +76,7 @@ The library is organized into distinct layers:
 
 ## Component Overview
 
-### ParallelRequests (Client)
+### FastRequests (Client)
 
 The main client class that orchestrates everything:
 
@@ -162,7 +162,7 @@ This provides a consistent interface regardless of which backend you use.
 ### Backend Detection Flow
 
 ```
-User creates ParallelRequests(backend="auto")
+User creates FastRequests(backend="auto")
          │
          ▼
 Try importing niquests

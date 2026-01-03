@@ -42,9 +42,9 @@ pip install fastreq[all]
 ### Sync Usage
 
 ```python
-from fastreq import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/cpython/issues",
@@ -61,10 +61,10 @@ for result in results:
 
 ```python
 import asyncio
-from fastreq import parallel_requests_async
+from fastreq import fastreq_async
 
 async def main():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=[
             "https://httpbin.org/delay/1",
             "https://httpbin.org/delay/2",
@@ -81,10 +81,10 @@ results = asyncio.run(main())
 ### Context Manager
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def main():
-    async with ParallelRequests(concurrency=5) as client:
+    async with FastRequests(concurrency=5) as client:
         results = await client.request(urls=["https://httpbin.org/get"] * 10)
     return results
 ```
@@ -150,9 +150,9 @@ The library automatically detects and uses the best available backend in this pr
 To explicitly select a backend:
 
 ```python
-from fastreq import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",  # Explicit backend selection
 )

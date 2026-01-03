@@ -284,10 +284,10 @@ Reuse sessions across multiple batches:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def reuse_session():
-    async with ParallelRequests(backend="niquests") as client:
+    async with FastRequests(backend="niquests") as client:
         # First batch
         results1 = await client.request(
             urls=["https://api.github.com/repos/python/cpython"],

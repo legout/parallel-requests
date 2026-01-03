@@ -3,13 +3,13 @@
 Context manager example.
 
 This example demonstrates:
-- Using ParallelRequests as async context manager
+- Using FastRequests as async context manager
 - Reusing session across multiple request batches
 - Proper resource cleanup
 """
 
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 
 async def main():
@@ -18,7 +18,7 @@ async def main():
     print("Scenario 1: Reusing session across batches")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         concurrency=5,
         verbose=False,
@@ -53,7 +53,7 @@ async def main():
     print("\n\nScenario 2: Cookie persistence across batches")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         concurrency=3,
         verbose=False,
@@ -82,7 +82,7 @@ async def main():
     print("\n\nScenario 3: Manual session management")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         concurrency=3,
         verbose=False,
@@ -103,7 +103,7 @@ async def main():
     print("-" * 50)
 
     try:
-        client = ParallelRequests(
+        client = FastRequests(
             backend="auto",
             concurrency=3,
             verbose=False,

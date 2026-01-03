@@ -268,12 +268,12 @@ With HTTP/2, multiple requests share a single connection:
 
 ```python
 # With niquests (HTTP/2 enabled)
-client = ParallelRequests(backend="niquests", http2=True)
+client = FastRequests(backend="niquests", http2=True)
 # All 100 requests share 1-2 connections due to multiplexing
 results = await client.request(urls=[url] * 100)
 
 # With httpx (HTTP/2 enabled, requires h2)
-client = ParallelRequests(backend="httpx", http2=True)
+client = FastRequests(backend="httpx", http2=True)
 # All 100 requests share 1-2 connections due to multiplexing
 results = await client.request(urls=[url] * 100)
 ```
@@ -284,7 +284,7 @@ With HTTP/1.1, each connection handles one request at a time:
 
 ```python
 # With aiohttp or requests (HTTP/1.1 only)
-client = ParallelRequests(backend="aiohttp")
+client = FastRequests(backend="aiohttp")
 # With concurrency=20, up to 20 connections are used
 results = await client.request(urls=[url] * 100)
 ```
@@ -326,7 +326,7 @@ pip install fastreq[all]
 All backends implement async context managers:
 
 ```python
-async with ParallelRequests(backend="niquests") as client:
+async with FastRequests(backend="niquests") as client:
     # Backend session is initialized here
     results = await client.request(urls=[...])
     # Backend session is closed here automatically
@@ -379,10 +379,10 @@ print(response.url)            # Final URL (after redirects)
 
 ```python
 # niquests
-client = ParallelRequests(backend="niquests", http2=True)
+client = FastRequests(backend="niquests", http2=True)
 
 # httpx (requires httpx[http2] extra)
-client = ParallelRequests(backend="httpx", http2=True)
+client = FastRequests(backend="httpx", http2=True)
 ```
 
 ### HTTP/2 with httpx
@@ -414,7 +414,7 @@ pip install fastreq[all]  # or specific backend
 
 **Solution**: Reduce concurrency or use aiohttp/niquests:
 ```python
-client = ParallelRequests(
+client = FastRequests(
     backend="requests",  # or "aiohttp"
     concurrency=10,      # Lower concurrency for requests
 )

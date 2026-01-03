@@ -9,7 +9,7 @@ This example demonstrates:
 """
 
 import asyncio
-from fastreq import fastreq_async, ParallelRequests
+from fastreq import fastreq_async, FastRequests
 
 
 async def fetch_data(urls: list[str]) -> list[dict]:
@@ -110,7 +110,7 @@ async def main():
     print("-" * 50)
 
     async def make_requests_with_custom_client():
-        client = ParallelRequests(
+        client = FastRequests(
             backend="auto",
             concurrency=3,
             verbose=False,

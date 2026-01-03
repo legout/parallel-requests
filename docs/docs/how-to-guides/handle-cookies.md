@@ -28,10 +28,10 @@ Use a context manager to maintain cookies across multiple request batches:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def session_example():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # First request - receives session cookie
         results1 = await client.request(
             urls=["https://httpbin.org/cookies/set/session/abc123"],
@@ -60,10 +60,10 @@ Add cookies to an existing session:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def add_cookies_example():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Add cookies to session
         client.set_cookies({
             "auth_token": "secret_token_123",
@@ -87,10 +87,10 @@ Clear all cookies from the session:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def clear_cookies_example():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Set cookies
         client.set_cookies({"session": "abc123"})
 
@@ -120,10 +120,10 @@ Authenticate and maintain session across requests:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def authenticated_session():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Login request - receives session cookie
         login_response = await client.request(
             urls=["https://httpbin.org/cookies/set/session/logged_in"],
@@ -152,10 +152,10 @@ Authenticate with an API and maintain session:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def api_session():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Login endpoint
         login_data = await client.request(
             urls=["https://api.example.com/login"],
@@ -185,10 +185,10 @@ Use context manager to persist cookies:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def persistent_session():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Batch 1
         batch1 = await client.request(
             urls=[
@@ -223,10 +223,10 @@ Set cookies per request:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def different_cookies():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # First request with specific cookies
         results1 = await client.request(
             urls=["https://httpbin.org/cookies"],
@@ -252,10 +252,10 @@ Add more cookies to existing session:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def update_cookies():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Initial cookies
         client.set_cookies({"session": "abc123"})
 
@@ -279,10 +279,10 @@ Check cookie status:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def cookie_status():
-    async with ParallelRequests() as client:
+    async with FastRequests() as client:
         # Set cookies
         client.set_cookies({"session": "abc123"})
 
@@ -358,7 +358,7 @@ results = fastreq(
 
 1. **Use Context Manager**: Maintain cookies across requests
    ```python
-   async with ParallelRequests() as client:
+   async with FastRequests() as client:
        await client.request(urls=urls)
    ```
 
@@ -388,4 +388,4 @@ results = fastreq(
 
 - **[Make Parallel Requests](make-fastreq.md)** - Request configuration
 - **[Post JSON Data](post-json-data.md)** - Authentication examples
-- **[API Reference](../reference/api/parallelrequests.md)** - Client documentation
+- **[API Reference](../reference/api/fastrequests.md)** - Client documentation

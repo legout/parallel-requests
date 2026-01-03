@@ -4,7 +4,7 @@ from fastreq.exceptions import (
     BackendError,
     ConfigurationError,
     FailureDetails,
-    ParallelRequestsError,
+    FastRequestsError,
     PartialFailureError,
     ProxyError,
     RateLimitExceededError,
@@ -13,15 +13,15 @@ from fastreq.exceptions import (
 )
 
 
-class TestParallelRequestsError:
+class TestFastRequestsError:
     def test_base_exception_instantiation(self) -> None:
-        e = ParallelRequestsError("connection failed")
+        e = FastRequestsError("connection failed")
         assert str(e) == "connection failed"
         assert isinstance(e, Exception)
 
     def test_base_exception_isinstance_checks(self) -> None:
-        e = ParallelRequestsError("test")
-        assert isinstance(e, ParallelRequestsError)
+        e = FastRequestsError("test")
+        assert isinstance(e, FastRequestsError)
         assert isinstance(e, Exception)
 
 
@@ -30,7 +30,7 @@ class TestBackendError:
         e = BackendError("niquests unavailable", backend_name="niquests")
         assert str(e) == "niquests unavailable"
         assert e.backend_name == "niquests"
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
         assert isinstance(e, BackendError)
 
     def test_backend_error_without_name(self) -> None:
@@ -43,7 +43,7 @@ class TestProxyError:
         e = ProxyError("proxy connection failed", proxy_url="http://proxy:8080")
         assert str(e) == "proxy connection failed"
         assert e.proxy_url == "http://proxy:8080"
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
 
     def test_proxy_error_without_url(self) -> None:
         e = ProxyError("proxy failed")
@@ -62,28 +62,28 @@ class TestRetryExhaustedError:
         assert e.attempts == 3
         assert e.last_error is timeout_err
         assert e.url == "https://example.com"
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
 
 
 class TestRateLimitExceededError:
     def test_rate_limit_exceeded_error(self) -> None:
         e = RateLimitExceededError("rate limit exceeded", retry_after=60.0)
         assert e.retry_after == 60.0
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
 
 
 class TestValidationError:
     def test_validation_error(self) -> None:
         e = ValidationError("invalid URL", field_name="url")
         assert e.field_name == "url"
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
 
 
 class TestConfigurationError:
     def test_configuration_error(self) -> None:
         e = ConfigurationError("invalid config", config_key="backend")
         assert e.config_key == "backend"
-        assert isinstance(e, ParallelRequestsError)
+        assert isinstance(e, FastRequestsError)
 
 
 class TestFailureDetails:

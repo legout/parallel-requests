@@ -17,8 +17,8 @@ class FailureDetails:
     attempt: int = 0
 
 
-class ParallelRequestsError(Exception):
-    """Base exception for parallel-requests library.
+class FastRequestsError(Exception):
+    """Base exception for fastreq library.
 
     All library exceptions inherit from this base class.
     """
@@ -27,7 +27,7 @@ class ParallelRequestsError(Exception):
         super().__init__(message, *args, **kwargs)
 
 
-class BackendError(ParallelRequestsError):
+class BackendError(FastRequestsError):
     """Raised when a backend operation fails.
 
     Indicates a failure in the underlying HTTP client library.
@@ -43,7 +43,7 @@ class BackendError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class ProxyError(ParallelRequestsError):
+class ProxyError(FastRequestsError):
     """Raised when a proxy operation fails.
 
     Indicates a failure with proxy rotation, validation, or connection.
@@ -59,7 +59,7 @@ class ProxyError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class RetryExhaustedError(ParallelRequestsError):
+class RetryExhaustedError(FastRequestsError):
     """Raised when all retry attempts are exhausted.
 
     Indicates that a request failed after max_retries attempts.
@@ -85,7 +85,7 @@ class RetryExhaustedError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class RateLimitExceededError(ParallelRequestsError):
+class RateLimitExceededError(FastRequestsError):
     """Raised when rate limit is exceeded.
 
     Indicates that the rate limiter blocked a request.
@@ -105,7 +105,7 @@ class RateLimitExceededError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class ValidationError(ParallelRequestsError):
+class ValidationError(FastRequestsError):
     """Raised when request validation fails.
 
     Indicates invalid input parameters or configuration.
@@ -121,7 +121,7 @@ class ValidationError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class ConfigurationError(ParallelRequestsError):
+class ConfigurationError(FastRequestsError):
     """Raised when configuration is invalid.
 
     Indicates missing or invalid configuration parameters.
@@ -137,7 +137,7 @@ class ConfigurationError(ParallelRequestsError):
         super().__init__(message, *args, **kwargs)
 
 
-class PartialFailureError(ParallelRequestsError):
+class PartialFailureError(FastRequestsError):
     """Raised when some requests succeed and others fail.
 
     Occurs when return_none_on_failure=False and some requests fail.
@@ -176,3 +176,6 @@ class PartialFailureError(ParallelRequestsError):
             List of URLs that experienced errors
         """
         return list(self.failures.keys())
+
+
+ParallelRequestsError = FastRequestsError

@@ -8,7 +8,7 @@ This example demonstrates:
 - Named result access patterns
 """
 
-from fastreq import fastreq, ParallelRequests
+from fastreq import fastreq, FastRequests
 
 
 async def async_example():

@@ -10,7 +10,7 @@ This example demonstrates:
 
 from fastreq import (
     fastreq,
-    ParallelRequests,
+    FastRequests,
 )
 
 
@@ -76,10 +76,10 @@ def main():
     print("* async via thread pool wrapper")
     print("† streaming via thread pool wrapper")
 
-    print("\n\nScenario 4: Using ParallelRequests class")
+    print("\n\nScenario 4: Using FastRequests class")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         concurrency=5,
         verbose=False,

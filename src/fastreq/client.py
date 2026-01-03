@@ -69,12 +69,12 @@ class RequestOptions:
 T = TypeVar("T")
 
 
-class ParallelRequests:
+class FastRequests:
     """Main client for parallel HTTP requests.
 
     Example:
-        >>> from fastreq import ParallelRequests
-        >>> client = ParallelRequests(concurrency=5)
+        >>> from fastreq import FastRequests
+        >>> client = FastRequests(concurrency=5)
         >>> async with client:
         ...     results = await client.request(
         ...         urls=["https://httpbin.org/get"] * 3,
@@ -138,11 +138,12 @@ class ParallelRequests:
         retry_config = RetryConfig(max_retries=max_retries)
         self._retry_strategy = RetryStrategy(retry_config)
 
+        self._concurrency_semaphore = asyncio.Semaphore(concurrency)
+
         if rate_limit is not None:
             rate_limit_config = RateLimitConfig(
                 requests_per_second=rate_limit,
                 burst=rate_limit_burst,
-                max_concurrency=concurrency,
             )
             self._rate_limiter = AsyncRateLimiter(rate_limit_config)
 
@@ -167,7 +168,9 @@ class ParallelRequests:
                 try:
                     module = importlib.import_module(f"fastreq.backends.{backend_name}")
                     backend_cls = getattr(module, backend_class_name)
-                    self._backend = backend_cls(http2_enabled=self._http2)
+                    self._backend = backend_cls(
+                        http2_enabled=self._http2, concurrency=self.concurrency
+                    )
                     if unavailable:
                         logger.info(
                             f"Using backend: {backend_name} ({', '.join(unavailable)} unavailable)"
@@ -195,14 +198,14 @@ class ParallelRequests:
                     raise ConfigurationError(f"Backend '{self.backend_name}' not found")
 
                 backend_cls = backend_options[0][1]
-                self._backend = backend_cls(http2_enabled=self._http2)
+                self._backend = backend_cls(http2_enabled=self._http2, concurrency=self.concurrency)
                 logger.info(f"Using backend: {self.backend_name}")
             except ImportError as e:
                 raise ConfigurationError(
                     f"Failed to load backend '{self.backend_name}': {e}"
                 ) from e
 
-    async def __aenter__(self) -> "ParallelRequests":
+    async def __aenter__(self) -> "FastRequests":
         """Enter async context manager and initialize backend session.
 
         Returns:
@@ -464,24 +467,26 @@ class ParallelRequests:
             rate_limit_ctx = (
                 self._rate_limiter.acquire() if self._rate_limiter else self._null_context()
             )
-            async with rate_limit_ctx:
-                return await backend.request(
-                    RequestConfig(
-                        url=req.url,
-                        method=req.method,
-                        params=req.params,
-                        data=req.data,
-                        json=req.json,
-                        headers=req.headers,
-                        cookies={**self._cookies},
-                        timeout=req.timeout,
-                        proxy=req.proxy,
-                        http2=self._http2,
-                        stream=req.return_type == ReturnType.STREAM,
-                        follow_redirects=follow_redirects,
-                        verify_ssl=verify_ssl,
+            async with self._concurrency_semaphore:
+                logger.debug(f"Concurrency slot acquired, making request to: {req.url}")
+                async with rate_limit_ctx:
+                    return await backend.request(
+                        RequestConfig(
+                            url=req.url,
+                            method=req.method,
+                            params=req.params,
+                            data=req.data,
+                            json=req.json,
+                            headers=req.headers,
+                            cookies={**self._cookies},
+                            timeout=req.timeout,
+                            proxy=req.proxy,
+                            http2=self._http2,
+                            stream=req.return_type == ReturnType.STREAM,
+                            follow_redirects=follow_redirects,
+                            verify_ssl=verify_ssl,
+                        )
                     )
-                )
 
         response = await self._retry_strategy.execute(make_request)
         return self._parse_response(response, req)
@@ -578,7 +583,7 @@ def fastreq(
     """
 
     async def _run() -> Any:
-        client = ParallelRequests(
+        client = FastRequests(
             backend=backend,
             concurrency=concurrency,
             max_retries=max_retries,
@@ -688,7 +693,7 @@ async def fastreq_async(
         - List of URLs: list of results
         - List of URLs with keys: dict mapping keys to results
     """
-    client = ParallelRequests(
+    client = FastRequests(
         backend=backend,
         concurrency=concurrency,
         max_retries=max_retries,
@@ -719,3 +724,6 @@ async def fastreq_async(
             parse_func=parse_func,
             keys=keys,
         )
+
+
+ParallelRequests = FastRequests

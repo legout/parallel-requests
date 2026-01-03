@@ -9,9 +9,9 @@ Control how responses are parsed using the `ReturnType` enum or string values.
 Parses response body as JSON. Returns `dict`, `list`, or `None` if response is not valid JSON.
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     # Returns dict/list if JSON
     result = await client.request(
         "https://api.github.com/repos/python/cpython",
@@ -31,9 +31,9 @@ async with ParallelRequests() as client:
 Returns response body as decoded UTF-8 string.
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     # Returns decoded string
     html = await client.request(
         "https://example.com",
@@ -53,9 +53,9 @@ async with ParallelRequests() as client:
 Returns response body as raw bytes.
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     # Returns raw bytes
     image_data = await client.request(
         "https://example.com/image.png",
@@ -76,9 +76,9 @@ async with ParallelRequests() as client:
 Returns full `NormalizedResponse` object with all response details.
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     # Returns NormalizedResponse
     response = await client.request(
         "https://httpbin.org/get",
@@ -113,12 +113,12 @@ async with ParallelRequests() as client:
 Streams response content through a callback function.
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 def stream_callback(chunk: bytes):
     print(f"Received {len(chunk)} bytes")
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     await client.request(
         "https://example.com/large-file.zip",
         return_type="stream",
@@ -139,9 +139,9 @@ async with ParallelRequests() as client:
 You can use either string values or the `ReturnType` enum:
 
 ```python
-from fastreq import ParallelRequests, ReturnType
+from fastreq import FastRequests, ReturnType
 
-async with ParallelRequests() as client:
+async with FastRequests() as client:
     # String value
     result1 = await client.request(url, return_type="json")
 
@@ -163,6 +163,6 @@ result = await client.request("https://example.com")
 
 ## See Also
 
-- [API Reference: ParallelRequests.request()](api/parallelrequests.md)
+- [API Reference: FastRequests.request()](api/parallelrequests.md)
 - [API Reference: ReturnType](api/returntype.md)
 - [How-to: Post JSON Data](../how-to-guides/post-json-data.md)

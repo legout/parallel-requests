@@ -1,4 +1,4 @@
-# Parallel Requests
+# fastreq
 
 A high-performance Python library for executing parallel HTTP requests with built-in retry logic, proxy rotation, rate limiting, and support for multiple HTTP backends.
 
@@ -83,7 +83,7 @@ results = asyncio.run(main())
 
 ### API Reference
 - [API Overview](reference/index.md)
-- [ParallelRequests Class](reference/api/parallelrequests.md)
+- [FastRequests Class](reference/api/fastrequests.md)
 - [Configuration Options](reference/configuration.md)
 
 ### Advanced Topics

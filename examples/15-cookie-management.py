@@ -9,7 +9,7 @@ This example demonstrates:
 """
 
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 
 async def main():
@@ -18,7 +18,7 @@ async def main():
     print("Scenario 1: Setting and using cookies")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         concurrency=3,
         verbose=False,
@@ -47,7 +47,7 @@ async def main():
     print("\n\nScenario 2: Adding cookies incrementally")
     print("-" * 50)
 
-    async with ParallelRequests(
+    async with FastRequests(
         backend="auto",
         verbose=False,
     ) as client:
@@ -71,7 +71,7 @@ async def main():
     print("\n\nScenario 3: Resetting cookies")
     print("-" * 50)
 
-    async with ParallelRequests(
+    async with FastRequests(
         backend="auto",
         verbose=False,
     ) as client:
@@ -96,7 +96,7 @@ async def main():
     print("\n\nScenario 4: Cookie persistence across requests")
     print("-" * 50)
 
-    async with ParallelRequests(
+    async with FastRequests(
         backend="auto",
         verbose=False,
     ) as client:
@@ -120,7 +120,7 @@ async def main():
     print("\n\nScenario 5: Cookies with initial configuration")
     print("-" * 50)
 
-    client = ParallelRequests(
+    client = FastRequests(
         backend="auto",
         cookies={
             "initial1": "value1",

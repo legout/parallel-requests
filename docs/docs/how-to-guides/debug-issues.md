@@ -314,10 +314,10 @@ Use context manager for better debugging:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def debug_with_context():
-    async with ParallelRequests(debug=True) as client:
+    async with FastRequests(debug=True) as client:
         # First batch
         results1 = await client.request(
             urls=["https://api.github.com/repos/python/cpython"],

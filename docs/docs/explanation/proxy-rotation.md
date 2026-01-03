@@ -381,7 +381,7 @@ Random selection helps avoid:
 ### Basic Proxy Rotation
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 from fastreq.utils.proxies import ProxyManager, ProxyConfig
 
 # Configure proxy rotation
@@ -396,7 +396,7 @@ proxy_config = ProxyConfig(
 )
 
 # Create client with proxy rotation
-client = ParallelRequests(
+client = FastRequests(
     random_proxy=True,  # Enable proxy rotation
     concurrency=10,
 )

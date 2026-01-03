@@ -247,7 +247,7 @@ def _should_retry(self, error: Exception) -> bool:
 
 ```python
 # Default: 3 retries, 1s base delay, 10% jitter
-client = ParallelRequests(max_retries=3)
+client = FastRequests(max_retries=3)
 ```
 
 Retry delays (with 10% jitter):
@@ -260,7 +260,7 @@ Retry delays (with 10% jitter):
 
 ```python
 # More retries, faster initial delay
-client = ParallelRequests(
+client = FastRequests(
     max_retries=5,
     # Default backoff_multiplier=1.0
 )
@@ -277,7 +277,7 @@ Retry delays:
 
 ```python
 # Fewer retries, slower backoff, more jitter
-client = ParallelRequests(
+client = FastRequests(
     max_retries=2,
     backoff_multiplier=2.0,  # Slower backoff
 )
@@ -311,7 +311,7 @@ jittered_delay = base_delay
 Retries respect rate limiting:
 
 ```python
-client = ParallelRequests(
+client = FastRequests(
     max_retries=3,
     rate_limit=10,
     rate_limit_burst=5,
@@ -330,7 +330,7 @@ Flow:
 Retries don't increase concurrency:
 
 ```python
-client = ParallelRequests(
+client = FastRequests(
     max_retries=3,
     concurrency=10,
 )
@@ -343,7 +343,7 @@ If request fails, retry doesn't use additional concurrency slot. The original sl
 Retries are separate from timeouts:
 
 ```python
-client = ParallelRequests(
+client = FastRequests(
     max_retries=3,
     timeout=5,  # Per-request timeout
 )
@@ -359,7 +359,7 @@ client = ParallelRequests(
 **For API calls:**
 ```python
 # API calls: moderate retries
-ParallelRequests(
+FastRequests(
     max_retries=3,
     backoff_multiplier=1.0,
 )
@@ -368,7 +368,7 @@ ParallelRequests(
 **For long-running downloads:**
 ```python
 # Downloads: fewer retries, longer timeout
-ParallelRequests(
+FastRequests(
     max_retries=2,
     backoff_multiplier=2.0,
     timeout=30,
@@ -378,7 +378,7 @@ ParallelRequests(
 **For unreliable networks:**
 ```python
 # Unstable network: more retries
-ParallelRequests(
+FastRequests(
     max_retries=5,
     backoff_multiplier=1.0,
 )
@@ -403,7 +403,7 @@ ParallelRequests(
 Enable debug logging to see retry behavior:
 
 ```python
-client = ParallelRequests(
+client = FastRequests(
     max_retries=3,
     debug=True,
 )
@@ -463,7 +463,7 @@ Max time per URL: 3 × (5s timeout + avg 2.33s delay) = ~22s
 
 **Solution**: Reduce `max_retries`:
 ```python
-ParallelRequests(max_retries=1)  # Only retry once
+FastRequests(max_retries=1)  # Only retry once
 ```
 
 ### Retries Too Slow

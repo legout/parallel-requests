@@ -149,14 +149,14 @@ results = fastreq(
 
 ## Using a Context Manager
 
-For more control, use the ParallelRequests class with an async context manager:
+For more control, use the FastRequests class with an async context manager:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def main():
-    async with ParallelRequests(concurrency=5) as client:
+    async with FastRequests(concurrency=5) as client:
         # First batch
         results1 = await client.request(
             urls=["https://api.github.com/repos/python/cpython"],

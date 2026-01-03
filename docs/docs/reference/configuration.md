@@ -2,14 +2,14 @@
 
 Configure fastreq using client parameters, environment variables, or global config.
 
-## ParallelRequests Parameters
+## FastRequests Parameters
 
-Configure the `ParallelRequests` client with these parameters:
+Configure the `FastRequests` client with these parameters:
 
 ```python
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
-client = ParallelRequests(
+client = FastRequests(
     backend="auto",
     concurrency=20,
     max_retries=3,
@@ -55,7 +55,7 @@ client = ParallelRequests(
 Override client settings per request:
 
 ```python
-async with ParallelRequests(
+async with FastRequests(
     timeout=30,
     follow_redirects=True
 ) as client:
@@ -173,13 +173,13 @@ Automatically selects the best available backend:
 3. `requests` (if installed)
 
 ```python
-client = ParallelRequests(backend="auto")
+client = FastRequests(backend="auto")
 ```
 
 ### Niquests (Recommended)
 Best performance with HTTP/2 support:
 ```python
-client = ParallelRequests(backend="niquests")
+client = FastRequests(backend="niquests")
 ```
 
 Install: `pip install niquests`
@@ -187,7 +187,7 @@ Install: `pip install niquests`
 ### Aiohttp
 Native async backend:
 ```python
-client = ParallelRequests(backend="aiohttp")
+client = FastRequests(backend="aiohttp")
 ```
 
 Install: `pip install aiohttp`
@@ -195,7 +195,7 @@ Install: `pip install aiohttp`
 ### Requests
 Synchronous backend (uses `asyncio` wrapper):
 ```python
-client = ParallelRequests(backend="requests")
+client = FastRequests(backend="requests")
 ```
 
 Install: `pip install requests`
@@ -207,7 +207,7 @@ Install: `pip install requests`
 Manage session cookies:
 
 ```python
-async with ParallelRequests(cookies={"session": "abc123"}) as client:
+async with FastRequests(cookies={"session": "abc123"}) as client:
     # Add cookies
     client.set_cookies({"user_id": "456"})
 
@@ -222,6 +222,6 @@ async with ParallelRequests(cookies={"session": "abc123"}) as client:
 
 ## See Also
 
-- [API Reference: ParallelRequests](api/parallelrequests.md)
+- [API Reference: FastRequests](api/parallelrequests.md)
 - [API Reference: GlobalConfig](api/globalconfig.md)
 - [How-to: Select a Backend](../how-to-guides/select-backend.md)

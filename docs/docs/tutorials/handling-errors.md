@@ -8,7 +8,7 @@ This tutorial covers error handling patterns and working with exceptions in fast
 
 The library defines several exception types:
 
-- **`ParallelRequestsError`**: Base exception class
+- **`FastRequestsError`**: Base exception class
 - **`BackendError`**: Backend operation failures
 - **`ProxyError`**: Proxy-related failures
 - **`RetryExhaustedError`**: All retry attempts exhausted
@@ -22,13 +22,13 @@ The library defines several exception types:
 Wrap your requests in try-except blocks:
 
 ```python
-from fastreq import fastreq, ParallelRequestsError
+from fastreq import fastreq, FastRequestsError
 
 try:
     results = fastreq(
         urls=["https://api.github.com/invalid"],
     )
-except ParallelRequestsError as e:
+except FastRequestsError as e:
     print(f"Request failed: {e}")
 ```
 
@@ -153,10 +153,10 @@ Using a context manager gives you more control:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests, PartialFailureError
+from fastreq import FastRequests, PartialFailureError
 
 async def fetch_with_retry():
-    async with ParallelRequests(max_retries=3) as client:
+    async with FastRequests(max_retries=3) as client:
         try:
             results = await client.request(
                 urls=[
@@ -189,7 +189,7 @@ except RetryExhaustedError as e:
 except PartialFailureError as e:
     # Handle partial failures
     pass
-except ParallelRequestsError as e:
+except FastRequestsError as e:
     # Catch-all for other errors
     pass
 ```

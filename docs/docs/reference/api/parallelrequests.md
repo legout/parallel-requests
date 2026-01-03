@@ -1,3 +1,0 @@
-# ParallelRequests
-
-::: fastreq.client.ParallelRequests

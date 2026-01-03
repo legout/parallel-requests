@@ -156,10 +156,10 @@ Reuse sessions across multiple request batches:
 
 ```python
 import asyncio
-from fastreq import ParallelRequests
+from fastreq import FastRequests
 
 async def fetch_with_session():
-    async with ParallelRequests(concurrency=5) as client:
+    async with FastRequests(concurrency=5) as client:
         # First batch
         results1 = await client.request(
             urls=["https://api.github.com/repos/python/cpython"],

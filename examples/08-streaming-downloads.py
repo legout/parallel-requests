@@ -10,7 +10,7 @@ This example demonstrates:
 Note: Streaming support varies by backend
 """
 
-from fastreq import fastreq, ParallelRequests, ReturnType
+from fastreq import fastreq, FastRequests, ReturnType
 
 
 class ProgressTracker:

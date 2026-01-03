@@ -1,6 +1,6 @@
 [project]
 name = "fastreq"
-version = "2.0.2"
+version = "2.1.0"
 description = "Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"

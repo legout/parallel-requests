@@ -8,7 +8,7 @@ This example demonstrates:
 - User agent headers in requests
 """
 
-from fastreq import fastreq, ParallelRequests
+from fastreq import fastreq, FastRequests
 
 
 def main():

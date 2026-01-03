@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 
 from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
-from fastreq.client import ParallelRequests
+from fastreq.client import FastRequests
 
 
 def _clear_fastreq_modules() -> None:
@@ -41,7 +41,7 @@ def test_import_fastreq_without_optional_backends(
     _block_imports(monkeypatch, {"aiohttp", "niquests", "requests"})
 
     module = importlib.import_module("fastreq")
-    assert hasattr(module, "ParallelRequests")
+    assert hasattr(module, "FastRequests")
 
     _clear_fastreq_modules()
     importlib.import_module("fastreq")
@@ -125,6 +125,6 @@ def test_auto_backend_selection_does_not_import_unselected_modules(
     monkeypatch.setattr(importlib.util, "find_spec", fake_find_spec)
     monkeypatch.setattr(importlib, "import_module", fake_import_module)
 
-    client = ParallelRequests(backend="auto")
+    client = FastRequests(backend="auto")
     assert client._backend is not None
     assert client._backend.name == "niquests"

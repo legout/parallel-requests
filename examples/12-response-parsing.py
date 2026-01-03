@@ -10,7 +10,7 @@ This example demonstrates:
 
 from fastreq import (
     fastreq,
-    ParallelRequests,
+    FastRequests,
     ReturnType,
 )
 

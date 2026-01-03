@@ -12,7 +12,7 @@ Explanations provide in-depth understanding of the library's internal mechanics,
 |------|---------|---------|
 | **Tutorials** | Learning-oriented, step-by-step lessons | "Make your first parallel request" |
 | **How-to Guides** | Problem-solving, practical solutions | "Handle rate limits for an API" |
-| **Reference** | Technical details, API documentation | `ParallelRequests` class parameters |
+| **Reference** | Technical details, API documentation | `FastRequests` class parameters |
 | **Explanations** | Understanding internal design | "Why token bucket for rate limiting?" |
 
 ## When to Consult Explanations

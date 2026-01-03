@@ -70,9 +70,9 @@ nav:
   - API Reference:
     - reference/index.md
     - Core API:
-      - reference/api/parallelrequests.md
-      - reference/api/parallel_requests.md
-      - reference/api/parallel_requests_async.md
+      - reference/api/fastrequests.md
+      - reference/api/fastreq.md
+      - reference/api/fastreq_async.md
       - reference/api/returntype.md
       - reference/api/globalconfig.md
     - Return Types: reference/return-types.md

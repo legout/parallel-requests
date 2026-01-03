@@ -1,0 +1,3 @@
+# FastRequests
+
+::: fastreq.client.FastRequests
