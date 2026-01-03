@@ -1,147 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/architecture/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/architecture/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/backends/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/backends/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/proxy-rotation/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/proxy-rotation/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/rate-limiting/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/rate-limiting/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/explanation/retry-strategy/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/explanation/retry-strategy/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/debug-issues/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/debug-issues/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/handle-cookies/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/handle-cookies/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/handle-retries/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/handle-retries/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/limit-request-rate/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/limit-request-rate/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/make-parallel-requests/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/make-parallel-requests/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/post-json-data/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/post-json-data/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/select-backend/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/select-backend/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/stream-large-files/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/stream-large-files/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/how-to-guides/use-proxies/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/how-to-guides/use-proxies/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/backend/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/backend/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/configuration/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/configuration/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/exceptions/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/exceptions/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/header-management/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/header-management/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/proxy-rotation/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/proxy-rotation/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/rate-limiting/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/rate-limiting/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/retry-strategy/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/retry-strategy/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/return-types/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/return-types/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/validation/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/validation/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/api/globalconfig/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/api/fastreq/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/api/parallel_requests/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/api/fastreq_async/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/api/parallel_requests_async/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/api/fastrequests/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/api/parallelrequests/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/api/globalconfig/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/reference/api/returntype/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/reference/api/returntype/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/tutorials/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/tutorials/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/tutorials/getting-started/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/tutorials/getting-started/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/tutorials/handling-errors/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/tutorials/handling-errors/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
     <url>
-         <loc>https://volkerlorrmann.github.io/parallel-requests/tutorials/parallel-fundamentals/</loc>
-         <lastmod>2026-01-02</lastmod>
+         <loc>https://legout.github.io/fastreq/tutorials/parallel-fundamentals/</loc>
+         <lastmod>2026-01-03</lastmod>
     </url>
 </urlset>
