@@ -16,5 +16,5 @@
 
 ## 4. Testing and Validation
 - [x] 4.1 Verify workflow syntax with act or GitHub Actions lint
-- [ ] 4.2 Test publish workflow against a fork or test repository (requires OIDC setup)
+- [x] 4.2 Test publish workflow against a fork or test repository (requires OIDC setup)
 - [x] 4.3 Validate workflow permissions are minimal and secure
