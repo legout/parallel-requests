@@ -2,7 +2,7 @@ import asyncio
 import time
 import pytest
 
-from parallel_requests.utils.rate_limiter import RateLimitConfig, TokenBucket, AsyncRateLimiter
+from fastreq.utils.rate_limiter import RateLimitConfig, TokenBucket, AsyncRateLimiter
 
 
 @pytest.mark.asyncio

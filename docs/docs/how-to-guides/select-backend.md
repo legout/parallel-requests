@@ -7,10 +7,10 @@ Learn how to choose and configure HTTP backends (niquests, httpx, aiohttp, reque
 The library automatically selects the best available backend:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Auto-detection (default)
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="auto",  # Default behavior
 )
@@ -27,28 +27,28 @@ results = parallel_requests(
 Force a specific backend:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Use niquests (recommended)
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",
 )
 
 # Use httpx (modern async API with HTTP/2 support)
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="httpx",
 )
 
 # Use aiohttp
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="aiohttp",
 )
 
 # Use requests
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="requests",
 )
@@ -78,10 +78,10 @@ results = parallel_requests(
 - You need both sync and async compatibility
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Best for modern APIs with HTTP/2
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     backend="niquests",
     concurrency=50,
@@ -96,10 +96,10 @@ results = parallel_requests(
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def fetch_with_httpx():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=["https://api.example.com/data"] * 100,
         backend="httpx",
         concurrency=50,
@@ -118,10 +118,10 @@ results = asyncio.run(fetch_with_httpx())
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def async_fetch():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=["https://api.example.com/data"] * 100,
         backend="aiohttp",
         concurrency=50,
@@ -138,10 +138,10 @@ results = asyncio.run(async_fetch())
 - Compatibility is more important than performance
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Simple synchronous use
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 50,
     backend="requests",
 )
@@ -152,23 +152,23 @@ results = parallel_requests(
 niquests and httpx support HTTP/2 for better performance:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # HTTP/2 with niquests
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 10,
     backend="niquests",
     debug=True,
 )
 
 # HTTP/2 with httpx (requires httpx[http2] extra)
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 10,
     backend="httpx",
 )
 
 # Other backends use HTTP/1.1
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 10,
     backend="aiohttp",  # HTTP/1.1 only
 )
@@ -185,13 +185,13 @@ Benchmark different backends:
 
 ```python
 import time
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 urls = ["https://httpbin.org/get"] * 100
 
 for backend in ["niquests", "httpx", "aiohttp", "requests"]:
     start = time.time()
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         backend=backend,
         concurrency=20,
@@ -206,19 +206,19 @@ Install with specific backend support:
 
 ```bash
 # All backends (recommended)
-pip install parallel-requests[all]
+pip install fastreq[all]
 
 # niquests only (HTTP/2 support)
-pip install parallel-requests[niquests]
+pip install fastreq[niquests]
 
 # httpx only (HTTP/2 support with h2 extra)
-pip install parallel-requests[httpx]
+pip install fastreq[httpx]
 
 # aiohttp only
-pip install parallel-requests[aiohttp]
+pip install fastreq[aiohttp]
 
 # requests only
-pip install parallel-requests[requests]
+pip install fastreq[requests]
 ```
 
 ## Checking Backend Availability
@@ -226,7 +226,7 @@ pip install parallel-requests[requests]
 Check which backends are available:
 
 ```python
-from parallel_requests.backends import get_available_backends
+from fastreq.backends import get_available_backends
 
 available = get_available_backends()
 print(f"Available backends: {available}")
@@ -237,24 +237,24 @@ print(f"Available backends: {available}")
 Some backends support additional configuration:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # niquests-specific options
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",
     # Backend can expose additional options
 )
 
 # httpx-specific options
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="httpx",
     # Backend can expose additional options
 )
 
 # aiohttp-specific options
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="aiohttp",
     # Backend can expose additional options
@@ -266,10 +266,10 @@ results = parallel_requests(
 All backends support connection pooling:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Connection pooling is automatic
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     concurrency=20,
     backend="niquests",
@@ -284,7 +284,7 @@ Reuse sessions across multiple batches:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def reuse_session():
     async with ParallelRequests(backend="niquests") as client:
@@ -308,10 +308,10 @@ results1, results2 = asyncio.run(reuse_session())
 Different backends handle errors differently:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://invalid-url.com"],
         backend="niquests",
     )
@@ -319,7 +319,7 @@ except Exception as e:
     print(f"niquests error: {e}")
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://invalid-url.com"],
         backend="aiohttp",
     )
@@ -332,10 +332,10 @@ except Exception as e:
 Timeouts work consistently across backends:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Timeout works the same for all backends
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/delay/5"],
     timeout=3,  # 3 second timeout
     backend="niquests",  # or httpx, aiohttp, requests
@@ -347,10 +347,10 @@ results = parallel_requests(
 ### Production Recommendation
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Use auto-detection for production
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     backend="auto",  # Will pick niquests if available
     concurrency=20,
@@ -363,7 +363,7 @@ results = parallel_requests(
 # During development, test with multiple backends
 for backend in ["niquests", "httpx", "aiohttp", "requests"]:
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=test_urls,
             backend=backend,
         )
@@ -404,6 +404,6 @@ for backend in ["niquests", "httpx", "aiohttp", "requests"]:
 
 ## See Also
 
-- **[Make Parallel Requests](make-parallel-requests.md)** - Request configuration
+- **[Make Parallel Requests](make-fastreq.md)** - Request configuration
 - **[Stream Large Files](stream-large-files.md)** - Backend streaming differences
 - **[API Reference](../reference/backend.md)** - Backend documentation

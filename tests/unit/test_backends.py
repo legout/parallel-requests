@@ -1,7 +1,7 @@
 from typing import Any
 
 import pytest
-from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
+from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
 
 
 class TestRequestConfig:

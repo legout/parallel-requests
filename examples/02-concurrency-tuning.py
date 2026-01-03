@@ -9,7 +9,7 @@ This example demonstrates:
 """
 
 import time
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 
 def measure_time(concurrency: int, num_requests: int = 20) -> float:
@@ -17,7 +17,7 @@ def measure_time(concurrency: int, num_requests: int = 20) -> float:
     urls = [f"https://httpbin.org/delay/{i % 3 + 1}" for i in range(num_requests)]
 
     start = time.time()
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         concurrency=concurrency,
         verbose=False,

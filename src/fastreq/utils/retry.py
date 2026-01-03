@@ -33,7 +33,7 @@ class RetryStrategy:
     resilient request handling.
 
     Example:
-        >>> from parallel_requests.utils.retry import RetryStrategy, RetryConfig
+        >>> from fastreq.utils.retry import RetryStrategy, RetryConfig
         >>> config = RetryConfig(max_retries=3, backoff_multiplier=1.0, jitter=0.1)
         >>> strategy = RetryStrategy(config)
         >>> result = await strategy.execute(some_async_function)

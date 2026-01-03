@@ -1,3 +1,3 @@
-# parallel_requests()
+# fastreq()
 
-::: parallel_requests.client.parallel_requests
+::: fastreq.client.fastreq

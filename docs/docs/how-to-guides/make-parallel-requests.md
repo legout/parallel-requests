@@ -7,20 +7,20 @@ Learn how to create parallel HTTP requests with different configurations and ret
 Make multiple requests to the same or different URLs:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Single URL repeated
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 5,
     concurrency=3,
 )
 
 # Multiple different URLs
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
-        "https://api.github.com/repos/legout/parallel-requests",
+        "https://api.github.com/repos/legout/fastreq",
     ],
 )
 ```
@@ -30,9 +30,9 @@ results = parallel_requests(
 Use the `keys` parameter to return a dictionary mapping names to results:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
@@ -52,7 +52,7 @@ The keys parameter is useful when you need to track which result corresponds to 
 Use `parse_func` to apply custom transformation to each response:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def extract_repo_info(response):
     """Extract only relevant fields from GitHub API response."""
@@ -62,10 +62,10 @@ def extract_repo_info(response):
         "language": response.get("language"),
     }
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
-        "https://api.github.com/repos/legout/parallel-requests",
+        "https://api.github.com/repos/legout/fastreq",
     ],
     parse_func=extract_repo_info,
 )
@@ -81,9 +81,9 @@ Control how responses are parsed with `return_type`:
 ### JSON Response (Default)
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.github.com/repos/python/cpython"],
     return_type="json",
 )
@@ -94,7 +94,7 @@ print(results[0]["name"])  # Access JSON fields directly
 ### Text Response
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/html"],
     return_type="text",
 )
@@ -105,7 +105,7 @@ print(results[0])  # Raw HTML text
 ### Binary Content
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/bytes/1024"],
     return_type="content",
 )
@@ -116,9 +116,9 @@ print(len(results[0]))  # Length in bytes
 ### Full Response Object
 
 ```python
-from parallel_requests import parallel_requests, ReturnType
+from fastreq import fastreq, ReturnType
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     return_type=ReturnType.RESPONSE,
 )
@@ -135,10 +135,10 @@ For async applications, use the async version:
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def fetch_data():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=[
             "https://api.github.com/repos/python/cpython",
             "https://api.github.com/repos/python/pypy",
@@ -156,7 +156,7 @@ Reuse sessions across multiple request batches:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def fetch_with_session():
     async with ParallelRequests(concurrency=5) as client:
@@ -180,9 +180,9 @@ results1, results2 = asyncio.run(fetch_with_session())
 Pass URL-specific parameters using dictionaries:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
@@ -199,9 +199,9 @@ results = parallel_requests(
 Combine parallel requests with other features:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
@@ -222,4 +222,4 @@ results = parallel_requests(
 
 - **[Limit Request Rate](limit-request-rate.md)** - Control request frequency
 - **[Handle Retries](handle-retries.md)** - Configure retry logic
-- **[API Reference](../reference/api/parallel_requests.md)** - Complete function documentation
+- **[API Reference](../reference/api/fastreq.md)** - Complete function documentation

@@ -1,10 +1,10 @@
-# parallel-requests v2.0.0
+# fastreq v2.0.2
 
-[![PyPI Version](https://img.shields.io/pypi/v/parallel-requests)](https://pypi.org/project/parallel-requests/)
-[![Python Version](https://img.shields.io/pypi/pyversions/parallel-requests)](https://pypi.org/project/parallel-requests/)
+[![PyPI Version](https://img.shields.io/pypi/v/fastreq)](https://pypi.org/project/fastreq/)
+[![Python Version](https://img.shields.io/pypi/pyversions/fastreq)](https://pypi.org/project/fastreq/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Test Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/legout/parallel-requests)
-[![Tests](https://img.shields.io/badge/tests-140%2B-brightgreen)](https://github.com/legout/parallel-requests)
+[![Test Coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)](https://github.com/legout/fastreq)
+[![Tests](https://img.shields.io/badge/tests-250%2B-brightgreen)](https://github.com/legout/fastreq)
 
 Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting.
 
@@ -25,16 +25,16 @@ Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate 
 
 ```bash
 # Core library only
-pip install parallel-requests
+pip install fastreq
 
 # With specific backend (recommended: niquests for HTTP/2 support)
-pip install parallel-requests[niquests]  # Primary (recommended)
-pip install parallel-requests[aiohttp]
-pip install parallel-requests[httpx]
-pip install parallel-requests[requests]
+pip install fastreq[niquests]  # Primary (recommended)
+pip install fastreq[aiohttp]
+pip install fastreq[httpx]
+pip install fastreq[requests]
 
 # All backends
-pip install parallel-requests[all]
+pip install fastreq[all]
 ```
 
 ## Quick Start
@@ -42,7 +42,7 @@ pip install parallel-requests[all]
 ### Sync Usage
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import parallel_requests
 
 results = parallel_requests(
     urls=[
@@ -61,7 +61,7 @@ for result in results:
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import parallel_requests_async
 
 async def main():
     results = await parallel_requests_async(
@@ -81,7 +81,7 @@ results = asyncio.run(main())
 ### Context Manager
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def main():
     async with ParallelRequests(concurrency=5) as client:
@@ -91,14 +91,14 @@ async def main():
 
 ## Documentation
 
-- **[Full Documentation](https://legout.github.io/parallel-requests/)** - Complete user guide
+- **[Full Documentation](https://legout.github.io/fastreq/)** - Complete user guide
 - **[API Reference](docs/reference/api/)** - Detailed API documentation
 - **[How-To Guides](docs/how-to-guides/)** - Practical guides for specific tasks
 - **[Tutorials](docs/tutorials/)** - Step-by-step learning guides
 
 ## Examples
 
-Visit the [examples](https://github.com/legout/parallel-requests/tree/main/examples) folder for 17 executable code samples covering all library features, including:
+Visit the [examples](https://github.com/legout/fastreq/tree/main/examples) folder for 17 executable code samples covering all library features, including:
 
 - Basic requests and concurrency tuning
 - Rate limiting and retry configuration
@@ -135,8 +135,8 @@ git push origin v2.0.1
 
 The workflow will:
 - Run tests, linting, and type checking
-- Publish to Test PyPI for validation
-- Publish to PyPI if Test PyPI succeeds
+- Create a version tag and update CHANGELOG.md
+- Publish to PyPI
 
 ## Backend Selection
 
@@ -150,7 +150,7 @@ The library automatically detects and uses the best available backend in this pr
 To explicitly select a backend:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import parallel_requests
 
 results = parallel_requests(
     urls=["https://httpbin.org/get"],
@@ -160,4 +160,4 @@ results = parallel_requests(
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/legout/parallel-requests/blob/main/LICENSE) for details.
+MIT License - see [LICENSE](https://github.com/legout/fastreq/blob/main/LICENSE) for details.

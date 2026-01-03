@@ -1,4 +1,4 @@
-from parallel_requests.exceptions import (
+from fastreq.exceptions import (
     ConfigurationError,
     FailureDetails,
     ParallelRequestsError,
@@ -9,14 +9,14 @@ from parallel_requests.exceptions import (
     ValidationError,
     BackendError,
 )
-from parallel_requests.config import GlobalConfig
-from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
-from parallel_requests.client import (
+from fastreq.config import GlobalConfig
+from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
+from fastreq.client import (
     ParallelRequests,
     RequestOptions,
     ReturnType,
-    parallel_requests,
-    parallel_requests_async,
+    fastreq,
+    fastreq_async,
 )
 
 __version__ = "2.0.0"
@@ -39,8 +39,8 @@ __all__ = [
     "ParallelRequests",
     "RequestOptions",
     "ReturnType",
-    "parallel_requests",
-    "parallel_requests_async",
+    "fastreq",
+    "fastreq_async",
 ]
 
 
@@ -52,8 +52,8 @@ aiohttp, and requests).
 
 Basic usage:
 
-    >>> from parallel_requests import parallel_requests
-    >>> results = parallel_requests(
+    >>> from fastreq import fastreq
+    >>> results = fastreq(
     ...     urls=["https://api.github.com/repos/python/cpython"],
     ...     concurrency=3,
     ... )
@@ -63,9 +63,9 @@ Basic usage:
 Async usage:
 
     >>> import asyncio
-    >>> from parallel_requests import parallel_requests_async
+    >>> from fastreq import fastreq_async
     >>> async def main():
-    ...     results = await parallel_requests_async(
+    ...     results = await fastreq_async(
     ...         urls=["https://httpbin.org/get"],
     ...     )
     ...     return results

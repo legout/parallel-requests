@@ -3,12 +3,12 @@
 Basic parallel GET requests example.
 
 This example demonstrates:
-- Using parallel_requests() for simple parallel HTTP calls
+- Using fastreq() for simple parallel HTTP calls
 - Making multiple requests to httpbin.org
 - Printing response data
 """
 
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 import json
 
 
@@ -29,7 +29,7 @@ def main():
         print(f"  - {url}")
     print()
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         concurrency=3,
     )

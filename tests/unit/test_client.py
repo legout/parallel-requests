@@ -2,15 +2,15 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from parallel_requests import (
+from fastreq import (
     ParallelRequests,
     RequestOptions,
     ReturnType,
-    parallel_requests,
-    parallel_requests_async,
+    fastreq,
+    fastreq_async,
 )
-from parallel_requests.backends.base import NormalizedResponse
-from parallel_requests.exceptions import ConfigurationError
+from fastreq.backends.base import NormalizedResponse
+from fastreq.exceptions import ConfigurationError
 
 
 class TestParallelRequestsInit:
@@ -75,7 +75,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_context_manager_entry(self) -> None:
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_backend = AsyncMock()
             mock_backend.__aenter__ = AsyncMock(return_value=mock_backend)
             mock_backend.__aexit__ = AsyncMock(return_value=None)
@@ -89,7 +89,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_context_manager_exit(self) -> None:
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_backend = AsyncMock()
             mock_backend.__aenter__ = AsyncMock(return_value=mock_backend)
             mock_backend.__aexit__ = AsyncMock(return_value=None)
@@ -104,7 +104,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_close_method(self) -> None:
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_backend = AsyncMock()
             mock_backend.close = AsyncMock(return_value=None)
             mock_module = MagicMock()
@@ -118,7 +118,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_backend_selection_no_backend_found(self) -> None:
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_import.side_effect = ImportError("No backend found")
 
             with pytest.raises(ConfigurationError) as exc_info:
@@ -128,7 +128,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_manual_backend_selection(self) -> None:
-        from parallel_requests.backends.base import Backend
+        from fastreq.backends.base import Backend
 
         class MockBackend(Backend):
             def __init__(self, http2_enabled: bool = True):
@@ -155,7 +155,7 @@ class TestParallelRequestsInit:
 
         mock_backend = MockBackend()
 
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_module = MagicMock()
             mock_module.RequestsBackend = MockBackend
             mock_import.return_value = mock_module
@@ -168,7 +168,7 @@ class TestParallelRequestsInit:
         class EmptyModule:
             __dict__ = {}
 
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_import.return_value = EmptyModule()
 
             with pytest.raises(ConfigurationError) as exc_info:
@@ -178,7 +178,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_manual_backend_import_error(self) -> None:
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_import.side_effect = ImportError("Module not found")
 
             with pytest.raises(ConfigurationError) as exc_info:
@@ -188,7 +188,7 @@ class TestParallelRequestsInit:
 
     @pytest.mark.asyncio
     async def test_explicit_httpx_backend_selection(self) -> None:
-        from parallel_requests.backends.base import Backend
+        from fastreq.backends.base import Backend
 
         class MockHttpxBackend(Backend):
             def __init__(self, http2_enabled: bool = True):
@@ -215,7 +215,7 @@ class TestParallelRequestsInit:
 
         mock_backend = MockHttpxBackend()
 
-        with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.import_module") as mock_import:
             mock_module = MagicMock()
             mock_module.HttpxBackend = MockHttpxBackend
             mock_import.return_value = mock_module
@@ -226,8 +226,8 @@ class TestParallelRequestsInit:
     @pytest.mark.asyncio
     async def test_auto_backend_selection_with_httpx_priority(self) -> None:
 
-        with patch("parallel_requests.client.importlib.util.find_spec") as mock_find:
-            with patch("parallel_requests.client.importlib.import_module") as mock_import:
+        with patch("fastreq.client.importlib.util.find_spec") as mock_find:
+            with patch("fastreq.client.importlib.import_module") as mock_import:
                 mock_backend = AsyncMock()
                 mock_backend.__aenter__ = AsyncMock(return_value=mock_backend)
                 mock_backend.__aexit__ = AsyncMock(return_value=None)
@@ -295,7 +295,7 @@ class TestReturnType:
 class TestParallelRequestsRequest:
     @pytest.mark.asyncio
     async def test_single_url_returns_single_result(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"result": "success"}
 
             client = ParallelRequests()
@@ -307,7 +307,7 @@ class TestParallelRequestsRequest:
 
     @pytest.mark.asyncio
     async def test_multiple_urls_returns_list(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.side_effect = [{"result": "a"}, {"result": "b"}]
 
             client = ParallelRequests()
@@ -321,7 +321,7 @@ class TestParallelRequestsRequest:
 
     @pytest.mark.asyncio
     async def test_urls_with_keys_returns_dict(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.side_effect = [{"result": "first"}, {"result": "second"}]
 
             client = ParallelRequests()
@@ -348,7 +348,7 @@ class TestParallelRequestsRequest:
 
     @pytest.mark.asyncio
     async def test_parse_func_applied(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"id": 123, "name": "test"}
 
             client = ParallelRequests()
@@ -362,7 +362,7 @@ class TestParallelRequestsRequest:
 
     @pytest.mark.asyncio
     async def test_return_none_on_failure(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.side_effect = [
                 {"result": "success"},
                 Exception("Connection failed"),
@@ -380,14 +380,14 @@ class TestParallelRequestsRequest:
 
     @pytest.mark.asyncio
     async def test_partial_failure_error(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.side_effect = [
                 {"result": "success"},
                 Exception("Connection failed"),
                 {"result": "success"},
             ]
 
-            from parallel_requests.exceptions import PartialFailureError
+            from fastreq.exceptions import PartialFailureError
 
             client = ParallelRequests(return_none_on_failure=False)
             async with client:
@@ -400,29 +400,29 @@ class TestParallelRequestsRequest:
 
 class TestParallelRequestsAsyncFunctions:
     @pytest.mark.asyncio
-    async def test_parallel_requests_async_wrapper(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+    async def test_fastreq_async_wrapper(self) -> None:
+        with patch("fastreq.client.ParallelRequests") as MockClient:
             mock_instance = AsyncMock()
             mock_instance.request = AsyncMock(return_value=[{"result": "success"}])
             mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            results = await parallel_requests_async(["https://example.com/api"])
+            results = await fastreq_async(["https://example.com/api"])
 
             assert len(results) == 1
             assert results[0] == {"result": "success"}
 
     @pytest.mark.asyncio
-    async def test_parallel_requests_async_with_custom_config(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+    async def test_fastreq_async_with_custom_config(self) -> None:
+        with patch("fastreq.client.ParallelRequests") as MockClient:
             mock_instance = AsyncMock()
             mock_instance.request = AsyncMock(return_value=[{"result": "success"}])
             mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            results = await parallel_requests_async(
+            results = await fastreq_async(
                 ["https://example.com/api"],
                 backend="custom",
                 concurrency=5,
@@ -437,40 +437,40 @@ class TestParallelRequestsAsyncFunctions:
             assert call_kwargs["rate_limit"] == 50.0
             assert len(results) == 1
 
-    def test_parallel_requests_sync_wrapper(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+    def test_fastreq_sync_wrapper(self) -> None:
+        with patch("fastreq.client.ParallelRequests") as MockClient:
             mock_instance = AsyncMock()
             mock_instance.request = AsyncMock(return_value=[{"result": "success"}])
             mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            with patch("parallel_requests.client.asyncio.run") as mock_run:
+            with patch("fastreq.client.asyncio.run") as mock_run:
                 mock_run.return_value = [{"result": "success"}]
 
-                results = parallel_requests(["https://example.com/api"])
+                results = fastreq(["https://example.com/api"])
 
                 assert len(results) == 1
                 assert results[0] == {"result": "success"}
                 mock_run.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_parallel_requests_async_single_url(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+    async def test_fastreq_async_single_url(self) -> None:
+        with patch("fastreq.client.ParallelRequests") as MockClient:
             mock_instance = AsyncMock()
             mock_instance.request = AsyncMock(return_value={"result": "success"})
             mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            result = await parallel_requests_async("https://example.com/api")
+            result = await fastreq_async("https://example.com/api")
 
             # Single URL returns single result
             assert result == {"result": "success"}
 
     @pytest.mark.asyncio
     async def test_return_type_as_string(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"data": "result"}
 
             client = ParallelRequests()
@@ -484,7 +484,7 @@ class TestParallelRequestsAsyncFunctions:
 
     @pytest.mark.asyncio
     async def test_follow_redirects_override(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"status": "ok"}
 
             client = ParallelRequests(follow_redirects=False)
@@ -500,7 +500,7 @@ class TestParallelRequestsAsyncFunctions:
 
     @pytest.mark.asyncio
     async def test_verify_ssl_override(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"status": "ok"}
 
             client = ParallelRequests(verify_ssl=False)
@@ -516,7 +516,7 @@ class TestParallelRequestsAsyncFunctions:
 
     @pytest.mark.asyncio
     async def test_timeout_override(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests._execute_request") as mock_exec:
+        with patch("fastreq.client.ParallelRequests._execute_request") as mock_exec:
             mock_exec.return_value = {"status": "ok"}
 
             client = ParallelRequests(timeout=10.0)
@@ -663,7 +663,7 @@ class TestParallelRequestsAsyncFunctions:
 
     @pytest.mark.asyncio
     async def test_execute_request_with_rate_limiter(self) -> None:
-        from parallel_requests.backends.base import NormalizedResponse
+        from fastreq.backends.base import NormalizedResponse
 
         mock_response = NormalizedResponse.from_backend(
             status_code=200,
@@ -687,15 +687,15 @@ class TestParallelRequestsAsyncFunctions:
 
             assert result == {"result": "success"}
 
-    def test_parallel_requests_sync_function(self) -> None:
-        with patch("parallel_requests.client.ParallelRequests") as MockClient:
+    def test_fastreq_sync_function(self) -> None:
+        with patch("fastreq.client.ParallelRequests") as MockClient:
             mock_instance = AsyncMock()
             mock_instance.request = AsyncMock(return_value={"result": "sync"})
             mock_instance.__aenter__ = AsyncMock(return_value=mock_instance)
             mock_instance.__aexit__ = AsyncMock(return_value=None)
             MockClient.return_value = mock_instance
 
-            result = parallel_requests(
+            result = fastreq(
                 ["https://example.com"],
                 backend="requests",
                 concurrency=5,

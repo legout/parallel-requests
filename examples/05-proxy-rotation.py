@@ -12,7 +12,7 @@ Note: This requires valid proxy settings in .env file
 
 import os
 from dotenv import load_dotenv
-from parallel_requests import parallel_requests, ProxyError
+from fastreq import fastreq, ProxyError
 
 
 def main():
@@ -41,7 +41,7 @@ def main():
         print("-" * 50)
 
         try:
-            results = parallel_requests(
+            results = fastreq(
                 urls=urls,
                 proxy=proxy_url,
                 concurrency=2,
@@ -68,7 +68,7 @@ def main():
         print("\nMaking direct requests (no proxy)...")
         print("-" * 50)
 
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             concurrency=2,
         )

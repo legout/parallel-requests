@@ -10,7 +10,7 @@ This example demonstrates:
 Note: Streaming support varies by backend
 """
 
-from parallel_requests import parallel_requests, ParallelRequests, ReturnType
+from fastreq import fastreq, ParallelRequests, ReturnType
 
 
 class ProgressTracker:
@@ -56,7 +56,7 @@ def main():
 
     callbacks = [create_callback(i) for i in range(len(urls))]
 
-    parallel_requests(
+    fastreq(
         urls=urls,
         return_type=ReturnType.STREAM,
         stream_callback=lambda chunk: None,
@@ -81,7 +81,7 @@ def main():
 
     print("\nDownloading files with progress...")
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_type=ReturnType.CONTENT,
         concurrency=2,

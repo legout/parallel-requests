@@ -1,6 +1,6 @@
 # Tutorials
 
-Welcome to the tutorials section! These step-by-step guides will help you learn parallel-requests from the ground up, starting with installation and basic usage, and progressing to more advanced concepts.
+Welcome to the tutorials section! These step-by-step guides will help you learn fastreq from the ground up, starting with installation and basic usage, and progressing to more advanced concepts.
 
 ## Tutorial Path
 
@@ -14,7 +14,7 @@ We recommend following the tutorials in order:
 
 After completing these tutorials, you'll be able to:
 
-- Install and configure parallel-requests
+- Install and configure fastreq
 - Make basic parallel HTTP requests
 - Understand how async/await works with parallel requests
 - Handle different types of errors and failures

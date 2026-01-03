@@ -4,8 +4,8 @@ from typing import Any
 
 import aiohttp
 
-from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
-from parallel_requests.exceptions import BackendError
+from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
+from fastreq.exceptions import BackendError
 
 
 class AiohttpBackend(Backend):

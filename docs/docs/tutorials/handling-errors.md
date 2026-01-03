@@ -1,6 +1,6 @@
 # Handling Errors
 
-This tutorial covers error handling patterns and working with exceptions in parallel-requests.
+This tutorial covers error handling patterns and working with exceptions in fastreq.
 
 **Estimated reading time: 15 minutes**
 
@@ -22,10 +22,10 @@ The library defines several exception types:
 Wrap your requests in try-except blocks:
 
 ```python
-from parallel_requests import parallel_requests, ParallelRequestsError
+from fastreq import fastreq, ParallelRequestsError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://api.github.com/invalid"],
     )
 except ParallelRequestsError as e:
@@ -37,7 +37,7 @@ except ParallelRequestsError as e:
 When making multiple requests, some may succeed while others fail. By default, the library raises `PartialFailureError`:
 
 ```python
-from parallel_requests import parallel_requests, PartialFailureError
+from fastreq import fastreq, PartialFailureError
 
 urls = [
     "https://api.github.com/repos/python/cpython",  # Valid
@@ -46,7 +46,7 @@ urls = [
 ]
 
 try:
-    results = parallel_requests(urls=urls)
+    results = fastreq(urls=urls)
 except PartialFailureError as e:
     print(f"Partial failure: {e.successes}/{e.total} succeeded")
     print(f"Failed URLs: {e.get_failed_urls()}")
@@ -61,9 +61,9 @@ except PartialFailureError as e:
 Use `return_none_on_failure` to return `None` for failed requests instead of raising exceptions:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://invalid-url.com",
@@ -84,16 +84,16 @@ for url, result in zip(urls, results):
 Control retry behavior with `max_retries`:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry up to 3 times (default)
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
 )
 
 # Disable retries
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=0,
 )
@@ -102,10 +102,10 @@ results = parallel_requests(
 ### Catching Retry Exhaustion
 
 ```python
-from parallel_requests import parallel_requests, RetryExhaustedError
+from fastreq import fastreq, RetryExhaustedError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://api.example.com/unreliable"],
         max_retries=3,
     )
@@ -119,11 +119,11 @@ except RetryExhaustedError as e:
 Set timeouts to prevent hanging requests:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 from concurrent.futures import TimeoutError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://httpbin.org/delay/10"],
         timeout=5,  # 5 second timeout
     )
@@ -136,10 +136,10 @@ except TimeoutError:
 Catch validation errors for invalid inputs:
 
 ```python
-from parallel_requests import parallel_requests, ValidationError
+from fastreq import fastreq, ValidationError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["ftp://invalid-protocol.com"],  # Invalid URL
     )
 except ValidationError as e:
@@ -153,7 +153,7 @@ Using a context manager gives you more control:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests, PartialFailureError
+from fastreq import ParallelRequests, PartialFailureError
 
 async def fetch_with_retry():
     async with ParallelRequests(max_retries=3) as client:
@@ -179,10 +179,10 @@ results = asyncio.run(fetch_with_retry())
 
 ```python
 # Good: Catch specific exceptions
-from parallel_requests import RetryExhaustedError, PartialFailureError
+from fastreq import RetryExhaustedError, PartialFailureError
 
 try:
-    results = parallel_requests(urls=urls)
+    results = fastreq(urls=urls)
 except RetryExhaustedError as e:
     # Handle retry exhaustion
     pass
@@ -198,10 +198,10 @@ except ParallelRequestsError as e:
 
 ```python
 from loguru import logger
-from parallel_requests import parallel_requests, PartialFailureError
+from fastreq import fastreq, PartialFailureError
 
 try:
-    results = parallel_requests(urls=urls)
+    results = fastreq(urls=urls)
 except PartialFailureError as e:
     logger.error(f"Partial failure: {e.successes}/{e.total}")
     for url, details in e.failures.items():
@@ -211,24 +211,24 @@ except PartialFailureError as e:
 ### 3. Implement Fallback Logic
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def fetch_with_fallback(urls):
     try:
-        return parallel_requests(urls=urls)
+        return fastreq(urls=urls)
     except PartialFailureError:
         # Retry only failed URLs
         failed_urls = list(e.get_failed_urls())
-        return parallel_requests(urls=failed_urls)
+        return fastreq(urls=failed_urls)
 ```
 
 ### 4. Use `return_none_on_failure` for Non-Critical Requests
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Fetch multiple resources, ignore failures
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api1.example.com/data",
         "https://api2.example.com/data",

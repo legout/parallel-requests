@@ -41,7 +41,7 @@ class ProxyManager:
     Handles loading, validating, rotating, and tracking proxy health.
 
     Example:
-        >>> from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+        >>> from fastreq.utils.proxies import ProxyManager, ProxyConfig
         >>> config = ProxyConfig(
         ...     enabled=True,
         ...     list=["192.168.1.1:8080", "192.168.1.2:8080:admin:pass"],

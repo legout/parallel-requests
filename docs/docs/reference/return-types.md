@@ -9,7 +9,7 @@ Control how responses are parsed using the `ReturnType` enum or string values.
 Parses response body as JSON. Returns `dict`, `list`, or `None` if response is not valid JSON.
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async with ParallelRequests() as client:
     # Returns dict/list if JSON
@@ -31,7 +31,7 @@ async with ParallelRequests() as client:
 Returns response body as decoded UTF-8 string.
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async with ParallelRequests() as client:
     # Returns decoded string
@@ -53,7 +53,7 @@ async with ParallelRequests() as client:
 Returns response body as raw bytes.
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async with ParallelRequests() as client:
     # Returns raw bytes
@@ -76,7 +76,7 @@ async with ParallelRequests() as client:
 Returns full `NormalizedResponse` object with all response details.
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async with ParallelRequests() as client:
     # Returns NormalizedResponse
@@ -113,7 +113,7 @@ async with ParallelRequests() as client:
 Streams response content through a callback function.
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 def stream_callback(chunk: bytes):
     print(f"Received {len(chunk)} bytes")
@@ -139,7 +139,7 @@ async with ParallelRequests() as client:
 You can use either string values or the `ReturnType` enum:
 
 ```python
-from parallel_requests import ParallelRequests, ReturnType
+from fastreq import ParallelRequests, ReturnType
 
 async with ParallelRequests() as client:
     # String value

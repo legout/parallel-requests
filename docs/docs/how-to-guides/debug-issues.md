@@ -7,9 +7,9 @@ Learn how to troubleshoot common problems and enable debug logging.
 Use `debug=True` to enable verbose logging:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 5,
     debug=True,  # Enable debug logging
 )
@@ -28,9 +28,9 @@ Debug output includes:
 Use `verbose=False` to disable progress bars:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 100,
     verbose=False,  # Quiet mode, no progress bar
 )
@@ -41,7 +41,7 @@ results = parallel_requests(
 Verify which backends are installed:
 
 ```python
-from parallel_requests.backends import get_available_backends
+from fastreq.backends import get_available_backends
 
 available = get_available_backends()
 print(f"Available backends: {available}")
@@ -54,11 +54,11 @@ print(f"Available backends: {available}")
 Test if a backend works:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def test_backend(backend_name):
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=["https://httpbin.org/get"],
             backend=backend_name,
             timeout=5,
@@ -79,9 +79,9 @@ for backend in ["niquests", "aiohttp", "requests"]:
 See rate limiting behavior:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 20,
     rate_limit=5,
     rate_limit_burst=10,
@@ -103,9 +103,9 @@ Example output:
 Monitor retry behavior:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
     debug=True,
@@ -125,9 +125,9 @@ Example output:
 See which proxy is being used:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 5,
     proxies=[
         "http://proxy1:8080",
@@ -146,15 +146,15 @@ results = parallel_requests(
 **Solution:** Install backend dependencies:
 
 ```bash
-pip install parallel-requests[all]
+pip install fastreq[all]
 ```
 
 Or install specific backend:
 
 ```bash
-pip install parallel-requests[niquests]
-pip install parallel-requests[aiohttp]
-pip install parallel-requests[requests]
+pip install fastreq[niquests]
+pip install fastreq[aiohttp]
+pip install fastreq[requests]
 ```
 
 ### Issue: Requests Timing Out
@@ -164,10 +164,10 @@ pip install parallel-requests[requests]
 **Solution:** Increase timeout or check network:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Increase timeout
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/delay/10"],
     timeout=15,  # Increase from default
 )
@@ -184,10 +184,10 @@ requests.get("https://httpbin.org/get", timeout=5)
 **Solution:** Adjust rate limiting:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Lower rate limit
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     rate_limit=5,           # Reduce from 10
     rate_limit_burst=5,      # Reduce from 10
@@ -224,17 +224,17 @@ except Exception as e:
 
 ```bash
 # Install niquests
-pip install parallel-requests[niquests]
+pip install fastreq[niquests]
 
 # Verify
 python -c "import niquests; print('niquests installed')"
 ```
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Force niquests backend
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",
     debug=True,
@@ -248,7 +248,7 @@ results = parallel_requests(
 **Solution:** Verify SSL certificates or disable (not recommended for production):
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Note: Disabling SSL verification is not recommended for production
 # This is for debugging only
@@ -264,7 +264,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 **Solution:** Handle partial failures gracefully:
 
 ```python
-from parallel_requests import parallel_requests, PartialFailureError
+from fastreq import fastreq, PartialFailureError
 
 urls = [
     "https://api.github.com/repos/python/cpython",
@@ -273,7 +273,7 @@ urls = [
 ]
 
 try:
-    results = parallel_requests(urls=urls)
+    results = fastreq(urls=urls)
 except PartialFailureError as e:
     print(f"Partial failure: {e.successes}/{e.total}")
     print(f"Failed URLs: {e.get_failed_urls()}")
@@ -282,7 +282,7 @@ except PartialFailureError as e:
     failed_urls = list(e.get_failed_urls())
     if failed_urls:
         print(f"Retrying {len(failed_urls)} failed URLs...")
-        results = parallel_requests(urls=failed_urls)
+        results = fastreq(urls=failed_urls)
 ```
 
 ### Issue: High Memory Usage
@@ -292,7 +292,7 @@ except PartialFailureError as e:
 **Solution:** Use streaming for large files:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Use streaming instead of loading entire response
 def stream_handler(response, url):
@@ -301,7 +301,7 @@ def stream_handler(response, url):
             if chunk:
                 f.write(chunk)
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],
     return_type="stream",
     stream_callback=stream_handler,
@@ -314,7 +314,7 @@ Use context manager for better debugging:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def debug_with_context():
     async with ParallelRequests(debug=True) as client:
@@ -339,7 +339,7 @@ Use Python logging for custom logging:
 
 ```python
 import logging
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Configure logging
 logging.basicConfig(
@@ -348,7 +348,7 @@ logging.basicConfig(
 )
 
 # Make requests
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 5,
     debug=True,
 )
@@ -360,7 +360,7 @@ Use this checklist when debugging:
 
 1. **Backend Available?**
    ```python
-   from parallel_requests.backends import get_available_backends
+   from fastreq.backends import get_available_backends
    print(get_available_backends())
    ```
 
@@ -399,12 +399,12 @@ Use this checklist when debugging:
 
 2. **Test Simple Cases First**: Start with a single URL
    ```python
-   parallel_requests(urls=["https://httpbin.org/get"])
+   fastreq(urls=["https://httpbin.org/get"])
    ```
 
 3. **Check Dependencies**: Verify all backends are installed
    ```python
-   pip install parallel-requests[all]
+   pip install fastreq[all]
    ```
 
 4. **Monitor Memory**: Use streaming for large responses

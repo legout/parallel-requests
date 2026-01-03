@@ -8,7 +8,7 @@ This example demonstrates:
 - Testing with an endpoint that sometimes fails
 """
 
-from parallel_requests import parallel_requests, RetryExhaustedError
+from fastreq import fastreq, RetryExhaustedError
 
 
 def main():
@@ -26,7 +26,7 @@ def main():
     print("Scenario 1: No retries (max_retries=0)")
     print("-" * 50)
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             max_retries=0,
             verbose=False,
@@ -38,7 +38,7 @@ def main():
     print("\nScenario 2: 3 retries (default)")
     print("-" * 50)
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             max_retries=3,
             verbose=False,
@@ -57,7 +57,7 @@ def main():
         "https://httpbin.org/delay/1",
     ]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=delay_urls,
         max_retries=3,
         verbose=False,

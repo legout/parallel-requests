@@ -27,11 +27,11 @@ Load with python-dotenv:
 
 ```python
 from dotenv import load_dotenv
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 load_dotenv()
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 5,
 )
 ```
@@ -41,7 +41,7 @@ results = parallel_requests(
 Pass `proxies` directly:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     "http://proxy1.example.com:8080",
@@ -49,7 +49,7 @@ proxies = [
     "socks5://proxy3.example.com:1080",
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 10,
     proxies=proxies,
 )
@@ -60,7 +60,7 @@ results = parallel_requests(
 The library automatically rotates through the proxy list:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     "http://proxy1:8080",
@@ -68,7 +68,7 @@ proxies = [
     "http://proxy3:8080",
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 9,
     proxies=proxies,
 )
@@ -85,12 +85,12 @@ Use WebShare.io rotating proxies:
 
 ```python
 import os
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Set WebShare.io proxy (or use environment variable)
 webshare_proxy = f"http://{os.getenv('WEBSHARE_USERNAME')}:{os.getenv('WEBSHARE_PASSWORD')}@p.webshare.io:80"
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 10,
     proxies=[webshare_proxy],
 )
@@ -110,14 +110,14 @@ PARALLEL_REQUESTS_PROXIES=http://${WEBSHARE_USERNAME}:${WEBSHARE_PASSWORD}@p.web
 Use httpbin.org to verify which proxy was used:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     "http://proxy1.example.com:8080",
     "http://proxy2.example.com:8080",
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 6,
     proxies=proxies,
 )
@@ -131,14 +131,14 @@ for result in results:
 Use authenticated proxies:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     "http://user:pass@proxy1.example.com:8080",
     "http://user:pass@proxy2.example.com:8080",
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 5,
     proxies=proxies,
 )
@@ -148,13 +148,13 @@ results = parallel_requests(
 
 ```python
 import os
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     f"http://{os.getenv('PROXY_USER')}:{os.getenv('PROXY_PASS')}@proxy1:8080",
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 5,
     proxies=proxies,
 )
@@ -165,7 +165,7 @@ results = parallel_requests(
 The library supports HTTP, HTTPS, and SOCKS5 proxies:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 proxies = [
     "http://proxy.example.com:8080",      # HTTP proxy
@@ -173,7 +173,7 @@ proxies = [
     "socks5://socks-proxy.com:1080",      # SOCKS5 proxy
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 6,
     proxies=proxies,
 )
@@ -184,9 +184,9 @@ results = parallel_requests(
 Route specific URLs through different proxies:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/pypy",
@@ -206,9 +206,9 @@ To bypass proxy for specific domains:
 import os
 os.environ['NO_PROXY'] = 'localhost,127.0.0.1,.local'
 
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"],
 )
 ```
@@ -238,9 +238,9 @@ except Exception as e:
 See which proxy is being used:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 3,
     proxies=["http://proxy1:8080", "http://proxy2:8080"],
     debug=True,
@@ -250,10 +250,10 @@ results = parallel_requests(
 ### Common Proxy Errors
 
 ```python
-from parallel_requests import parallel_requests, ProxyError
+from fastreq import fastreq, ProxyError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://httpbin.org/ip"],
         proxies=["http://invalid-proxy:8080"],
     )
@@ -267,10 +267,10 @@ except ProxyError as e:
 The library has experimental support for fetching free proxies, but this feature is not fully implemented yet.
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # This is experimental and may not work
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 5,
     use_free_proxies=True,  # Experimental
 )
@@ -291,7 +291,7 @@ results = parallel_requests(
 ```python
 import os
 from dotenv import load_dotenv
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 load_dotenv()
 
@@ -307,7 +307,7 @@ if webshare_user and webshare_pass:
     proxies.append(webshare_proxy)
 
 # Make requests with fallback
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/ip"] * 10,
     proxies=proxies if proxies else None,
     max_retries=2,

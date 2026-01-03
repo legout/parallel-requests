@@ -7,22 +7,22 @@ Learn how to configure automatic retries with exponential backoff and selective 
 Use `max_retries` to automatically retry failed requests:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry up to 3 times (default)
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
 )
 
 # Disable retries
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=0,
 )
 
 # Increase retries for unreliable services
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=5,
 )
@@ -33,7 +33,7 @@ results = parallel_requests(
 The library uses exponential backoff with random jitter:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry behavior with max_retries=3
 # Attempt 0: immediate
@@ -42,7 +42,7 @@ from parallel_requests import parallel_requests
 # Attempt 3: wait ~4s (1.0 * 2^3 + jitter)
 # Failed after 4 total attempts
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
 )
@@ -55,17 +55,17 @@ results = parallel_requests(
 Only retry on specific HTTP status codes:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry only on 5xx server errors
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     retry_on=[500, 502, 503, 504],  # Server errors
 )
 
 # Retry on connection errors and server errors
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     retry_on=[500, 502, 503, 504, "timeout", "connection"],
@@ -77,10 +77,10 @@ results = parallel_requests(
 Never retry on specific status codes:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Don't retry on 4xx client errors
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     dont_retry_on=[400, 401, 403, 404, 429],  # Client errors
@@ -90,10 +90,10 @@ results = parallel_requests(
 ## Example: Retry Only on Server Errors
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry only when server is having issues
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.example.com/endpoint1",
         "https://api.example.com/endpoint2",
@@ -108,10 +108,10 @@ results = parallel_requests(
 ## Example: Don't Retry on Validation Errors
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Don't retry on validation errors (4xx)
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/users"],
     method="POST",
     json={"name": "John"},
@@ -127,9 +127,9 @@ results = parallel_requests(
 Both parameters can be used together:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     retry_on=[500, 502, 503, 504],           # Retry server errors
@@ -142,10 +142,10 @@ results = parallel_requests(
 Catch `RetryExhaustedError` when all retries fail:
 
 ```python
-from parallel_requests import parallel_requests, RetryExhaustedError
+from fastreq import fastreq, RetryExhaustedError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://api.example.com/unreliable"],
         max_retries=3,
     )
@@ -157,11 +157,11 @@ except RetryExhaustedError as e:
 ## Retry with Custom Error Handling
 
 ```python
-from parallel_requests import parallel_requests, RetryExhaustedError
+from fastreq import fastreq, RetryExhaustedError
 
 def fetch_with_fallback(urls):
     try:
-        return parallel_requests(
+        return fastreq(
             urls=urls,
             max_retries=3,
             retry_on=[500, 502, 503, 504],
@@ -169,7 +169,7 @@ def fetch_with_fallback(urls):
     except RetryExhaustedError as e:
         print(f"Retries failed: {e.last_error}")
         # Fallback: try again with different parameters
-        return parallel_requests(
+        return fastreq(
             urls=urls,
             max_retries=1,
             timeout=30,  # Longer timeout
@@ -185,7 +185,7 @@ results = fetch_with_fallback(
 Handle retries with partial failures:
 
 ```python
-from parallel_requests import parallel_requests, PartialFailureError, RetryExhaustedError
+from fastreq import fastreq, PartialFailureError, RetryExhaustedError
 
 urls = [
     "https://api.example.com/endpoint1",
@@ -194,7 +194,7 @@ urls = [
 ]
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         max_retries=3,
     )
@@ -208,24 +208,24 @@ except PartialFailureError as e:
 Different backends handle retries differently:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # niquests: HTTP/2 retries, connection pooling
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     backend="niquests",
 )
 
 # aiohttp: Async retries
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     backend="aiohttp",
 )
 
 # requests: Sync retries via threading
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"],
     max_retries=3,
     backend="requests",
@@ -237,9 +237,9 @@ results = parallel_requests(
 Enable debug logging to see retry attempts:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
     debug=True,
@@ -261,7 +261,7 @@ Example output:
 For rate-limited APIs:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"],
     max_retries=2,
     dont_retry_on=[429],  # Don't retry rate limit
@@ -273,7 +273,7 @@ results = parallel_requests(
 For critical operations:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/payment"],
     max_retries=5,
     retry_on=[500, 502, 503, 504],
@@ -286,7 +286,7 @@ results = parallel_requests(
 Retry only on timeouts:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/slow"],
     max_retries=3,
     retry_on=["timeout"],
@@ -299,7 +299,7 @@ results = parallel_requests(
 ### Retries + Rate Limiting
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 50,
     max_retries=3,
     rate_limit=10,  # 10 req/s
@@ -310,7 +310,7 @@ results = parallel_requests(
 ### Retries + Proxies
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 20,
     max_retries=2,
     proxies=["http://proxy1:8080", "http://proxy2:8080"],
@@ -321,7 +321,7 @@ results = parallel_requests(
 ### Retries + Timeout
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/slow"],
     max_retries=3,
     timeout=5,

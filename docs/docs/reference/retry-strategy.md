@@ -7,7 +7,7 @@ Automatic retry with exponential backoff and jitter for resilient request handli
 Main retry strategy class.
 
 ```python
-from parallel_requests.utils.retry import RetryStrategy, RetryConfig
+from fastreq.utils.retry import RetryStrategy, RetryConfig
 
 config = RetryConfig(
     max_retries=3,
@@ -35,7 +35,7 @@ result = await strategy.execute(some_async_function)
 Configuration for retry strategy.
 
 ```python
-from parallel_requests.utils.retry import RetryConfig
+from fastreq.utils.retry import RetryConfig
 
 config = RetryConfig(
     max_retries=3,              # Retry up to 3 times
@@ -171,7 +171,7 @@ config = RetryConfig(
 ### In ParallelRequests Client
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 client = ParallelRequests(
     max_retries=3,  # Built-in retry
@@ -184,7 +184,7 @@ async with client:
 ### Standalone Usage
 
 ```python
-from parallel_requests.utils.retry import RetryStrategy, RetryConfig
+from fastreq.utils.retry import RetryStrategy, RetryConfig
 import httpx
 
 config = RetryConfig(max_retries=3, jitter=0.1)
@@ -205,7 +205,7 @@ result = await strategy.execute(fetch, "https://example.com")
 When all retries are exhausted, `RetryExhaustedError` is raised:
 
 ```python
-from parallel_requests.exceptions import RetryExhaustedError
+from fastreq.exceptions import RetryExhaustedError
 
 try:
     await strategy.execute(func)
@@ -227,8 +227,8 @@ except RetryExhaustedError as e:
 ## Complete Example
 
 ```python
-from parallel_requests import ParallelRequests
-from parallel_requests.exceptions import RetryExhaustedError
+from fastreq import ParallelRequests
+from fastreq.exceptions import RetryExhaustedError
 import httpx
 
 client = ParallelRequests(

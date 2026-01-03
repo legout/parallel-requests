@@ -3,20 +3,20 @@
 Async usage example.
 
 This example demonstrates:
-- Using parallel_requests_async() function
+- Using fastreq_async() function
 - Integrating with other async code
 - Combining multiple async operations
 """
 
 import asyncio
-from parallel_requests import parallel_requests_async, ParallelRequests
+from fastreq import fastreq_async, ParallelRequests
 
 
 async def fetch_data(urls: list[str]) -> list[dict]:
     """Fetch data from multiple URLs asynchronously."""
     print(f"Fetching {len(urls)} URLs...")
 
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=urls,
         concurrency=5,
         verbose=False,
@@ -47,7 +47,7 @@ async def process_data(results: list) -> list:
 async def main():
     print("=== Async Usage Example ===\n")
 
-    print("Scenario 1: Using parallel_requests_async()")
+    print("Scenario 1: Using fastreq_async()")
     print("-" * 50)
 
     urls = [
@@ -56,7 +56,7 @@ async def main():
         "https://httpbin.org/get?id=3",
     ]
 
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=urls,
         concurrency=3,
         verbose=False,
@@ -78,7 +78,7 @@ async def main():
 
     async def task_b():
         print("Task B: Starting")
-        results = await parallel_requests_async(
+        results = await fastreq_async(
             urls=["https://httpbin.org/delay/1"],
             verbose=False,
         )
@@ -127,12 +127,12 @@ async def main():
     print("\n\nScenario 5: Sequential async operations")
     print("-" * 50)
 
-    batch1 = await parallel_requests_async(
+    batch1 = await fastreq_async(
         urls=["https://httpbin.org/get?batch=1"],
         verbose=False,
     )
 
-    batch2 = await parallel_requests_async(
+    batch2 = await fastreq_async(
         urls=["https://httpbin.org/get?batch=2"],
         verbose=False,
     )
@@ -141,7 +141,7 @@ async def main():
     print(f"Batch 2: {len(batch2)} requests")
 
     print("\n--- Async Patterns ---")
-    print("• parallel_requests_async(): Quick async function")
+    print("• fastreq_async(): Quick async function")
     print("• asyncio.gather(): Run multiple async operations")
     print("• Sequential awaits: Run operations in order")
     print("• Custom clients: More control and session reuse")

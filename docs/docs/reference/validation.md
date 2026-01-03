@@ -7,7 +7,7 @@ Input validation functions for URLs, proxies, headers, and more.
 Validate URL format (must start with http:// or https://).
 
 ```python
-from parallel_requests.utils.validators import validate_url
+from fastreq.utils.validators import validate_url
 
 is_valid = validate_url("https://example.com")  # True
 ```
@@ -29,7 +29,7 @@ is_valid = validate_url("https://example.com")  # True
 ### Examples
 
 ```python
-from parallel_requests.utils.validators import validate_url, ValidationError
+from fastreq.utils.validators import validate_url, ValidationError
 
 # Valid URLs
 validate_url("https://example.com")           # True
@@ -61,7 +61,7 @@ pattern = r"^https?://.+"
 Validate proxy URL format.
 
 ```python
-from parallel_requests.utils.validators import validate_proxy
+from fastreq.utils.validators import validate_proxy
 
 is_valid = validate_proxy("192.168.1.1:8080")  # True
 ```
@@ -129,7 +129,7 @@ http_url = r"^https?://.+"
 Validate headers dictionary.
 
 ```python
-from parallel_requests.utils.validators import validate_headers
+from fastreq.utils.validators import validate_headers
 
 is_valid = validate_headers({
     "Content-Type": "application/json",
@@ -160,7 +160,7 @@ is_valid = validate_headers({
 ### Examples
 
 ```python
-from parallel_requests.utils.validators import validate_headers, ValidationError
+from fastreq.utils.validators import validate_headers, ValidationError
 
 # Valid headers
 validate_headers({
@@ -195,7 +195,7 @@ except ValidationError as e:
 Normalize URLs to list format.
 
 ```python
-from parallel_requests.utils.validators import normalize_urls
+from fastreq.utils.validators import normalize_urls
 
 # Single URL → list
 result = normalize_urls("https://example.com")
@@ -223,7 +223,7 @@ result = normalize_urls(None)
 ### Examples
 
 ```python
-from parallel_requests.utils.validators import normalize_urls
+from fastreq.utils.validators import normalize_urls
 
 # Single string
 normalize_urls("https://example.com")
@@ -249,7 +249,7 @@ normalize_urls([])
 ### Manual Validation
 
 ```python
-from parallel_requests.utils.validators import (
+from fastreq.utils.validators import (
     validate_url,
     validate_proxy,
     validate_headers,
@@ -281,7 +281,7 @@ print(urls)  # ["https://example.com"]
 ParallelRequests uses these validators internally:
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async with ParallelRequests() as client:
     # URLs are validated internally
@@ -301,7 +301,7 @@ async with ParallelRequests() as client:
 Base validation error with `field_name` attribute.
 
 ```python
-from parallel_requests.exceptions import ValidationError
+from fastreq.exceptions import ValidationError
 
 try:
     validate_url("invalid-url")

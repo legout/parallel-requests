@@ -1,8 +1,8 @@
-site_name: Parallel Requests
-site_url: https://volkerlorrmann.github.io/parallel-requests/
+site_name: fastreq
+site_url: https://legout.github.io/fastreq/
 site_description: Fast parallel HTTP requests with asyncio, retry logic, proxy rotation, and rate limiting
 site_author: Volker Lorrmann
-repo_url: https://github.com/legout/parallel-requests
+repo_url: https://github.com/legout/fastreq
 edit_uri: edit/main/docs/docs/
 
 theme:

@@ -8,8 +8,8 @@ This example demonstrates:
 - Handling various response formats
 """
 
-from parallel_requests import (
-    parallel_requests,
+from fastreq import (
+    fastreq,
     ParallelRequests,
     ReturnType,
 )
@@ -28,7 +28,7 @@ def main():
     print("Scenario 1: JSON return type (default)")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_type=ReturnType.JSON,
         verbose=False,
@@ -44,7 +44,7 @@ def main():
     print("\n\nScenario 2: TEXT return type")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_type=ReturnType.TEXT,
         verbose=False,
@@ -60,7 +60,7 @@ def main():
     print("\n\nScenario 3: CONTENT return type (bytes)")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls[:2],
         return_type=ReturnType.CONTENT,
         verbose=False,
@@ -74,7 +74,7 @@ def main():
     print("\n\nScenario 4: RESPONSE return type (full object)")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls[:2],
         return_type=ReturnType.RESPONSE,
         verbose=False,
@@ -101,7 +101,7 @@ def main():
 
     urls = ["https://httpbin.org/ip", "https://httpbin.org/get"]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_type=ReturnType.JSON,
         parse_func=lambda r: {
@@ -130,7 +130,7 @@ def main():
             }
         return None
 
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://httpbin.org/post"],
         method="POST",
         json={"test": "data"},

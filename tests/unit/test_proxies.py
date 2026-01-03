@@ -2,7 +2,7 @@ import os
 import pytest
 import asyncio
 from unittest.mock import patch, MagicMock
-from parallel_requests.utils.proxies import ProxyConfig, ProxyManager, ProxyValidationError
+from fastreq.utils.proxies import ProxyConfig, ProxyManager, ProxyValidationError
 
 
 @pytest.fixture

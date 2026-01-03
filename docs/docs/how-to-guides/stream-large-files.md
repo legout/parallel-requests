@@ -7,7 +7,7 @@ Learn how to download large files efficiently using streaming to save memory.
 Use `return_type="stream"` with `stream_callback` to process responses incrementally:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def stream_handler(response, url):
     """Handle streaming response."""
@@ -21,7 +21,7 @@ def stream_handler(response, url):
                 downloaded += len(chunk)
                 print(f"Downloaded: {downloaded}/{content_length} bytes")
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://httpbin.org/bytes/10240",
         "https://httpbin.org/bytes/20480",
@@ -36,7 +36,7 @@ results = parallel_requests(
 Track download progress for multiple files:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 import os
 
 def download_with_progress(response, url):
@@ -58,7 +58,7 @@ def download_with_progress(response, url):
 
     print(f"Completed: {filename}")
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://httpbin.org/bytes/10485760",  # 10 MB
         "https://httpbin.org/bytes/20971520",  # 20 MB
@@ -73,7 +73,7 @@ results = parallel_requests(
 Process large responses line by line (e.g., CSV, JSON lines):
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def process_jsonl(response, url):
     """Process JSON Lines format."""
@@ -88,7 +88,7 @@ def process_jsonl(response, url):
 
     print(f"Processed {line_count} lines from {url}")
 
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.example.com/data.jsonl",
     ],
@@ -102,10 +102,10 @@ results = parallel_requests(
 ### Non-Streaming (High Memory Usage)
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Loads entire response into memory
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],  # 1 GB file
     return_type="content",
 )
@@ -116,7 +116,7 @@ results = parallel_requests(
 ### Streaming (Low Memory Usage)
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def save_stream(response, url):
     with open("large-file.zip", "wb") as f:
@@ -125,7 +125,7 @@ def save_stream(response, url):
                 f.write(chunk)
 
 # Processes in 8KB chunks
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],
     return_type="stream",
     stream_callback=save_stream,
@@ -139,7 +139,7 @@ results = parallel_requests(
 Download multiple files simultaneously with progress tracking:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 from tqdm import tqdm  # pip install tqdm
 import os
 
@@ -164,7 +164,7 @@ def download_with_tqdm(response, url):
                 f.write(chunk)
                 pbar.update(len(chunk))
 
-results = parallel_requests(
+results = fastreq(
     urls=files,
     concurrency=3,
     return_type="stream",
@@ -178,7 +178,7 @@ results = parallel_requests(
 Filter content while streaming:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def filter_lines(response, url):
     """Filter lines containing 'error' keyword."""
@@ -189,7 +189,7 @@ def filter_lines(response, url):
                 if 'error' in text.lower():
                     f.write(text + '\n')
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/logs.txt"],
     return_type="stream",
     stream_callback=filter_lines,
@@ -201,7 +201,7 @@ results = parallel_requests(
 Implement resumable downloads with Range headers:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 import os
 
 def resumable_download(response, url):
@@ -224,7 +224,7 @@ def resumable_download(response, url):
     print(f"Download complete: {os.path.getsize(filename)} bytes")
 
 # Note: Range headers must be set in request configuration
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.bin"],
     return_type="stream",
     stream_callback=resumable_download,
@@ -236,7 +236,7 @@ results = parallel_requests(
 Stream large files during upload:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def stream_large_file(filepath):
     """Generator for streaming file chunks."""
@@ -253,7 +253,7 @@ def stream_large_file(filepath):
 Handle errors during streaming:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 def safe_stream(response, url):
     try:
@@ -266,7 +266,7 @@ def safe_stream(response, url):
         print(f"Error downloading {url}: {e}")
         raise
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/bytes/10240"],
     return_type="stream",
     stream_callback=safe_stream,
@@ -278,7 +278,7 @@ results = parallel_requests(
 ### niquests (Recommended)
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],
     backend="niquests",
     return_type="stream",
@@ -289,7 +289,7 @@ results = parallel_requests(
 ### aiohttp
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],
     backend="aiohttp",
     return_type="stream",
@@ -300,7 +300,7 @@ results = parallel_requests(
 ### requests
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com/large-file.zip"],
     backend="requests",
     return_type="stream",
@@ -342,6 +342,6 @@ results = parallel_requests(
 
 ## See Also
 
-- **[Make Parallel Requests](make-parallel-requests.md)** - Basic request configuration
+- **[Make Parallel Requests](make-fastreq.md)** - Basic request configuration
 - **[Limit Request Rate](limit-request-rate.md)** - Control download rate
 - **[API Reference](../reference/configuration.md)** - Configuration options

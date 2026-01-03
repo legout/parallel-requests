@@ -1,7 +1,7 @@
 import pytest
 
-from parallel_requests.backends.base import RequestConfig
-from parallel_requests.backends.requests import RequestsBackend
+from fastreq.backends.base import RequestConfig
+from fastreq.backends.requests import RequestsBackend
 
 
 @pytest.mark.asyncio

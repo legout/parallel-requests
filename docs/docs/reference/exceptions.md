@@ -1,6 +1,6 @@
 # Exceptions
 
-All parallel-requests exceptions inherit from `ParallelRequestsError`.
+All fastreq exceptions inherit from `ParallelRequestsError`.
 
 ## Exception Hierarchy
 
@@ -21,10 +21,10 @@ ParallelRequestsError
 
 ### ParallelRequestsError
 
-Base exception for all parallel-requests errors.
+Base exception for all fastreq errors.
 
 ```python
-from parallel_requests.exceptions import ParallelRequestsError
+from fastreq.exceptions import ParallelRequestsError
 
 try:
     await client.request(url)
@@ -39,7 +39,7 @@ except ParallelRequestsError as e:
 Raised when a backend operation fails.
 
 ```python
-from parallel_requests.exceptions import BackendError
+from fastreq.exceptions import BackendError
 
 try:
     await client.request(url)
@@ -61,7 +61,7 @@ except BackendError as e:
 Raised when a proxy operation fails.
 
 ```python
-from parallel_requests.exceptions import ProxyError
+from fastreq.exceptions import ProxyError
 
 try:
     await client.request(url, proxy="http://invalid:8080")
@@ -85,7 +85,7 @@ except ProxyError as e:
 Raised when all retry attempts are exhausted.
 
 ```python
-from parallel_requests.exceptions import RetryExhaustedError
+from fastreq.exceptions import RetryExhaustedError
 
 try:
     await client.request(url)
@@ -111,7 +111,7 @@ except RetryExhaustedError as e:
 Raised when rate limit is exceeded.
 
 ```python
-from parallel_requests.exceptions import RateLimitExceededError
+from fastreq.exceptions import RateLimitExceededError
 
 try:
     await client.request(url)
@@ -134,7 +134,7 @@ except RateLimitExceededError as e:
 Raised when request validation fails.
 
 ```python
-from parallel_requests.exceptions import ValidationError
+from fastreq.exceptions import ValidationError
 
 try:
     validate_url("invalid-url")
@@ -157,7 +157,7 @@ except ValidationError as e:
 Raised when configuration is invalid.
 
 ```python
-from parallel_requests.exceptions import ConfigurationError
+from fastreq.exceptions import ConfigurationError
 
 try:
     client = ParallelRequests(backend="invalid")
@@ -183,7 +183,7 @@ Raised when some requests succeed and others fail.
 Only raised when `return_none_on_failure=False` (default).
 
 ```python
-from parallel_requests.exceptions import PartialFailureError
+from fastreq.exceptions import PartialFailureError
 
 try:
     results = await client.request([

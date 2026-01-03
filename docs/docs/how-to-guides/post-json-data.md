@@ -7,9 +7,9 @@ Learn how to handle POST, PUT, and PATCH requests with various data formats.
 Send JSON payloads using the `json` parameter:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"] * 3,
     method="POST",
     json={
@@ -29,9 +29,9 @@ for result in results:
 Send form-encoded data using the `data` parameter:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"],
     method="POST",
     data={
@@ -50,9 +50,9 @@ for result in results:
 Use `method="PUT"` to update resources:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/put"],
     method="PUT",
     json={
@@ -71,9 +71,9 @@ for result in results:
 Use `method="PATCH"` for partial resource updates:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/patch"],
     method="PATCH",
     json={
@@ -90,9 +90,9 @@ for result in results:
 Use `method="DELETE"` to remove resources:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/delete"],
     method="DELETE",
 )
@@ -106,7 +106,7 @@ for result in results:
 Create multiple resources in parallel:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 users = [
     {"name": "Alice", "email": "alice@example.com"},
@@ -114,7 +114,7 @@ users = [
     {"name": "Charlie", "email": "charlie@example.com"},
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/users"] * len(users),
     method="POST",
     json=users,  # Each request gets one user
@@ -134,7 +134,7 @@ for i, result in enumerate(results):
 Update multiple resources:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 user_ids = [1, 2, 3]
 updates = [
@@ -143,7 +143,7 @@ updates = [
     {"status": "pending"},
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=[f"https://api.example.com/users/{uid}" for uid in user_ids],
     method="PATCH",
     json=updates,
@@ -161,7 +161,7 @@ for i, result in enumerate(results):
 Send different data for each URL using a list:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 urls = [
     "https://api.example.com/users/1",
@@ -175,7 +175,7 @@ data_list = [
     {"name": "Charlie", "status": "pending"},
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=urls,
     method="PATCH",
     json=data_list,  # List of data dicts
@@ -190,9 +190,9 @@ for url, result in zip(urls, results):
 Upload files using `files` parameter:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"],
     method="POST",
     files={
@@ -209,9 +209,9 @@ for result in results:
 Upload multiple files:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/upload"],
     method="POST",
     files={
@@ -230,7 +230,7 @@ for result in results:
 Set headers per request using a list:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 urls = [
     "https://api.example.com/users",
@@ -242,7 +242,7 @@ headers_list = [
     {"Authorization": "Bearer POST_TOKEN"},
 ]
 
-results = parallel_requests(
+results = fastreq(
     urls=urls,
     method="POST",
     json=[{}, {}],
@@ -255,10 +255,10 @@ results = parallel_requests(
 Send raw request bodies with `data` parameter:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Send raw text
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"],
     method="POST",
     data="raw text body",
@@ -266,7 +266,7 @@ results = parallel_requests(
 )
 
 # Send raw bytes
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"],
     method="POST",
     data=b"binary data",
@@ -279,9 +279,9 @@ results = parallel_requests(
 Combine query parameters with POST body:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"],
     method="POST",
     params={"token": "secret"},  # Query params
@@ -298,10 +298,10 @@ for result in results:
 Include authentication in headers:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Bearer token
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"],
     method="POST",
     json={"query": "SELECT *"},
@@ -311,7 +311,7 @@ results = parallel_requests(
 )
 
 # API key
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"],
     method="POST",
     json={"query": "SELECT *"},
@@ -326,9 +326,9 @@ results = parallel_requests(
 Check response status codes:
 
 ```python
-from parallel_requests import parallel_requests, ReturnType
+from fastreq import fastreq, ReturnType
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/status/201"],
     method="POST",
     json={"key": "value"},
@@ -345,10 +345,10 @@ for response in results:
 ## Error Handling for Failed POST Requests
 
 ```python
-from parallel_requests import parallel_requests, PartialFailureError
+from fastreq import fastreq, PartialFailureError
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=[
             "https://api.example.com/users",
             "https://invalid-url.com/users",
@@ -393,7 +393,7 @@ except PartialFailureError as e:
 
 ## See Also
 
-- **[Make Parallel Requests](make-parallel-requests.md)** - Basic request configuration
+- **[Make Parallel Requests](make-fastreq.md)** - Basic request configuration
 - **[Handle Retries](handle-retries.md)** - Configure retry logic for POST requests
 - **[Debug Issues](debug-issues.md)** - Troubleshoot request problems
 - **[API Reference](../reference/configuration.md)** - Configuration options

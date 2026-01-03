@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from parallel_requests.config import GlobalConfig
+from fastreq.config import GlobalConfig
 
 
 class TestGlobalConfigDefaults:

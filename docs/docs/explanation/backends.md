@@ -1,6 +1,6 @@
 # Backends
 
-The parallel-requests library supports four HTTP backends, each with different capabilities and trade-offs.
+The fastreq library supports four HTTP backends, each with different capabilities and trade-offs.
 
 ## Overview
 
@@ -297,19 +297,19 @@ The `concurrency` parameter directly limits the number of concurrent connections
 
 ```bash
 # Install only niquests
-pip install parallel-requests[niquests]
+pip install fastreq[niquests]
 
 # Install only httpx (HTTP/2 requires httpx[http2])
-pip install parallel-requests[httpx]
+pip install fastreq[httpx]
 
 # Install only aiohttp
-pip install parallel-requests[aiohttp]
+pip install fastreq[aiohttp]
 
 # Install only requests
-pip install parallel-requests[requests]
+pip install fastreq[requests]
 
 # Install all backends (recommended)
-pip install parallel-requests[all]
+pip install fastreq[all]
 ```
 
 ### Dependency Sizes
@@ -394,7 +394,7 @@ client = ParallelRequests(backend="httpx", http2=True)
 ```bash
 pip install httpx[http2]
 # or
-pip install parallel-requests[httpx]
+pip install fastreq[httpx]
 ```
 
 The backend will automatically detect if h2 is available and enable HTTP/2.
@@ -405,7 +405,7 @@ The backend will automatically detect if h2 is available and enable HTTP/2.
 
 **Solution**: Install a backend:
 ```bash
-pip install parallel-requests[all]  # or specific backend
+pip install fastreq[all]  # or specific backend
 ```
 
 ### Thread Pool Exhaustion (requests backend)

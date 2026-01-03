@@ -8,8 +8,8 @@ This example demonstrates:
 - Different error types and handling strategies
 """
 
-from parallel_requests import (
-    parallel_requests,
+from fastreq import (
+    fastreq,
     PartialFailureError,
     BackendError,
     RetryExhaustedError,
@@ -31,7 +31,7 @@ def main():
     ]
 
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             verbose=False,
         )
@@ -46,7 +46,7 @@ def main():
     print("\nScenario 2: Graceful failure (return_none_on_failure)")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_none_on_failure=True,
         verbose=False,
@@ -70,7 +70,7 @@ def main():
     for name, urls, expect_error in test_cases:
         print(f"\nTest: {name}")
         try:
-            results = parallel_requests(
+            results = fastreq(
                 urls=urls,
                 max_retries=1,
                 verbose=False,

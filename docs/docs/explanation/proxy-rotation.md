@@ -306,7 +306,7 @@ def _load_webshare_proxies(self, url: str) -> List[str]:
 ### Using WebShare Proxies
 
 ```python
-from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+from fastreq.utils.proxies import ProxyManager, ProxyConfig
 
 config = ProxyConfig(
     enabled=True,
@@ -381,8 +381,8 @@ Random selection helps avoid:
 ### Basic Proxy Rotation
 
 ```python
-from parallel_requests import ParallelRequests
-from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+from fastreq import ParallelRequests
+from fastreq.utils.proxies import ProxyManager, ProxyConfig
 
 # Configure proxy rotation
 proxy_config = ProxyConfig(
@@ -519,7 +519,7 @@ ProxyConfig(retry_delay=30.0)  # Instead of 60.0
 
 **Solution**: Check format:
 ```python
-from parallel_requests.utils.proxies import ProxyManager
+from fastreq.utils.proxies import ProxyManager
 
 ProxyManager.validate("192.168.1.10:8080")  # Should return True
 ProxyManager.validate("invalid")             # Should return False

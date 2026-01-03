@@ -2,8 +2,8 @@ from typing import Any
 
 import niquests
 
-from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
-from parallel_requests.exceptions import BackendError
+from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
+from fastreq.exceptions import BackendError
 
 
 class NiquestsBackend(Backend):

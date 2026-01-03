@@ -1,14 +1,14 @@
 # Reference
 
-Complete API reference and technical documentation for parallel-requests.
+Complete API reference and technical documentation for fastreq.
 
 ## Core API
 
 Auto-generated API documentation using mkdocstrings:
 
 - [ParallelRequests Class](api/parallelrequests.md) - Main client class
-- [parallel_requests()](api/parallel_requests.md) - Synchronous convenience function
-- [parallel_requests_async()](api/parallel_requests_async.md) - Async convenience function
+- [fastreq()](api/fastreq.md) - Synchronous convenience function
+- [fastreq_async()](api/fastreq_async.md) - Async convenience function
 - [ReturnType](api/returntype.md) - Response parsing options
 - [GlobalConfig](api/globalconfig.md) - Global configuration
 

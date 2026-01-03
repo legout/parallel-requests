@@ -9,7 +9,7 @@ class GlobalConfig:
     Can be loaded from environment variables or created programmatically.
 
     Example:
-        >>> from parallel_requests.config import GlobalConfig
+        >>> from fastreq.config import GlobalConfig
         >>> config = GlobalConfig(
         ...     backend="niquests",
         ...     default_concurrency=10,

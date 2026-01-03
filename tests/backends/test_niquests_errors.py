@@ -1,9 +1,9 @@
 import pytest
 import warnings
 
-from parallel_requests.backends.niquests import NiquestsBackend
-from parallel_requests.backends.base import RequestConfig
-from parallel_requests.exceptions import BackendError
+from fastreq.backends.niquests import NiquestsBackend
+from fastreq.backends.base import RequestConfig
+from fastreq.exceptions import BackendError
 
 
 @pytest.mark.asyncio

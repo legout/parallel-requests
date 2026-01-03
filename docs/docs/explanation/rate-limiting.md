@@ -1,6 +1,6 @@
 # Rate Limiting
 
-Rate limiting controls the rate at which requests are sent to prevent overwhelming servers or hitting API rate limits. The parallel-requests library uses the **token bucket algorithm** for efficient and flexible rate limiting.
+Rate limiting controls the rate at which requests are sent to prevent overwhelming servers or hitting API rate limits. The fastreq library uses the **token bucket algorithm** for efficient and flexible rate limiting.
 
 ## Token Bucket Algorithm
 
@@ -288,10 +288,10 @@ client = ParallelRequests(
 ### Example 1: Basic Rate Limiting
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Limit to 5 requests/second, burst of 2
-results = parallel_requests(
+results = fastreq(
     urls=[url] * 50,
     rate_limit=5,
     rate_limit_burst=2,
@@ -308,7 +308,7 @@ results = parallel_requests(
 
 ```python
 # Large burst for initial fetch
-results = parallel_requests(
+results = fastreq(
     urls=[url] * 100,
     rate_limit=10,
     rate_limit_burst=50,  # Can send 50 immediately
@@ -325,7 +325,7 @@ results = parallel_requests(
 
 ```python
 # Strict API limit: 1 request/second
-results = parallel_requests(
+results = fastreq(
     urls=[url] * 10,
     rate_limit=1,
     rate_limit_burst=1,  # No real burst

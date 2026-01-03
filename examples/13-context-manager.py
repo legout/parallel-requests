@@ -9,7 +9,7 @@ This example demonstrates:
 """
 
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 
 async def main():

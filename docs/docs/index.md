@@ -18,24 +18,24 @@ A high-performance Python library for executing parallel HTTP requests with buil
 ## Installation
 
 ```bash
-pip install parallel-requests
+pip install fastreq
 
 # Install with all backend support
-pip install parallel-requests[all]
+pip install fastreq[all]
 
 # Install with specific backend
-pip install parallel-requests[niquests]  # For HTTP/2 support
-pip install parallel-requests[aiohttp]
-pip install parallel-requests[requests]
+pip install fastreq[niquests]  # For HTTP/2 support
+pip install fastreq[aiohttp]
+pip install fastreq[requests]
 ```
 
 ## Quick Start
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Make parallel requests
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/cpython/issues",
@@ -52,10 +52,10 @@ for result in results:
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def main():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=[
             "https://httpbin.org/delay/1",
             "https://httpbin.org/delay/2",
@@ -73,10 +73,10 @@ results = asyncio.run(main())
 
 ### New Users
 - [Getting Started Tutorial](tutorials/getting-started.md) - Installation and your first parallel requests
-- [Basic Examples](https://github.com/legout/parallel-requests/tree/main/examples) - Runnable code samples
+- [Basic Examples](https://github.com/legout/fastreq/tree/main/examples) - Runnable code samples
 
 ### Common Tasks
-- [Make Parallel Requests](how-to-guides/make-parallel-requests.md)
+- [Make Parallel Requests](how-to-guides/make-fastreq.md)
 - [Handle Rate Limits](how-to-guides/limit-request-rate.md)
 - [Configure Retries](how-to-guides/handle-retries.md)
 - [Use Proxies](how-to-guides/use-proxies.md)
@@ -92,7 +92,7 @@ results = asyncio.run(main())
 
 ## Examples
 
-Visit the [examples](https://github.com/legout/parallel-requests/tree/main/examples) folder for executable code samples covering all library features.
+Visit the [examples](https://github.com/legout/fastreq/tree/main/examples) folder for executable code samples covering all library features.
 
 ## Backend Selection
 
@@ -105,9 +105,9 @@ The library automatically detects and uses the best available backend in this pr
 To explicitly select a backend:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",  # Explicit backend selection
 )
@@ -115,4 +115,4 @@ results = parallel_requests(
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/legout/parallel-requests/blob/main/LICENSE) for details.
+MIT License - see [LICENSE](https://github.com/legout/fastreq/blob/main/LICENSE) for details.

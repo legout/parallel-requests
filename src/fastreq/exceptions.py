@@ -149,7 +149,7 @@ class PartialFailureError(ParallelRequestsError):
 
     Example:
         >>> try:
-        ...     results = parallel_requests(urls=many_urls)
+        ...     results = fastreq(urls=many_urls)
         ... except PartialFailureError as e:
         ...     print(f"Failed: {e.get_failed_urls()}")
         ...     print(f"Success: {e.successes}/{e.total}")

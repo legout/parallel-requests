@@ -1,13 +1,13 @@
 # Configuration
 
-Configure parallel-requests using client parameters, environment variables, or global config.
+Configure fastreq using client parameters, environment variables, or global config.
 
 ## ParallelRequests Parameters
 
 Configure the `ParallelRequests` client with these parameters:
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 client = ParallelRequests(
     backend="auto",
@@ -113,7 +113,7 @@ Load in your application:
 
 ```python
 from dotenv import load_dotenv
-from parallel_requests.config import GlobalConfig
+from fastreq.config import GlobalConfig
 
 load_dotenv()
 config = GlobalConfig.load_from_env()
@@ -126,7 +126,7 @@ config = GlobalConfig.load_from_env()
 Use `GlobalConfig` for programmatic configuration:
 
 ```python
-from parallel_requests.config import GlobalConfig
+from fastreq.config import GlobalConfig
 
 # Create config programmatically
 config = GlobalConfig(

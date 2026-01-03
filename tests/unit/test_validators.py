@@ -1,7 +1,7 @@
 import pytest
 
-from parallel_requests.exceptions import ValidationError
-from parallel_requests.utils.validators import (
+from fastreq.exceptions import ValidationError
+from fastreq.utils.validators import (
     validate_url,
     validate_proxy,
     validate_headers,

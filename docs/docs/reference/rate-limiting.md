@@ -7,7 +7,7 @@ Control request rate using the token bucket algorithm with burst capability.
 Main rate limiter class that combines token bucket rate limiting with semaphore-based concurrency control.
 
 ```python
-from parallel_requests.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
+from fastreq.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
 
 config = RateLimitConfig(
     requests_per_second=10,
@@ -36,7 +36,7 @@ async with limiter.acquire():
 Configuration for rate limiting.
 
 ```python
-from parallel_requests.utils.rate_limiter import RateLimitConfig
+from fastreq.utils.rate_limiter import RateLimitConfig
 
 config = RateLimitConfig(
     requests_per_second=10.0,  # 10 requests per second
@@ -60,7 +60,7 @@ config = RateLimitConfig(
 Implements the token bucket algorithm for rate limiting.
 
 ```python
-from parallel_requests.utils.rate_limiter import TokenBucket
+from fastreq.utils.rate_limiter import TokenBucket
 
 bucket = TokenBucket(requests_per_second=10, burst=5)
 
@@ -109,7 +109,7 @@ tokens = min(burst, tokens + elapsed * requests_per_second)
 ### In ParallelRequests Client
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 client = ParallelRequests(
     rate_limit=10.0,      # 10 requests per second
@@ -124,7 +124,7 @@ async with client:
 ### Standalone Usage
 
 ```python
-from parallel_requests.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
+from fastreq.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
 
 config = RateLimitConfig(requests_per_second=10, burst=5, max_concurrency=20)
 limiter = AsyncRateLimiter(config)

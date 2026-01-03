@@ -1,6 +1,6 @@
 # Retry Strategy
 
-Retry strategies determine how the library handles failed requests. The parallel-requests library implements **exponential backoff with jitter** to balance resilience with efficiency.
+Retry strategies determine how the library handles failed requests. The fastreq library implements **exponential backoff with jitter** to balance resilience with efficiency.
 
 ## Exponential Backoff Algorithm
 

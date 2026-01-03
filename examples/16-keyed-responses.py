@@ -8,7 +8,7 @@ This example demonstrates:
 - Named result access patterns
 """
 
-from parallel_requests import parallel_requests, ParallelRequests
+from fastreq import fastreq, ParallelRequests
 
 
 async def async_example():
@@ -24,9 +24,9 @@ async def async_example():
 
     keys = ["alice", "bob", "charlie"]
 
-    from parallel_requests import parallel_requests_async
+    from fastreq import fastreq_async
 
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=urls,
         keys=keys,
         verbose=False,
@@ -52,7 +52,7 @@ def main():
 
     keys = ["alice", "bob", "charlie"]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         keys=keys,
         verbose=False,
@@ -81,7 +81,7 @@ def main():
 
     keys = ["user", "post", "comment"]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         keys=keys,
         verbose=False,
@@ -106,10 +106,10 @@ def main():
 
     keys = ["valid1", "error", "valid2"]
 
-    from parallel_requests import PartialFailureError
+    from fastreq import PartialFailureError
 
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             keys=keys,
             verbose=False,
@@ -123,7 +123,7 @@ def main():
     print("\n\nScenario 5: Graceful failure with keys")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         keys=keys,
         return_none_on_failure=True,

@@ -9,7 +9,7 @@ class HeaderManager:
     Provides automatic user-agent rotation and custom header management.
 
     Example:
-        >>> from parallel_requests.utils.headers import HeaderManager
+        >>> from fastreq.utils.headers import HeaderManager
         >>> manager = HeaderManager(random_user_agent=True)
         >>> headers = manager.get_headers({"Authorization": "Bearer token"})
 

@@ -11,7 +11,7 @@ Note: HTTP/2 requires niquests backend
 """
 
 import asyncio
-from parallel_requests import parallel_requests, ParallelRequests
+from fastreq import fastreq, ParallelRequests
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     ]
 
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             backend="niquests",
             http2=True,

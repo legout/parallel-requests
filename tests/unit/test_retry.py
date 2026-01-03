@@ -1,8 +1,8 @@
 import asyncio
 import pytest
 
-from parallel_requests.exceptions import RetryExhaustedError
-from parallel_requests.utils.retry import RetryConfig, RetryStrategy
+from fastreq.exceptions import RetryExhaustedError
+from fastreq.utils.retry import RetryConfig, RetryStrategy
 
 
 @pytest.mark.asyncio

@@ -1,15 +1,15 @@
 # Getting Started
 
-This tutorial will walk you through installing parallel-requests and making your first parallel HTTP requests.
+This tutorial will walk you through installing fastreq and making your first parallel HTTP requests.
 
 **Estimated reading time: 10 minutes**
 
 ## Installation
 
-Install parallel-requests using pip:
+Install fastreq using pip:
 
 ```bash
-pip install parallel-requests
+pip install fastreq
 ```
 
 ### Installing with Backend Support
@@ -18,12 +18,12 @@ The library supports three HTTP backends. You can install with all backends or c
 
 ```bash
 # Install with all backends (recommended)
-pip install parallel-requests[all]
+pip install fastreq[all]
 
 # Install with specific backend
-pip install parallel-requests[niquests]  # HTTP/2 support
-pip install parallel-requests[aiohttp]
-pip install parallel-requests[requests]
+pip install fastreq[niquests]  # HTTP/2 support
+pip install fastreq[aiohttp]
+pip install fastreq[requests]
 ```
 
 ### Backend Priority
@@ -39,10 +39,10 @@ The library automatically detects and uses the best available backend in this or
 Let's start with a simple example that makes multiple API calls in parallel:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Make parallel requests
-results = parallel_requests(
+results = fastreq(
     urls=[
         "https://api.github.com/repos/python/cpython",
         "https://api.github.com/repos/python/cpython/issues",
@@ -64,10 +64,10 @@ For async applications, use the async version:
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def main():
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=[
             "https://httpbin.org/delay/1",
             "https://httpbin.org/delay/2",
@@ -88,27 +88,27 @@ By default, responses are parsed as JSON. You can specify different return types
 
 ```python
 # Get response as JSON (default)
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.github.com/repos/python/cpython"],
     return_type="json",
 )
 
 # Get response as text
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com"],
     return_type="text",
 )
 
 # Get raw bytes
-results = parallel_requests(
+results = fastreq(
     urls=["https://example.com"],
     return_type="content",
 )
 
 # Get full response object
-from parallel_requests import parallel_requests, ReturnType
+from fastreq import fastreq, ReturnType
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     return_type=ReturnType.RESPONSE,
 )
@@ -121,9 +121,9 @@ print(results[0].headers)      # Response headers
 Configure the client with various options:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"] * 5,
     concurrency=3,            # Max concurrent requests
     max_retries=2,            # Retry failed requests up to 2 times
@@ -139,7 +139,7 @@ results = parallel_requests(
 Make POST requests with JSON data:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/post"] * 3,
     method="POST",
     json={"key": "value"},
@@ -153,7 +153,7 @@ For more control, use the ParallelRequests class with an async context manager:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def main():
     async with ParallelRequests(concurrency=5) as client:
@@ -164,7 +164,7 @@ async def main():
 
         # Second batch (reuses the same session)
         results2 = await client.request(
-            urls=["https://api.github.com/repos/legout/parallel-requests"],
+            urls=["https://api.github.com/repos/legout/fastreq"],
         )
 
     return results1, results2

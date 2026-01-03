@@ -7,7 +7,7 @@ The backend abstraction provides a consistent interface across different HTTP cl
 All backends must inherit from `Backend` and implement its abstract methods.
 
 ```python
-from parallel_requests.backends.base import Backend
+from fastreq.backends.base import Backend
 
 class CustomBackend(Backend):
     @property
@@ -50,7 +50,7 @@ class CustomBackend(Backend):
 Configuration for a single HTTP request. Used internally by backends.
 
 ```python
-from parallel_requests.backends.base import RequestConfig
+from fastreq.backends.base import RequestConfig
 
 config = RequestConfig(
     url="https://example.com",
@@ -94,7 +94,7 @@ config = RequestConfig(
 Normalized response from HTTP backends with a consistent interface.
 
 ```python
-from parallel_requests.backends.base import NormalizedResponse
+from fastreq.backends.base import NormalizedResponse
 
 response = NormalizedResponse(
     status_code=200,
@@ -174,7 +174,7 @@ client = ParallelRequests(backend="niquests")
 Backends are initialized with HTTP/2 configuration:
 
 ```python
-from parallel_requests.backends.niquests import NiquestsBackend
+from fastreq.backends.niquests import NiquestsBackend
 
 backend = NiquestsBackend(http2_enabled=True)
 
@@ -189,7 +189,7 @@ async with backend:
 Create a custom backend:
 
 ```python
-from parallel_requests.backends.base import Backend, RequestConfig, NormalizedResponse
+from fastreq.backends.base import Backend, RequestConfig, NormalizedResponse
 import httpx
 
 class HttpxBackend(Backend):

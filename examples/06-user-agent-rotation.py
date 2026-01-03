@@ -8,7 +8,7 @@ This example demonstrates:
 - User agent headers in requests
 """
 
-from parallel_requests import parallel_requests, ParallelRequests
+from fastreq import fastreq, ParallelRequests
 
 
 def main():
@@ -23,7 +23,7 @@ def main():
     print("Scenario 1: Default user agent rotation")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         random_user_agent=True,
         verbose=False,
@@ -42,7 +42,7 @@ def main():
     print("\n\nScenario 2: Disable user agent rotation")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         random_user_agent=False,
         verbose=False,
@@ -62,7 +62,7 @@ def main():
 
     custom_ua = "MyCustomApp/1.0 (https://example.com/bot)"
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         random_user_agent=False,
         headers={"User-Agent": custom_ua},

@@ -7,10 +7,10 @@ Learn how to manage session cookies and authentication.
 Use the `cookies` parameter to send cookies with requests:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Send cookies with request
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/cookies"],
     cookies={
         "session_id": "abc123",
@@ -28,7 +28,7 @@ Use a context manager to maintain cookies across multiple request batches:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def session_example():
     async with ParallelRequests() as client:
@@ -60,7 +60,7 @@ Add cookies to an existing session:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def add_cookies_example():
     async with ParallelRequests() as client:
@@ -87,7 +87,7 @@ Clear all cookies from the session:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def clear_cookies_example():
     async with ParallelRequests() as client:
@@ -120,7 +120,7 @@ Authenticate and maintain session across requests:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def authenticated_session():
     async with ParallelRequests() as client:
@@ -152,7 +152,7 @@ Authenticate with an API and maintain session:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def api_session():
     async with ParallelRequests() as client:
@@ -185,7 +185,7 @@ Use context manager to persist cookies:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def persistent_session():
     async with ParallelRequests() as client:
@@ -223,7 +223,7 @@ Set cookies per request:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def different_cookies():
     async with ParallelRequests() as client:
@@ -252,7 +252,7 @@ Add more cookies to existing session:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def update_cookies():
     async with ParallelRequests() as client:
@@ -279,7 +279,7 @@ Check cookie status:
 
 ```python
 import asyncio
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 async def cookie_status():
     async with ParallelRequests() as client:
@@ -306,10 +306,10 @@ results = asyncio.run(cookie_status())
 Handle cookie-related errors:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 try:
-    results = parallel_requests(
+    results = fastreq(
         urls=["https://httpbin.org/cookies"],
         cookies={
             "invalid_cookie": "value",
@@ -324,9 +324,9 @@ except Exception as e:
 Send both cookies and headers:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/cookies"],
     cookies={"session": "abc123"},
     headers={
@@ -341,14 +341,14 @@ results = parallel_requests(
 Enable debug logging to see cookie handling:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/cookies/set/session/test"],
     debug=True,
 )
 
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/cookies"],
     debug=True,
 )
@@ -386,6 +386,6 @@ results = parallel_requests(
 
 ## See Also
 
-- **[Make Parallel Requests](make-parallel-requests.md)** - Request configuration
+- **[Make Parallel Requests](make-fastreq.md)** - Request configuration
 - **[Post JSON Data](post-json-data.md)** - Authentication examples
 - **[API Reference](../reference/api/parallelrequests.md)** - Client documentation

@@ -7,7 +7,7 @@ Manage, validate, and rotate HTTP proxies with automatic health tracking.
 Main proxy manager class for proxy rotation and validation.
 
 ```python
-from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+from fastreq.utils.proxies import ProxyManager, ProxyConfig
 
 config = ProxyConfig(
     enabled=True,
@@ -49,7 +49,7 @@ await manager.mark_success(proxy)
 Configuration for proxy rotation.
 
 ```python
-from parallel_requests.utils.proxies import ProxyConfig
+from fastreq.utils.proxies import ProxyConfig
 
 config = ProxyConfig(
     enabled=True,                      # Enable proxy rotation
@@ -101,7 +101,7 @@ config = ProxyConfig(
 ### Proxy Validation
 
 ```python
-from parallel_requests.utils.proxies import ProxyManager
+from fastreq.utils.proxies import ProxyManager
 
 # Validate proxy format
 is_valid = ProxyManager.validate("192.168.1.1:8080")  # True
@@ -147,7 +147,7 @@ PROXIES=192.168.1.1:8080,192.168.1.2:8080,http://user:pass@proxy:8080
 
 ```python
 import os
-from parallel_requests.utils.proxies import ProxyConfig
+from fastreq.utils.proxies import ProxyConfig
 
 config = ProxyConfig(enabled=True)
 manager = ProxyManager(config)  # Loads from PROXIES env var
@@ -226,7 +226,7 @@ failed = total - available
 ### In ParallelRequests Client
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 # Enable proxy rotation
 client = ParallelRequests(
@@ -238,7 +238,7 @@ client = ParallelRequests(
 ### Standalone Usage
 
 ```python
-from parallel_requests.utils.proxies import ProxyManager, ProxyConfig
+from fastreq.utils.proxies import ProxyManager, ProxyConfig
 
 config = ProxyConfig(
     enabled=True,
@@ -284,7 +284,7 @@ PROXY_PATTERNS = [
 Raised when proxy validation or loading fails:
 
 ```python
-from parallel_requests.utils.proxies import ProxyValidationError
+from fastreq.utils.proxies import ProxyValidationError
 
 try:
     config = ProxyConfig(webshare_url="https://invalid-url")

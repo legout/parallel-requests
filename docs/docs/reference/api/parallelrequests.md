@@ -1,3 +1,3 @@
 # ParallelRequests
 
-::: parallel_requests.client.ParallelRequests
+::: fastreq.client.ParallelRequests

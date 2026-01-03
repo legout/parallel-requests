@@ -1,6 +1,6 @@
 import pytest
 
-from parallel_requests.exceptions import (
+from fastreq.exceptions import (
     BackendError,
     ConfigurationError,
     FailureDetails,

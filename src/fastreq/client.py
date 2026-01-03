@@ -73,7 +73,7 @@ class ParallelRequests:
     """Main client for parallel HTTP requests.
 
     Example:
-        >>> from parallel_requests import ParallelRequests
+        >>> from fastreq import ParallelRequests
         >>> client = ParallelRequests(concurrency=5)
         >>> async with client:
         ...     results = await client.request(
@@ -165,7 +165,7 @@ class ParallelRequests:
                     continue
 
                 try:
-                    module = importlib.import_module(f"parallel_requests.backends.{backend_name}")
+                    module = importlib.import_module(f"fastreq.backends.{backend_name}")
                     backend_cls = getattr(module, backend_class_name)
                     self._backend = backend_cls(http2_enabled=self._http2)
                     if unavailable:
@@ -184,7 +184,7 @@ class ParallelRequests:
             )
         else:
             try:
-                module = importlib.import_module(f"parallel_requests.backends.{self.backend_name}")
+                module = importlib.import_module(f"fastreq.backends.{self.backend_name}")
                 backend_options: list[tuple[str, type[Backend]]] = [
                     (name, cls)
                     for name, cls in module.__dict__.items()
@@ -503,7 +503,7 @@ class ParallelRequests:
                 return None
 
 
-def parallel_requests(
+def fastreq(
     urls: str | list[str],
     *,
     backend: str = "auto",
@@ -536,8 +536,8 @@ def parallel_requests(
     This is the easiest way to make parallel requests. Uses asyncio.run() internally.
 
     Example:
-        >>> from parallel_requests import parallel_requests
-        >>> results = parallel_requests(
+        >>> from fastreq import fastreq
+        >>> results = fastreq(
         ...     urls=["https://api.github.com/repos/python/cpython"],
         ...     concurrency=3,
         ... )
@@ -613,7 +613,7 @@ def parallel_requests(
     return asyncio.run(_run())
 
 
-async def parallel_requests_async(
+async def fastreq_async(
     urls: str | list[str],
     *,
     backend: str = "auto",
@@ -645,9 +645,9 @@ async def parallel_requests_async(
 
     Example:
         >>> import asyncio
-        >>> from parallel_requests import parallel_requests_async
+        >>> from fastreq import fastreq_async
         >>> async def main():
-        ...     results = await parallel_requests_async(
+        ...     results = await fastreq_async(
         ...         urls=["https://httpbin.org/get"] * 3,
         ...         concurrency=5,
         ...     )

@@ -1,7 +1,7 @@
 import os
 import pytest
 from unittest.mock import patch, MagicMock
-from parallel_requests.utils.headers import HeaderManager
+from fastreq.utils.headers import HeaderManager
 
 
 class TestHeaderManager:

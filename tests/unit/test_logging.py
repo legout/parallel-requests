@@ -1,5 +1,5 @@
 import pytest
-from parallel_requests.utils.logging import configure_logging, reset_logging
+from fastreq.utils.logging import configure_logging, reset_logging
 from loguru import logger
 
 

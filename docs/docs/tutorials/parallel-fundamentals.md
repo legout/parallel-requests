@@ -20,10 +20,10 @@ for i in range(5):
 print(f"Sequential: {time.time() - start:.1f}s")  # ~5 seconds
 
 # Parallel requests (fast)
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 start = time.time()
-parallel_requests(
+fastreq(
     urls=["https://httpbin.org/delay/1"] * 5,
     concurrency=5,
 )
@@ -40,11 +40,11 @@ The library uses Python's `async` and `await` syntax for parallel execution.
 
 ```python
 import asyncio
-from parallel_requests import parallel_requests_async
+from fastreq import fastreq_async
 
 async def fetch_data():
     # This async function can pause while waiting for network I/O
-    results = await parallel_requests_async(
+    results = await fastreq_async(
         urls=["https://api.github.com/repos/python/cpython"],
     )
     return results
@@ -55,7 +55,7 @@ results = asyncio.run(fetch_data())
 
 ### How It Works
 
-When you use `await parallel_requests_async()`, the function:
+When you use `await fastreq_async()`, the function:
 
 1. Creates multiple async tasks (one per URL)
 2. Executes tasks concurrently using `asyncio.gather()`
@@ -69,10 +69,10 @@ This allows Python to efficiently wait for multiple network operations simultane
 The `concurrency` parameter controls how many requests run simultaneously.
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Process 100 URLs, 10 at a time
-results = parallel_requests(
+results = fastreq(
     urls=[f"https://api.example.com/page/{i}" for i in range(100)],
     concurrency=10,  # Max 10 concurrent requests
 )
@@ -97,7 +97,7 @@ The library abstracts away different HTTP client libraries.
 
 ```python
 # Automatically picks the best available backend
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="auto",  # Default
 )
@@ -107,7 +107,7 @@ results = parallel_requests(
 
 ```python
 # Force specific backend
-results = parallel_requests(
+results = fastreq(
     urls=["https://httpbin.org/get"],
     backend="niquests",  # or "aiohttp", "requests"
 )
@@ -130,10 +130,10 @@ results = parallel_requests(
 Control request rate to avoid overwhelming servers or hitting rate limits.
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Limit to 10 requests per second with burst of 5
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"] * 50,
     rate_limit=10,           # 10 requests per second
     rate_limit_burst=5,      # Allow bursts of 5
@@ -151,10 +151,10 @@ results = parallel_requests(
 Automatically retry failed requests with exponential backoff.
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Retry up to 3 times with backoff
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/unstable"],
     max_retries=3,
 )

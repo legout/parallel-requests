@@ -18,10 +18,10 @@ This allows for smooth rate limiting while accommodating short bursts of traffic
 Set `rate_limit` to control requests per second:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Limit to 10 requests per second
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"] * 50,
     rate_limit=10,  # 10 requests/second
 )
@@ -32,10 +32,10 @@ results = parallel_requests(
 Use `rate_limit_burst` to allow temporary spikes in traffic:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Allow bursts of 20 requests, then sustain 10 requests/second
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/endpoint"] * 100,
     rate_limit=10,           # 10 requests/second sustained
     rate_limit_burst=20,     # Allow bursts of 20
@@ -52,10 +52,10 @@ With this configuration:
 GitHub API has a limit of 5,000 requests per hour (~1.4 requests/second):
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Safe rate limiting for GitHub API
-results = parallel_requests(
+results = fastreq(
     urls=[f"https://api.github.com/repos/{repo}" for repo in my_repos],
     rate_limit=1,            # Conservative rate
     rate_limit_burst=5,      # Allow small bursts
@@ -70,10 +70,10 @@ results = parallel_requests(
 Handle peak loads with burst capacity:
 
 ```python
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 # Allow bursts during peak traffic, sustain rate otherwise
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     rate_limit=20,           # Sustain 20 req/s
     rate_limit_burst=50,     # Allow bursts of 50
@@ -86,7 +86,7 @@ results = parallel_requests(
 ### Without Burst (rate_limit_burst=1)
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 10,
     rate_limit=5,              # 5 req/s
     rate_limit_burst=1,       # No burst capacity
@@ -102,7 +102,7 @@ results = parallel_requests(
 ### With Burst (rate_limit_burst=5)
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 10,
     rate_limit=5,              # 5 req/s
     rate_limit_burst=5,       # Allow burst of 5
@@ -120,7 +120,7 @@ results = parallel_requests(
 Rate limiting works together with concurrency limits:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     concurrency=20,           # Max 20 concurrent requests
     rate_limit=10,            # 10 requests/second
@@ -145,7 +145,7 @@ Understanding the difference:
 
 ```python
 # Example: High concurrency, low rate limit
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 100,
     concurrency=50,           # Many concurrent connections
     rate_limit=5,             # But only 5 complete per second
@@ -158,7 +158,7 @@ results = parallel_requests(
 Set `rate_limit=None` to disable rate limiting:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 50,
     rate_limit=None,  # No rate limiting (use with caution!)
 )
@@ -171,7 +171,7 @@ results = parallel_requests(
 Enable debug logging to see rate limiting in action:
 
 ```python
-results = parallel_requests(
+results = fastreq(
     urls=["https://api.example.com/data"] * 20,
     rate_limit=5,
     rate_limit_burst=10,

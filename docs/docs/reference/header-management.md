@@ -7,7 +7,7 @@ Manage HTTP headers with automatic user-agent rotation.
 Main header manager class for automatic user-agent rotation.
 
 ```python
-from parallel_requests.utils.headers import HeaderManager
+from fastreq.utils.headers import HeaderManager
 
 manager = HeaderManager(
     random_user_agent=True,
@@ -33,7 +33,7 @@ print(headers["user-agent"])  # Random from list
 ## HeaderManager Initialization
 
 ```python
-from parallel_requests.utils.headers import HeaderManager
+from fastreq.utils.headers import HeaderManager
 
 # Default user-agent rotation
 manager = HeaderManager(random_user_agent=True)
@@ -279,7 +279,7 @@ Returns a copy of the list.
 ## Using in ParallelRequests
 
 ```python
-from parallel_requests import ParallelRequests
+from fastreq import ParallelRequests
 
 # Built-in user-agent rotation
 client = ParallelRequests(random_user_agent=True)

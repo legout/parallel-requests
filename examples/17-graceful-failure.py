@@ -8,8 +8,8 @@ This example demonstrates:
 - Continuing despite failures
 """
 
-from parallel_requests import (
-    parallel_requests,
+from fastreq import (
+    fastreq,
     PartialFailureError,
 )
 
@@ -28,7 +28,7 @@ def main():
     ]
 
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             verbose=False,
         )
@@ -44,7 +44,7 @@ def main():
     print("\n\nScenario 2: Graceful failure (return None on errors)")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         return_none_on_failure=True,
         verbose=False,
@@ -82,7 +82,7 @@ def main():
         "https://httpbin.org/status/404",
     ]
 
-    post_results = parallel_requests(
+    post_results = fastreq(
         urls=post_urls,
         method="POST",
         json={"test": "data"},
@@ -106,7 +106,7 @@ def main():
         "https://jsonplaceholder.typicode.com/users/2",
     ]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=api_urls,
         return_none_on_failure=True,
         verbose=False,
@@ -136,7 +136,7 @@ def main():
         "https://httpbin.org/status/404",
     ]
 
-    results = parallel_requests(
+    results = fastreq(
         urls=unreliable_urls,
         max_retries=3,
         return_none_on_failure=True,

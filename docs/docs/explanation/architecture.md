@@ -1,6 +1,6 @@
 # Architecture
 
-The parallel-requests library is designed around a few core principles that enable flexible, efficient, and maintainable parallel HTTP requests.
+The fastreq library is designed around a few core principles that enable flexible, efficient, and maintainable parallel HTTP requests.
 
 ## Design Philosophy
 
@@ -31,7 +31,7 @@ class Backend(ABC):
 
 ### Async-First Design
 
-Python's `asyncio` is the foundation of the library. All operations are asynchronous internally, even when using synchronous backends like requests. The synchronous `parallel_requests()` function is just a thin wrapper that runs `asyncio.run()` behind the scenes.
+Python's `asyncio` is the foundation of the library. All operations are asynchronous internally, even when using synchronous backends like requests. The synchronous `fastreq()` function is just a thin wrapper that runs `asyncio.run()` behind the scenes.
 
 **Why async-first?**
 
@@ -47,7 +47,7 @@ The library is organized into distinct layers:
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     User API Layer                         │
-│  parallel_requests() / parallel_requests_async()           │
+│  fastreq() / fastreq_async()           │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
@@ -86,7 +86,7 @@ The main client class that orchestrates everything:
 - **Context management**: Handles session lifecycle
 - **Cookie management**: Maintains session cookies across requests
 
-Located in: `src/parallel_requests/client.py`
+Located in: `src/fastreq/client.py`
 
 ### Backends
 
@@ -98,7 +98,7 @@ HTTP client adapters that provide a normalized interface:
 
 All backends implement the `Backend` interface and return `NormalizedResponse` objects.
 
-Located in: `src/parallel_requests/backends/`
+Located in: `src/fastreq/backends/`
 
 ### Utilities
 
@@ -111,7 +111,7 @@ Supporting utilities that handle cross-cutting concerns:
 - **Logging**: Structured logging configuration
 - **Validators**: Input validation and error handling
 
-Located in: `src/parallel_requests/utils/`
+Located in: `src/fastreq/utils/`
 
 ## Backend Abstraction Layer
 

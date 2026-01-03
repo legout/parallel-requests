@@ -1,3 +1,3 @@
 # ReturnType
 
-::: parallel_requests.client.ReturnType
+::: fastreq.client.ReturnType

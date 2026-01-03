@@ -8,7 +8,7 @@ This example demonstrates:
 - Verifying response data
 """
 
-from parallel_requests import parallel_requests, ReturnType
+from fastreq import fastreq, ReturnType
 import json
 
 
@@ -30,7 +30,7 @@ def main():
     print("Making POST requests with JSON payloads...")
     print("-" * 50)
 
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         method="POST",
         json=payloads,
@@ -49,7 +49,7 @@ def main():
     print("\n\nScenario 2: Single POST request")
     print("-" * 50)
 
-    result = parallel_requests(
+    result = fastreq(
         urls="https://httpbin.org/post",
         method="POST",
         json={"message": "Hello, World!", "count": 42},

@@ -82,7 +82,7 @@ class AsyncRateLimiter:
     Combines token bucket rate limiting with a semaphore for concurrency control.
 
     Example:
-        >>> from parallel_requests.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
+        >>> from fastreq.utils.rate_limiter import AsyncRateLimiter, RateLimitConfig
         >>> config = RateLimitConfig(requests_per_second=10, burst=5, max_concurrency=20)
         >>> limiter = AsyncRateLimiter(config)
         >>> async with limiter.acquire():

@@ -1,9 +1,9 @@
 import pytest
 import warnings
 
-from parallel_requests.backends.aiohttp import AiohttpBackend
-from parallel_requests.backends.base import RequestConfig
-from parallel_requests.exceptions import BackendError
+from fastreq.backends.aiohttp import AiohttpBackend
+from fastreq.backends.base import RequestConfig
+from fastreq.exceptions import BackendError
 
 
 @pytest.mark.asyncio

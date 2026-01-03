@@ -1,3 +1,3 @@
-# parallel_requests_async()
+# fastreq_async()
 
-::: parallel_requests.client.parallel_requests_async
+::: fastreq.client.fastreq_async

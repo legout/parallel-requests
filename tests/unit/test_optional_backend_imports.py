@@ -6,13 +6,13 @@ from typing import Any
 
 import pytest
 
-from parallel_requests.backends.base import Backend, NormalizedResponse, RequestConfig
-from parallel_requests.client import ParallelRequests
+from fastreq.backends.base import Backend, NormalizedResponse, RequestConfig
+from fastreq.client import ParallelRequests
 
 
-def _clear_parallel_requests_modules() -> None:
+def _clear_fastreq_modules() -> None:
     for module_name in list(sys.modules.keys()):
-        if module_name == "parallel_requests" or module_name.startswith("parallel_requests."):
+        if module_name == "fastreq" or module_name.startswith("fastreq."):
             sys.modules.pop(module_name, None)
 
 
@@ -33,50 +33,50 @@ def _block_imports(monkeypatch: pytest.MonkeyPatch, blocked_modules: set[str]) -
     monkeypatch.setattr(builtins, "__import__", guarded_import)
 
 
-def test_import_parallel_requests_without_optional_backends(
+def test_import_fastreq_without_optional_backends(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    _clear_parallel_requests_modules()
+    _clear_fastreq_modules()
 
     _block_imports(monkeypatch, {"aiohttp", "niquests", "requests"})
 
-    module = importlib.import_module("parallel_requests")
+    module = importlib.import_module("fastreq")
     assert hasattr(module, "ParallelRequests")
 
-    _clear_parallel_requests_modules()
-    importlib.import_module("parallel_requests")
+    _clear_fastreq_modules()
+    importlib.import_module("fastreq")
 
 
-def test_import_parallel_requests_backends_without_optional_dependencies(
+def test_import_fastreq_backends_without_optional_dependencies(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    _clear_parallel_requests_modules()
+    _clear_fastreq_modules()
 
     _block_imports(monkeypatch, {"aiohttp", "niquests", "requests"})
 
-    backends = importlib.import_module("parallel_requests.backends")
+    backends = importlib.import_module("fastreq.backends")
     assert hasattr(backends, "Backend")
     assert hasattr(backends, "RequestConfig")
     assert hasattr(backends, "NormalizedResponse")
 
-    _clear_parallel_requests_modules()
-    importlib.import_module("parallel_requests")
+    _clear_fastreq_modules()
+    importlib.import_module("fastreq")
 
 
 def test_accessing_missing_backend_raises_importerror(monkeypatch: pytest.MonkeyPatch) -> None:
-    _clear_parallel_requests_modules()
+    _clear_fastreq_modules()
 
     _block_imports(monkeypatch, {"aiohttp"})
 
-    backends = importlib.import_module("parallel_requests.backends")
+    backends = importlib.import_module("fastreq.backends")
 
     with pytest.raises(ImportError) as excinfo:
         getattr(backends, "AiohttpBackend")
 
     assert "aiohttp" in str(excinfo.value)
 
-    _clear_parallel_requests_modules()
-    importlib.import_module("parallel_requests")
+    _clear_fastreq_modules()
+    importlib.import_module("fastreq")
 
 
 class _DummyNiquestsBackend(Backend):
@@ -116,9 +116,9 @@ def test_auto_backend_selection_does_not_import_unselected_modules(
     fake_niquests_module = types.SimpleNamespace(NiquestsBackend=_DummyNiquestsBackend)
 
     def fake_import_module(name: str, package: str | None = None) -> Any:
-        if name == "parallel_requests.backends.niquests":
+        if name == "fastreq.backends.niquests":
             return fake_niquests_module
-        if name in {"parallel_requests.backends.aiohttp", "parallel_requests.backends.requests"}:
+        if name in {"fastreq.backends.aiohttp", "fastreq.backends.requests"}:
             raise AssertionError(f"Unexpected import of {name}")
         return real_import_module(name, package)
 

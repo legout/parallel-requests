@@ -9,7 +9,7 @@ This example demonstrates:
 """
 
 import time
-from parallel_requests import parallel_requests
+from fastreq import fastreq
 
 
 def main():
@@ -20,7 +20,7 @@ def main():
     print("Scenario 1: No rate limit (concurrency=5)")
     print("-" * 50)
     start = time.time()
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         concurrency=5,
         rate_limit=None,
@@ -32,7 +32,7 @@ def main():
     print("\nScenario 2: Rate limit of 5 req/s with burst of 3")
     print("-" * 50)
     start = time.time()
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         concurrency=5,
         rate_limit=5.0,
@@ -45,7 +45,7 @@ def main():
     print("\nScenario 3: Strict rate limit of 2 req/s (burst=2)")
     print("-" * 50)
     start = time.time()
-    results = parallel_requests(
+    results = fastreq(
         urls=urls,
         concurrency=5,
         rate_limit=2.0,

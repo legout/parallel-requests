@@ -8,8 +8,8 @@ This example demonstrates:
 - Comparing backend features
 """
 
-from parallel_requests import (
-    parallel_requests,
+from fastreq import (
+    fastreq,
     ParallelRequests,
 )
 
@@ -22,7 +22,7 @@ def test_backend(backend_name: str) -> dict:
     urls = [f"https://httpbin.org/get?backend={backend_name}"] * 3
 
     try:
-        results = parallel_requests(
+        results = fastreq(
             urls=urls,
             backend=backend_name,
             concurrency=3,

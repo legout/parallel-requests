@@ -1,3 +1,3 @@
 # GlobalConfig
 
-::: parallel_requests.config.GlobalConfig
+::: fastreq.config.GlobalConfig
